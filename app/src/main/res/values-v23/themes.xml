@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<!--
+    <style name="Theme.GiveAwayThings_GoodDeeds" parent="android:Theme.Material.Light.NoActionBar" />
+-->
+
+    <style name="BaseTheme" parent="Theme.MaterialComponents.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+        <item name="android:typeface">normal</item>
+    </style>
+
+    <style name="BaseTheme.AppTheme">
+        <!--Do nothing here-->
+    </style>
+
+    <style name="BaseTheme.AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>    </style>
+
+    <style name="BaseTheme.AppTheme.Splash">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <!--<item name="android:windowBackground">@drawable/gradient_background</item>-->
+        <!--<item name="android:background">@drawable/splash</item>-->
+    </style>
+    <style name="Theme.GiveAwayThings_GoodDeeds" parent="Theme.AppCompat" />
+</resources>

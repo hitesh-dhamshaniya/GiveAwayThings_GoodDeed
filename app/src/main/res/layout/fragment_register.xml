@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="isShowingForm"
+            type="Boolean" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <include layout="@layout/content_guild_lines" />
+
+        <androidx.constraintlayout.widget.Group
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{isShowingForm ? View.GONE : View.VISIBLE}"
+            app:constraint_referenced_ids="tvBeforeJoinNote,btnRegister,btnCancel"
+            tools:visibility="gone" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTitle"
+            style="@style/TextAppearance.AppCompat.Display1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/action_join_team"
+            app:layout_constraintEnd_toEndOf="@id/glVEnd"
+            app:layout_constraintStart_toStartOf="@id/glVStart"
+            app:layout_constraintTop_toBottomOf="@id/glTop" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvBeforeJoinNote"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/DP8"
+            android:layout_marginBottom="@dimen/DP8"
+            android:text="@string/msg_short_rules"
+            app:layout_constraintBottom_toTopOf="@id/btnRegister"
+            app:layout_constraintEnd_toEndOf="@id/glVEnd"
+            app:layout_constraintStart_toStartOf="@id/glVStart"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnRegister"
+            android:layout_width="@dimen/DP0"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/DP8"
+            android:text="@string/action_i_agree_continue_registration"
+            app:layout_constraintBottom_toTopOf="@id/btnCancel"
+            app:layout_constraintEnd_toEndOf="@id/glVEnd"
+            app:layout_constraintStart_toStartOf="@id/glVStart" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCancel"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="@dimen/DP0"
+            android:layout_height="wrap_content"
+            android:text="@string/action_cancel_registration"
+            app:layout_constraintBottom_toBottomOf="@id/glBottom"
+            app:layout_constraintEnd_toEndOf="@id/glVEnd"
+            app:layout_constraintStart_toStartOf="@id/glVStart" />
+
+        <androidx.constraintlayout.widget.Group
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{isShowingForm ? View.VISIBLE : View.GONE}"
+            app:constraint_referenced_ids="inputFirstName,inputLastName,inputEmail,inputPassword, inputConfirmPassword, btnSubmit" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputFirstName"
+            style="@style/AppTextInputLayout"
+            android:layout_marginTop="@dimen/DP16"
+            android:hint="@string/hint_first_name"
+            app:layout_constraintEnd_toEndOf="@id/glVEnd"
+            app:layout_constraintStart_toStartOf="@id/glVStart"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtFirstName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords|textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLastName"
+            style="@style/AppTextInputLayout"
+            android:layout_marginTop="@dimen/DP16"
+            android:hint="@string/hint_last_name"
+            app:layout_constraintEnd_toEndOf="@id/glVEnd"
+            app:layout_constraintStart_toStartOf="@id/glVStart"
+            app:layout_constraintTop_toBottomOf="@id/inputFirstName">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtLastName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords|textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputEmail"
+            style="@style/AppTextInputLayout"
+            android:layout_marginTop="@dimen/DP16"
+            android:hint="@string/hint_email_address"
+            app:layout_constraintEnd_toEndOf="@id/glVEnd"
+            app:layout_constraintStart_toStartOf="@id/glVStart"
+            app:layout_constraintTop_toBottomOf="@id/inputLastName">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtEmailAdd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputPassword"
+            style="@style/AppTextInputLayout"
+            android:layout_marginTop="@dimen/DP16"
+            android:hint="@string/hint_password"
+            app:layout_constraintEnd_toEndOf="@id/glVEnd"
+            app:layout_constraintStart_toStartOf="@id/glVStart"
+            app:layout_constraintTop_toBottomOf="@id/inputEmail">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputConfirmPassword"
+            style="@style/AppTextInputLayout"
+            android:layout_marginTop="@dimen/DP16"
+            android:hint="@string/hint_confirm_password"
+            app:layout_constraintEnd_toEndOf="@id/glVEnd"
+            app:layout_constraintStart_toStartOf="@id/glVStart"
+            app:layout_constraintTop_toBottomOf="@id/inputPassword">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSubmit"
+            style="@style/AppButton"
+            android:layout_marginTop="@dimen/DP16"
+            android:layout_marginBottom="@dimen/DP40"
+            android:text="@string/action_submit"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/glVEnd"
+            app:layout_constraintStart_toStartOf="@id/glVStart" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

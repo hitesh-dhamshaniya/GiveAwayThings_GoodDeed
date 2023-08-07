@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="model"
+            type="give.away.good.deeds.network.model.SettingItemModel" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/DP4"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardElevation="@dimen/DP0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivIcon"
+                android:layout_width="@dimen/DP24"
+                android:layout_height="@dimen/DP24"
+                android:layout_marginStart="@dimen/DP16"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_home" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSettingItem"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/DP16"
+                android:text="@{model.title}"
+                android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+                android:textSize="16sp"
+                app:drawableEndCompat="@drawable/ic_next"
+                app:layout_constraintBottom_toBottomOf="@id/ivIcon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ivIcon"
+                app:layout_constraintTop_toTopOf="@id/ivIcon"
+                tools:text="Profile" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

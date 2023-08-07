@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="model"
+            type="give.away.good.deeds.network.model.GiveAwayModel" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/DP8"
+        android:clipToPadding="true"
+        app:cardCornerRadius="@dimen/DP4"
+        app:cardElevation="@dimen/DP4"
+        app:contentPadding="@dimen/DP4">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivGiveAwayItem"
+                android:layout_width="@dimen/DP100"
+                android:layout_height="@dimen/DP100"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@android:drawable/ic_delete" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvItemTitle"
+                android:layout_width="@dimen/DP0"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/DP8"
+                android:layout_marginTop="@dimen/DP16"
+                android:layout_marginEnd="@dimen/DP4"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="Give away product title goes here here is more way to con"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ivGiveAwayItem"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivGiveAwayUserPic"
+                android:layout_width="@dimen/DP32"
+                android:layout_height="@dimen/DP32"
+                android:layout_marginStart="@dimen/DP8"
+                app:layout_constraintStart_toEndOf="@+id/ivGiveAwayItem"
+                app:layout_constraintTop_toBottomOf="@+id/tvItemTitle"
+                app:srcCompat="@android:drawable/ic_input_add" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvUserName"
+                android:layout_width="@dimen/DP0"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="Hello User name"
+                app:layout_constraintBottom_toBottomOf="@id/ivGiveAwayUserPic"
+                app:layout_constraintStart_toEndOf="@id/ivGiveAwayUserPic"
+                app:layout_constraintTop_toTopOf="@id/ivGiveAwayUserPic" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>
