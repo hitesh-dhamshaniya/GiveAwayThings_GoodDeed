@@ -1,14 +1,18 @@
 package give.away.good.deeds.screens.settings
 
+import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import give.away.good.deeds.core.extension.getVersionName
 import give.away.good.deeds.R
 import give.away.good.deeds.core.RecyclerItemClickListener
 import give.away.good.deeds.core.base.BaseFragment
+import give.away.good.deeds.core.dialog.DialogFactory
+import give.away.good.deeds.core.dialog.DialogListener
+import give.away.good.deeds.core.extension.getVersionName
 import give.away.good.deeds.databinding.FragmentSettingsBinding
 import give.away.good.deeds.network.model.SettingItemModel
 import give.away.good.deeds.network.model.SettingUtil
+import give.away.good.deeds.screens.landing.LandingActivity
 import give.away.good.deeds.screens.search.SearchViewModel
 
 class SettingsFragment : BaseFragment<FragmentSettingsBinding, SearchViewModel>() {
@@ -45,6 +49,18 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding, SearchViewModel>(
 
                     SettingUtil.SET_LOCATION -> {
                         navigate(R.id.action_settingsFragment_to_setupLocationFragment)
+                    }
+
+                    SettingUtil.LOGOUT -> {
+                        DialogFactory.showConfirmDialog(mActivity, getString(R.string.app_name), getString(R.string.msg_are_you_sure_you_want_to_logout), listener =
+                        object : DialogListener {
+                            override fun onClick(result: Boolean) {
+                                if (result) {
+                                    mActivity.finish()
+                                    startActivity(Intent(mActivity, LandingActivity::class.java))
+                                }
+                            }
+                        })
                     }
                 }
             }

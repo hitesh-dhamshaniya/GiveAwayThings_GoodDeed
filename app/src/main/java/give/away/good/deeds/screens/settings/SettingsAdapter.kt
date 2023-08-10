@@ -17,6 +17,7 @@ class SettingsAdapter(settingItems: MutableList<SettingItemModel>, val listener:
     override fun onBindViewHolder(holder: SettingViewHolder, position: Int) {
         val itemModel: SettingItemModel = getItem(position)
         holder.binding.model = itemModel
+        holder.binding.ivIcon.setImageResource(itemModel.icon)
     }
 
     inner class SettingViewHolder(val binding: AdapterSettingItemBinding) : RecyclerView.ViewHolder(binding.root) {
