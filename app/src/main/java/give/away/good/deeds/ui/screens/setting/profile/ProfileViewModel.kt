@@ -17,7 +17,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(
-    private val userRepository: UserRepository, private val mediaRepository: MediaRepository
+    private val userRepository: UserRepository,
+    private val mediaRepository: MediaRepository
 ) : ViewModel() {
 
     private val defaultErrorMessage = "Something went wrong. Please try again!"

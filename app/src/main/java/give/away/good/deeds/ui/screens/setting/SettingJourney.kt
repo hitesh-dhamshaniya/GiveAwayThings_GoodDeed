@@ -27,7 +27,7 @@ import give.away.good.deeds.ui.screens.setting.mylisting.MyPostScreen
 import give.away.good.deeds.ui.screens.setting.profile.ProfileScreen
 import give.away.good.deeds.ui.screens.setting.settingsmenu.SettingViewModel
 import give.away.good.deeds.ui.screens.setting.settingsmenu.SettingsScreen
-import give.away.good.deeds.ui.screens.setting.setuplocation.SetupLocationScreen
+import give.away.good.deeds.ui.screens.setting.location.SetupLocationScreen
 import give.away.good.deeds.ui.theme.AppTheme
 import give.away.good.deeds.utils.contentView
 import org.koin.androidx.compose.koinViewModel

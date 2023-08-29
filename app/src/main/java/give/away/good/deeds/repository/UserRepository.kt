@@ -3,7 +3,6 @@ package give.away.good.deeds.repository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
-import give.away.good.deeds.network.ApiConstants
 import give.away.good.deeds.network.model.User
 import kotlinx.coroutines.tasks.await
 
@@ -65,7 +64,7 @@ class UserRepositoryImpl(
         data: Map<String, Any>
     ): CallResult<Unit> {
         return try {
-            firestore.collection(ApiConstants.USERS)
+            firestore.collection(COLLECTION_USER)
                 .document(userId)
                 .update(data)
                 .await()

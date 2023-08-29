@@ -12,6 +12,8 @@ import give.away.good.deeds.repository.AuthRepository
 import give.away.good.deeds.repository.AuthRepositoryImpl
 import give.away.good.deeds.repository.MediaRepository
 import give.away.good.deeds.repository.MediaRepositoryImpl
+import give.away.good.deeds.repository.UserConfigRepository
+import give.away.good.deeds.repository.UserConfigRepositoryImpl
 import give.away.good.deeds.repository.UserRepository
 import give.away.good.deeds.repository.UserRepositoryImpl
 import give.away.good.deeds.ui.screens.splash.SplashViewModel
@@ -46,6 +48,9 @@ val appViewModules = module {
     }
     factory<MediaRepository> {
         MediaRepositoryImpl(get())
+    }
+    factory<UserConfigRepository> {
+        UserConfigRepositoryImpl(get(), get())
     }
 
 }

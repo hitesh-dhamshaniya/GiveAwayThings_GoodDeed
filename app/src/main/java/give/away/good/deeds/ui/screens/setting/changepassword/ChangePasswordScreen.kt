@@ -1,5 +1,6 @@
 package give.away.good.deeds.ui.screens.setting.changepassword
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,6 +23,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -73,8 +75,10 @@ fun ChangePasswordForm(
     viewModel: ChangePasswordViewModel = koinViewModel()
 ) {
 
+    val context = LocalContext.current
     if(viewModel.changePswrdSuccess) {
         LaunchedEffect(Unit, block = {
+            Toast.makeText(context, "Password changed successfully!", Toast.LENGTH_SHORT).show()
             onBackPress()
         })
     }

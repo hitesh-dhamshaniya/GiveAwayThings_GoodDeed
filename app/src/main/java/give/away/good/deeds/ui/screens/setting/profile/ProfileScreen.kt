@@ -1,5 +1,6 @@
 package give.away.good.deeds.ui.screens.setting.profile
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -82,6 +83,7 @@ fun ProfileForm(
     val context = LocalContext.current
     if (viewModel.updateSuccess) {
         LaunchedEffect(Unit, block = {
+            Toast.makeText(context, "Profile updated successfully!", Toast.LENGTH_SHORT).show()
             onBackPress()
         })
     }
