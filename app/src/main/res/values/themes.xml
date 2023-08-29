@@ -5,7 +5,7 @@
         <style name="Theme.GiveAwayThings_GoodDeeds" parent="android:Theme.Material.Light.NoActionBar" />
     -->
 
-    <style name="BaseTheme" parent="Theme.MaterialComponents.Light">
+    <style name="BaseTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -15,29 +15,28 @@
         <item name="android:typeface">normal</item>
         <item name="background">@color/white</item>
         <item name="android:windowBackground">@color/white</item>
+
+        <item name="materialButtonStyle">@style/BaseTheme.Button</item>
+        <item name="materialButtonOutlinedStyle">@style/BaseTheme.Button.OutlinedButton</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionModeOverlay">true</item>
     </style>
 
     <style name="BaseTheme.AppTheme">
         <!--Do nothing here-->
-    </style>
-
-    <style name="BaseTheme.AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionModeOverlay">true</item>
-        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="BaseTheme.AppTheme.Splash">
-        <item name="colorPrimary">@color/colorAccent</item>
-        <item name="colorPrimaryDark">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:statusBarColor">#0C154C</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:navigationBarColor">@color/colorPrimary</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
         <item name="windowActionModeOverlay">true</item>
-        <item name="android:windowBackground">@color/white</item>
-        <!--<item name="android:background">@drawable/splash</item>-->
     </style>
 
     <style name="Theme.GiveAwayThings_GoodDeeds" parent="Theme.AppCompat" />
@@ -53,7 +52,6 @@
     <style name="BaseTheme.AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 
     <style name="AppTextView">
-        <item name="android:lines">1</item>
         <item name="android:layout_width">@dimen/DP0</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
@@ -67,7 +65,7 @@
 
     </style>
 
-    <style name="AppTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="AppTextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
         <item name="android:layout_width">@dimen/DP0</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="hintAnimationEnabled">true</item>
@@ -80,17 +78,6 @@
 
     <style name="ThemeOverlay.MyApp.Chip.Choice" parent="">
         <item name="elevationOverlayEnabled">false</item>
-    </style>
-
-    <style name="AppButton" parent="Widget.MaterialComponents.Button">
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
-        <item name="android:padding">@dimen/DP14</item>
-        <item name="android:layout_width">@dimen/DP0</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
-    <style name="AppButton.Outline" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="android:padding">@dimen/DP16</item>
     </style>
 
     <style name="NarrowDialog" parent="Theme.AppCompat.Light.Dialog.Alert">

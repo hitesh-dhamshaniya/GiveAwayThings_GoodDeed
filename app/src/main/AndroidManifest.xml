@@ -8,10 +8,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
-        android:name=".core.GoodDeedsApp"
+        android:name=".GoodDeedsApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -26,7 +25,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".screens.splash.SplashActivity"
+            android:name=".ui.screens.splash.SplashActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/BaseTheme.AppTheme.Splash">
@@ -38,14 +37,15 @@
         </activity>
 
         <activity
-            android:name=".screens.landing.LandingActivity"
+            android:name=".ui.screens.authentication.LandingActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/BaseTheme.AppTheme.NoActionBar" />
+            android:theme="@style/BaseTheme.AppTheme" />
 
         <activity
-            android:name=".home.MainActivity"
+            android:name=".ui.screens.post_screens.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/BaseTheme.AppTheme.NoActionBar" />
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/BaseTheme.AppTheme" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

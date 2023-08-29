@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="give.away.good.deeds.screens.login.LoginFragment"
+        android:name="give.away.good.deeds.ui.screens.authentication.login.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
@@ -19,12 +19,12 @@
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
-        android:name="give.away.good.deeds.screens.forgotpassword.ForgotPasswordFragment"
+        android:name="give.away.good.deeds.ui.screens.authentication.forgotpassword.ForgotPasswordFragment"
         android:label="ForgotPasswordFragment"
         tools:layout="@layout/fragment_forgot_password" />
     <fragment
         android:id="@+id/registerFragment"
-        android:name="give.away.good.deeds.screens.register.RegisterFragment"
+        android:name="give.away.good.deeds.ui.screens.authentication.register.RegisterFragment"
         android:label="RegisterFragment"
         tools:layout="@layout/fragment_register" />
 

@@ -65,12 +65,16 @@ object DialogFactory {
         context: Context,
         title: String,
         message: String,
-        listener: DialogListener?
+        listener: (()->Unit)?
     ) {
         DialogHelper(context).apply {
             this.title = title
             this.message = message
-            resultListener = listener
+            resultListener = object: DialogListener{
+                override fun onClick(result: Boolean) {
+                    listener?.invoke()
+                }
+            }
             positiveButtonText = context.getString(R.string.action_ok)
         }.show(false)
     }
@@ -79,12 +83,16 @@ object DialogFactory {
         context: Context,
         title: String,
         message: String,
-        listener: DialogListener?
+        listener: ((Boolean)->Unit)?
     ) {
         DialogHelper(context).apply {
             //            this.title = title
             this.message = message
-            resultListener = listener
+            resultListener = object : DialogListener {
+                override fun onClick(result: Boolean) {
+                    listener?.invoke(result)
+                }
+            }
             positiveButtonText = context.getString(R.string.action_yes)
             negativeButtonText = context.getString(R.string.action_no)
 
