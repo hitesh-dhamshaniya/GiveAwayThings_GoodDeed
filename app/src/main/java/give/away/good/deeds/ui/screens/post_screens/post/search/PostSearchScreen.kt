@@ -30,7 +30,8 @@ import give.away.good.deeds.ui.screens.post_screens.post.common.PostCard
 
 @Composable
 fun PostSearchScreen(
-) {
+    navigateToDetail: (() -> Unit)? = null,
+ ) {
     Scaffold { contentPadding ->
         Column(
             modifier = Modifier
@@ -64,7 +65,8 @@ fun PostSearchScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 PostList(
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    navigateToDetail = navigateToDetail,
                 )
             }
         }
@@ -73,14 +75,19 @@ fun PostSearchScreen(
 
 @Composable
 fun PostList(
-    modifier: Modifier
+    modifier: Modifier,
+    navigateToDetail: (() -> Unit)? = null,
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = modifier
     ) {
         items(5) {
-            PostCard()
+            PostCard(
+                onClick = {
+                    navigateToDetail?.invoke()
+                }
+            )
         }
 
     }

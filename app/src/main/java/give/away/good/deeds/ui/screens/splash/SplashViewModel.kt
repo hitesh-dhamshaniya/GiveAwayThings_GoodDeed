@@ -14,7 +14,7 @@ class SplashViewModel(
     private val auth: FirebaseAuth,
 ) : ViewModel() {
 
-    private val mSplashDelay = 1500L
+    private val mSplashDelay = 2500L
 
     private val _event = Channel<Boolean>()
     val event: Flow<Boolean> = _event.receiveAsFlow()

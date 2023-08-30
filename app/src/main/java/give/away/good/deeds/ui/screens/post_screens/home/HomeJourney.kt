@@ -13,6 +13,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import give.away.good.deeds.ui.screens.post_screens.post.detail.PostDetailScreen
 import give.away.good.deeds.ui.screens.post_screens.post.list.PostListScreen
 import give.away.good.deeds.ui.theme.AppTheme
 import give.away.good.deeds.utils.contentView
@@ -43,9 +44,25 @@ fun HomeJourneyScreen(
         ) {
             composable("home") {
                 PostListScreen(
-
+                    navigateToDetail = {
+                        navController.navigate("post_detail")
+                    }
                 )
             }
+
+            composable("post_detail") {
+                PostDetailScreen(
+                    onBackPress = {
+                        navController.popBackStack()
+                    },
+                    /*showFullImage = {
+                        val encodedUrl = URLEncoder.encode(it, StandardCharsets.UTF_8.toString())
+                        navController.navigate("post_image/"+encodedUrl)
+                    }*/
+                )
+            }
+
+
 
         }
     }

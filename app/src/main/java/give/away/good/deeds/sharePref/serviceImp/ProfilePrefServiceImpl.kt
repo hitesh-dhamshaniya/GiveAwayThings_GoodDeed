@@ -81,7 +81,7 @@ class ProfilePrefServiceImpl(private val manager: SharedPrefManager) :
     }
 
     override fun getUser(): User {
-        return User(getUserId(), getFirstName() ?: "", getLastName() ?: "", getEmail() ?: "")
+        return User(getUserId(), getFirstName() , getLastName() , getEmail() ?: "")
     }
 
     override fun clear() {

@@ -22,6 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import give.away.good.deeds.R
 import give.away.good.deeds.ui.screens.app_common.SimpleAlertDialog
 import give.away.good.deeds.ui.screens.authentication.LandingActivity
+import give.away.good.deeds.ui.screens.post_screens.post.detail.PostDetailScreen
 import give.away.good.deeds.ui.screens.setting.changepassword.ChangePasswordScreen
 import give.away.good.deeds.ui.screens.setting.location.SetupLocationScreen
 import give.away.good.deeds.ui.screens.setting.mylisting.MyPostScreen
@@ -116,9 +117,21 @@ fun SettingsJourneyScreen(
                 MyPostScreen(
                     onBackPress = {
                         navController.popBackStack()
+                    },
+                    navigateToDetail = {
+                        navController.navigate("post_detail")
                     }
                 )
             }
+
+            composable("post_detail") {
+                PostDetailScreen(
+                    onBackPress = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+
 
         }
     }

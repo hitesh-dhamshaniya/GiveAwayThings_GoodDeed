@@ -82,7 +82,7 @@ fun SettingsListItem(
             Image(
                 painterResource(model.icon),
                 model.title,
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.tertiary)
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
             )
 
             Spacer(modifier = Modifier.width(16.dp))

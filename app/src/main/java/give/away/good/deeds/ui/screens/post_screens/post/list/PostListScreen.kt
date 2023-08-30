@@ -24,6 +24,7 @@ import give.away.good.deeds.ui.theme.AppTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostListScreen(
+    navigateToDetail: (() -> Unit)? = null,
 ) {
     Scaffold(topBar = {
         TopAppBar(
@@ -41,19 +42,27 @@ fun PostListScreen(
                 .padding(contentPadding)
                 .fillMaxSize()
         ) {
-            PostList()
+            PostList(
+                navigateToDetail = navigateToDetail
+            )
         }
     }
 }
 
 @Composable
-fun PostList() {
+fun PostList(
+    navigateToDetail: (() -> Unit)? = null,
+) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier.padding(horizontal = 16.dp)
     ) {
         items(5) {
-            PostCard()
+            PostCard(
+                onClick = {
+                    navigateToDetail?.invoke()
+                }
+            )
         }
 
     }

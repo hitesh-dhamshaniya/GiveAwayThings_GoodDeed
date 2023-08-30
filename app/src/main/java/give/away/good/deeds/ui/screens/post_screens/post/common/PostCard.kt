@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,10 +24,15 @@ import coil.compose.AsyncImage
 import give.away.good.deeds.ui.screens.post_screens.post.list.PostImageCarousel
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostCard(
+    isMyPost: Boolean = false,
+    onClick: () -> Unit,
 ) {
-    Card {
+    Card (
+        onClick = onClick
+    ){
         val list = listOf<String>(
             "https://images.unsplash.com/photo-1551298370-9d3d53740c72?&w=1000&q=80",
             "https://images.unsplash.com/photo-1618220179428-22790b461013?&w=1000&q=80",
@@ -43,30 +49,34 @@ fun PostCard(
             Column(
                 modifier = Modifier.padding(16.dp)
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    AsyncImage(
-                        model = "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=512&q=80",
-                        modifier = Modifier.size(48.dp).clip(RoundedCornerShape(24.dp)),
-                        contentDescription = "",
-                        contentScale = ContentScale.Crop
-                    )
 
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    Column {
-                        Text(
-                            "David Warner",
-                            style = MaterialTheme.typography.titleMedium
+                if (!isMyPost)
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        AsyncImage(
+                            model = "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=512&q=80",
+                            modifier = Modifier
+                                .size(48.dp)
+                                .clip(RoundedCornerShape(24.dp)),
+                            contentDescription = "",
+                            contentScale = ContentScale.Crop
                         )
 
-                        Text(
-                            "0.8 miles away",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        Column {
+                            Text(
+                                "David Warner",
+                                style = MaterialTheme.typography.titleMedium
+                            )
+
+                            Text(
+                                "0.8 miles away",
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
                     }
-                }
 
                 Spacer(modifier = Modifier.height(8.dp))
 
