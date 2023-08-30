@@ -1,4 +1,4 @@
-package give.away.good.deeds.ui.screens.post_screens.home
+package give.away.good.deeds.ui.screens.post_screens.search
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,25 +13,25 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import give.away.good.deeds.ui.screens.post_screens.post.list.PostListScreen
+import give.away.good.deeds.ui.screens.post_screens.post.search.PostSearchScreen
 import give.away.good.deeds.ui.theme.AppTheme
 import give.away.good.deeds.utils.contentView
 
-class HomeJourney : Fragment() {
+class SearchJourney : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = contentView(ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner)) {
         AppTheme {
-            HomeJourneyScreen()
+            SearchJourneyScreen()
         }
     }
 }
 
 
 @Composable
-fun HomeJourneyScreen(
+fun SearchJourneyScreen(
     navController: NavHostController = rememberNavController()
 ) {
     Surface(
@@ -39,10 +39,10 @@ fun HomeJourneyScreen(
     ) {
         NavHost(
             navController = navController,
-            startDestination = "home"
+            startDestination = "search"
         ) {
-            composable("home") {
-                PostListScreen(
+            composable("search") {
+                PostSearchScreen(
 
                 )
             }

@@ -98,6 +98,8 @@ dependencies {
     implementation 'com.google.maps.android:maps-utils-ktx:3.4.0'
     implementation 'com.google.maps.android:maps-compose:2.14.0'
 
+    implementation "com.airbnb.android:lottie-compose:6.1.0"
+
     implementation 'com.github.dhaval2404:imagepicker:2.1'
 
     testImplementation 'junit:junit:4.13.2'
