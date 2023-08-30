@@ -3,6 +3,7 @@ package give.away.good.deeds.ui.screens.splash
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
+import give.away.good.deeds.BuildConfig
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +21,7 @@ class SplashViewModel(
 
     fun preProcessing() {
         viewModelScope.launch {
-            delay(mSplashDelay)
+            if (!BuildConfig.DEBUG) delay(mSplashDelay)
             _event.send(auth.currentUser != null)
         }
     }

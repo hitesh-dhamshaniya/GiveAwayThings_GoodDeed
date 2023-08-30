@@ -1,18 +1,8 @@
-package give.away.good.deeds.core.extension
+package give.away.good.deeds.ui.screens.app_common
 
 import android.text.TextUtils
 import android.util.Patterns
-import android.view.View
 import android.widget.EditText
-
-
-fun View.setVisibility(visible: Boolean) {
-    visibility = if (visible) {
-        View.VISIBLE
-    } else {
-        View.GONE
-    }
-}
 
 fun EditText.getInputString() = text.toString().trim()
 

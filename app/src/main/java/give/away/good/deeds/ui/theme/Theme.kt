@@ -96,7 +96,7 @@ fun AppTheme(
         useDarkTheme -> DarkColors
         else -> LightColors
     }
-    val view = LocalView.current
+    /*val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
@@ -104,7 +104,7 @@ fun AppTheme(
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars =
                 useDarkTheme
         }
-    }
+    }*/
 
     MaterialTheme(
         colorScheme = colorScheme,

@@ -17,11 +17,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -104,7 +101,7 @@ fun ProfileForm(
             }
         )
 
-    val user by viewModel.uiState.collectAsState()
+    val formState = viewModel.formState
 
     LaunchedEffect(Unit, block = {
         viewModel.fetchUser()
@@ -119,19 +116,21 @@ fun ProfileForm(
     ) {
 
         ProfileImageView(
-            imageUri = user.profilePic,
+            imageUri = formState["profilePic"],
             onAdd = {
-                user.profilePic = it
+                formState.remove("profilePic")
+                formState["profilePic"] = it
             }
         )
 
         val fNameError = remember { mutableStateOf("") }
         SimpleTextFieldView(
             text = "First name",
-            value = user.firstName ?: "",
+            value = formState["firstName"] ?: "",
             onValueChange = {
                 fNameError.value = ""
-                user.firstName = it
+                formState.remove("firstName")
+                formState["firstName"] = it
             },
             isError = fNameError.value.isNotBlank(),
             supportingText = {
@@ -142,10 +141,11 @@ fun ProfileForm(
         val lNameError = remember { mutableStateOf("") }
         SimpleTextFieldView(
             text = "Last name",
-            value = user.lastName ?: "",
+            value = formState["lastName"] ?: "",
             onValueChange = {
                 lNameError.value = ""
-                user.lastName = it
+                formState.remove("lastName")
+                formState["lastName"] = it
             },
             isError = lNameError.value.isNotBlank(),
             supportingText = {
@@ -155,7 +155,7 @@ fun ProfileForm(
 
         SimpleTextFieldView(
             text = "Email address",
-            value = user.email ?: "",
+            value = formState["email"] ?: "",
             onValueChange = {
             },
             isEnabled = false
@@ -168,16 +168,22 @@ fun ProfileForm(
             shape = AppThemeButtonShape,
             onClick = {
                 var isError = false
-                if (user.firstName.isNullOrBlank()) {
+                if (formState["firstName"].isNullOrBlank()) {
                     fNameError.value = "Please enter first name"
                     isError = true
                 }
-                if (user.lastName.isNullOrBlank()) {
+                if (formState["lastName"].isNullOrBlank()) {
                     lNameError.value = "Please enter last name"
                     isError = true
                 }
                 if (!isError) {
-                    viewModel.updateProfile(context, user)
+                    viewModel.updateProfile(
+                        context,
+                        formState["id"] ?: "",
+                        formState["firstName"] ?: "",
+                        formState["lastName"] ?: "",
+                        formState["profilePic"]
+                    )
                 }
             },
         ) {

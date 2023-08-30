@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import give.away.good.deeds.R
-import give.away.good.deeds.core.dialog.DialogFactory.showErrorDialog
-import give.away.good.deeds.core.extension.getInputString
-import give.away.good.deeds.core.extension.isEmailValid
+import give.away.good.deeds.ui.screens.app_common.DialogFactory.showErrorDialog
+import give.away.good.deeds.ui.screens.app_common.getInputString
+import give.away.good.deeds.ui.screens.app_common.isValidEmail
 import give.away.good.deeds.ui.screens.post_screens.MainActivity
 import give.away.good.deeds.ui.screens.app_common.hideSoftKeyboard
 import give.away.good.deeds.ui.screens.app_common.startActivity
@@ -64,7 +64,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 }
 
                 is AuthenticationState.Error -> {
-                    showErrorDialog(requireActivity(), R.string.msg_login_failed, listener = null)
+                    showErrorDialog(requireActivity(), getString(R.string.title_login_failed), getString(R.string.msg_login_failed))
                 }
 
                 else -> {}
@@ -92,7 +92,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             email.error = getString(R.string.error_please_enter_email_address)
             isValid = false
         }
-        if (email.editText?.getInputString()?.isEmailValid() == false) {
+        if (email.editText?.isValidEmail() != true) {
             email.error = getString(R.string.error_please_enter_valid_email_address)
             isValid = false
         }

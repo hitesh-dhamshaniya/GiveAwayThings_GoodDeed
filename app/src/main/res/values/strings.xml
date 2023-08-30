@@ -52,6 +52,7 @@
     <string name="msg_add_details_of_give_away_things">Add Details of Give away things</string>
     <string name="msg_note_add_expiry_and_allergy_details"><b>Note:</b> Add Expiry and allergy details</string>
     <string name="msg_add_up_to_5_images_of_the_item">Add up to 5 images of the item</string>
+    <string name="title_login_failed">Login</string>
     <string name="msg_login_failed">Provided credential does not matched, please try again!</string>
 
     <string name="action_cancel_registration">Cancel registration</string>

@@ -3,17 +3,14 @@ package give.away.good.deeds.ui.screens.setting.profile
 import android.content.Context
 import android.net.Uri
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import give.away.good.deeds.network.model.User
 import give.away.good.deeds.repository.CallResult
 import give.away.good.deeds.repository.MediaRepository
 import give.away.good.deeds.repository.UserRepository
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(
@@ -29,36 +26,43 @@ class ProfileViewModel(
     var errorMessage by mutableStateOf("")
         private set
 
-    private val _uiState = MutableStateFlow(User())
-    val uiState: StateFlow<User> = _uiState.asStateFlow()
+    val formState = mutableStateMapOf<String, String>()
 
     fun fetchUser() {
         viewModelScope.launch {
             val result = userRepository.getUser()
             if (result is CallResult.Success) {
-                _uiState.emit(result.data)
+                result.data.apply {
+                    formState.putAll(this.toMap())
+                }
             }
         }
     }
 
-    fun updateProfile(context: Context, user: User) {
+    fun updateProfile(
+        context: Context,
+        userId: String,
+        firstName: String,
+        lastName: String,
+        profilePic: String?
+    ) {
 
         viewModelScope.launch {
             val updates = mutableMapOf<String, Any>(
-                "firstName" to (user.firstName ?: ""),
-                "lastName" to (user.lastName ?: ""),
+                "firstName" to firstName,
+                "lastName" to lastName,
             )
 
             try {
-                if (user.profilePic != null && user.profilePic?.startsWith("http") == false) {
+                if (profilePic != null && !profilePic.startsWith("http")) {
                     mediaRepository.uploadProfileImage(
-                        context, user.id ?: "", Uri.parse(user.profilePic)
-                    )?.let { url ->
+                        context, userId, Uri.parse(profilePic)
+                    ).let { url ->
                         updates["profilePic"] = url
                     }
                 }
 
-                val result = userRepository.updateUser(user.id ?: "", updates)
+                val result = userRepository.updateUser(userId, updates)
                 if (result is CallResult.Success) {
                     updateSuccess = true
                 } else if (result is CallResult.Failure) {

@@ -10,13 +10,13 @@ data class User(
     var profilePic: String? = ""
 ) {
     @Exclude
-    fun toMap() {
-        "id" to id
-        "firstName" to firstName
-        "lastName" to lastName
-        "email" to email
-        "profilePic" to profilePic
-    }
+    fun toMap() = mapOf<String, String>(
+        "id" to (id ?: ""),
+        "firstName" to (firstName ?: ""),
+        "lastName" to (lastName ?: ""),
+        "email" to (email ?: ""),
+        "profilePic" to (profilePic ?: ""),
+    )
 
     override fun toString(): String {
         return "User(id='$id', firstName='$firstName', lastName='$lastName', email='$email', profilePic='$profilePic')"

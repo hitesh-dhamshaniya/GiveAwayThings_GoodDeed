@@ -39,18 +39,6 @@
         <item name="windowActionModeOverlay">true</item>
     </style>
 
-    <style name="Theme.GiveAwayThings_GoodDeeds" parent="Theme.AppCompat" />
-
-    <style name="BaseTheme.AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar">
-
-    </style>
-
-    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <!--<item name="android:lines">2</item>-->
-    </style>
-
-    <style name="BaseTheme.AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
-
     <style name="AppTextView">
         <item name="android:layout_width">@dimen/DP0</item>
         <item name="android:layout_height">wrap_content</item>
@@ -70,14 +58,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="hintAnimationEnabled">true</item>
         <item name="hintEnabled">true</item>
-    </style>
-
-    <style name="Widget.MyApp.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
-        <item name="materialThemeOverlay">@style/ThemeOverlay.MyApp.Chip.Choice</item>
-    </style>
-
-    <style name="ThemeOverlay.MyApp.Chip.Choice" parent="">
-        <item name="elevationOverlayEnabled">false</item>
     </style>
 
     <style name="NarrowDialog" parent="Theme.AppCompat.Light.Dialog.Alert">

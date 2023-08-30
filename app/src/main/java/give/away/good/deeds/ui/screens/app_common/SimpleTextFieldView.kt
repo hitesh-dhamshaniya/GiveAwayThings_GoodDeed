@@ -11,6 +11,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,20 +30,24 @@ fun SimpleTextFieldView(
     onValueChange: (String) -> Unit,
     isError: Boolean = false,
     isEnabled: Boolean = true,
+    minLines: Int = 1,
+    maxLines: Int = 1,
     supportingText: @Composable (() -> Unit)? = null,
 ) {
     Column {
         Text(
             text = text,
+            style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Medium,
             color = if(isEnabled) Color.Unspecified else Color.LightGray
         )
         Spacer(Modifier.height(4.dp))
-        OutlinedTextField(
+        TextField(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth(),
-            maxLines = 1,
+            minLines = minLines,
+            maxLines = maxLines,
             enabled = isEnabled,
             isError = isError,
             supportingText = supportingText,
@@ -64,11 +69,12 @@ fun PasswordTextField(
     Column {
         Text(
             text = text,
+            style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Medium,
             color = if (isError) MaterialTheme.colorScheme.error else Color.Unspecified
         )
         Spacer(Modifier.height(4.dp))
-        OutlinedTextField(
+        TextField(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth(),

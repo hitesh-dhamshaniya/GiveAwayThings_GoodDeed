@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import give.away.good.deeds.R
-import give.away.good.deeds.core.dialog.DialogFactory
-import give.away.good.deeds.core.extension.isEmailValid
+import give.away.good.deeds.ui.screens.app_common.DialogFactory
+import give.away.good.deeds.ui.screens.app_common.isValidEmail
 import give.away.good.deeds.ui.screens.app_common.hideSoftKeyboard
 import give.away.good.deeds.ui.screens.authentication.common.AuthenticationState
 import org.koin.android.ext.android.inject
@@ -130,7 +130,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             isValid = false
             email.error = getString(R.string.error_please_enter_email_address)
         }
-        if (!email.editText?.text.toString().isEmailValid()) {
+        if (email.editText?.isValidEmail() != true) {
             isValid = false
             email.error = getString(R.string.error_please_enter_valid_email_address)
         }

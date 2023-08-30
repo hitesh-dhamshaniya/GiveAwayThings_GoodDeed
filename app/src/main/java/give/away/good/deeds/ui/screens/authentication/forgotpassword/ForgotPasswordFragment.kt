@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import give.away.good.deeds.R
-import give.away.good.deeds.core.dialog.DialogFactory
-import give.away.good.deeds.core.extension.isEmailValid
+import give.away.good.deeds.ui.screens.app_common.DialogFactory
+import give.away.good.deeds.ui.screens.app_common.isValidEmail
 import give.away.good.deeds.ui.screens.app_common.hideSoftKeyboard
 import give.away.good.deeds.ui.screens.authentication.common.AuthenticationState
 import org.koin.android.ext.android.inject
@@ -78,7 +78,7 @@ class ForgotPasswordFragment : Fragment(R.layout.fragment_forgot_password) {
         var validForm = false
         if (emailAddress.editText?.text?.toString()?.isEmpty() == true) {
             emailAddress.error = getString(R.string.error_please_enter_email_address)
-        } else if (!emailAddress.editText?.text.toString().isEmailValid()) {
+        } else if (emailAddress.editText?.isValidEmail() != true) {
             emailAddress.error = getString(R.string.error_please_enter_valid_email_address)
         } else {
             emailAddress.error = null
