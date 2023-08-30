@@ -1,7 +1,7 @@
 package give.away.good.deeds.di
 
-import give.away.good.deeds.ui.screens.setting.settingModule
 import give.away.good.deeds.sharePref.di.sharedPrefModules
+import give.away.good.deeds.ui.screens.setting.settingModule
 
 /**
  * @author Hitesh

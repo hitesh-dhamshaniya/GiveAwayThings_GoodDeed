@@ -9,8 +9,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import give.away.good.deeds.R
 import give.away.good.deeds.ui.screens.app_common.DialogFactory
-import give.away.good.deeds.ui.screens.app_common.isValidEmail
 import give.away.good.deeds.ui.screens.app_common.hideSoftKeyboard
+import give.away.good.deeds.ui.screens.app_common.isValidEmail
 import give.away.good.deeds.ui.screens.authentication.common.AuthenticationState
 import org.koin.android.ext.android.inject
 

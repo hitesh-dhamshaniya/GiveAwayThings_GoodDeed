@@ -1,7 +1,7 @@
 package give.away.good.deeds.sharePref;
 
 import android.content.SharedPreferences
-import java.util.*
+import java.util.Collections
 
 /**
  * SharedPreferences DisplayUtil class
