@@ -1,7 +1,6 @@
 package give.away.good.deeds.repository
 
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.tasks.await
 
 interface AuthRepository {
@@ -53,11 +52,16 @@ class AuthRepositoryImpl(
     ): CallResult<Unit> {
         return try {
             val email = firebaseAuth.currentUser?.email ?: ""
-            val loginError = login(email, currentPassword)
-            if (loginError is CallResult.Success) {
-                firebaseAuth.currentUser?.updatePassword(newPassword)
+            when (val loginError = login(email, currentPassword)) {
+                is CallResult.Success -> {
+                    firebaseAuth.currentUser?.updatePassword(newPassword)
+                    CallResult.Success(Unit)
+                }
+
+                is CallResult.Failure -> {
+                    CallResult.Failure(loginError.message)
+                }
             }
-            CallResult.Success(Unit)
         } catch (ex: Exception) {
             CallResult.Failure(ex.message)
         }
