@@ -13,6 +13,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import give.away.good.deeds.ui.screens.main.messages.detail.MessageDetailScreen
 import give.away.good.deeds.ui.screens.main.messages.list.MessageListScreen
 import give.away.good.deeds.ui.theme.AppTheme
 import give.away.good.deeds.utils.contentView
@@ -44,7 +45,13 @@ fun MessageJourneyScreen(
 
             composable("messages") {
                 MessageListScreen(
+                    navController = navController,
+                )
+            }
 
+            composable("chat") {
+                MessageDetailScreen(
+                    navController = navController,
                 )
             }
 

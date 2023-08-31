@@ -26,52 +26,61 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MessageListScreen() {
+fun MessageListScreen(
+    navController: NavController? = null,
+) {
     Scaffold(topBar = {
-        TopAppBar(
-            title = {
-                Text(
-                    text = "Messages",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-        )
+        TopAppBar(title = {
+            Text(
+                text = "Messages",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+        })
     }) { contentPadding ->
         Column(
             modifier = Modifier
                 .padding(contentPadding)
                 .fillMaxSize()
         ) {
-            MessageList()
+            MessageList(
+                navController = navController
+            )
         }
     }
 }
 
 @Composable
 fun MessageList(
+    navController: NavController? = null,
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier.padding(horizontal = 16.dp)
     ) {
         items(5) {
-            MessageCard()
+            MessageCard(navController)
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MessageCard() {
+fun MessageCard(
+    navController: NavController? = null,
+) {
     Card(
+        onClick = {
+            navController?.navigate("chat")
+        }
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(16.dp)
+            verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(16.dp)
         ) {
             AsyncImage(
                 model = "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=512&q=80",
@@ -94,8 +103,7 @@ fun MessageCard() {
                     )
 
                     Text(
-                        "9:06 AM",
-                        style = MaterialTheme.typography.bodySmall
+                        "9:06 AM", style = MaterialTheme.typography.bodySmall
                     )
                 }
 
