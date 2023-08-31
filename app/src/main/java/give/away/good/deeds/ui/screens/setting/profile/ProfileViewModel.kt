@@ -54,7 +54,7 @@ class ProfileViewModel(
             )
 
             try {
-                if (profilePic != null && !profilePic.startsWith("http")) {
+                if (!profilePic.isNullOrBlank() && !profilePic.startsWith("http")) {
                     mediaRepository.uploadProfileImage(
                         context, userId, Uri.parse(profilePic)
                     ).let { url ->

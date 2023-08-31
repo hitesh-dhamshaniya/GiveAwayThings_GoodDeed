@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.Uri
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import give.away.good.deeds.utils.FileUtil
 import kotlinx.coroutines.tasks.await
 
 interface MediaRepository {
@@ -18,12 +17,8 @@ class MediaRepositoryImpl(
 ) : MediaRepository {
 
     override suspend fun uploadProfileImage(context: Context, userId: String, uri: Uri): String {
-        val fileName = FileUtil.getFileName(context, uri) ?: "profile.jpg"
-        val fileRef = storage.reference
-            .child("users")
-            .child(userId)
-            .child("profile")
-            .child(fileName)
+        val fileName = "$userId.jpg"
+        val fileRef = storage.reference.child("users").child(fileName)
         return uploadUri(context, uri, fileRef)
     }
 
