@@ -90,7 +90,7 @@ fun PostCard(
                 Text(
                     "Are you looking to refresh your living space or simply have some furniture that needs a new home? We have a collection of gently used home furniture items that we're giving away for free! Our well-maintained pieces are in good condition and can add comfort and style to your home.",
                     style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 4,
+                    maxLines = 3,
                     overflow = TextOverflow.Ellipsis
                 )
 

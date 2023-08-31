@@ -50,8 +50,8 @@ fun SimpleTextFieldView(
             enabled = isEnabled,
             isError = isError,
             supportingText = supportingText,
-            shape = RoundedCornerShape(8.dp)
-        )
+            shape = RoundedCornerShape(8.dp, 8.dp),
+    )
     }
 }
 
@@ -82,7 +82,7 @@ fun PasswordTextField(
             supportingText = supportingText,
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            shape = RoundedCornerShape(8.dp, 8.dp, 8.dp, 8.dp),
+            shape = RoundedCornerShape(8.dp, 8.dp),
             trailingIcon = {
                 val image = if (passwordVisible) R.drawable.ic_visibility
                 else R.drawable.ic_visibility_off

@@ -15,19 +15,21 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -37,15 +39,18 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import give.away.good.deeds.R
 import give.away.good.deeds.ui.screens.main.post.list.PostImageCarousel
+import give.away.good.deeds.ui.theme.AppThemeButtonShape
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostDetailScreen(
+    isMyPost: Boolean = false,
     onBackPress: () -> Unit,
 ) {
     Scaffold(topBar = {
-        MediumTopAppBar(
+        TopAppBar(
             title = {
                 Text(
                     text = "Post Details",
@@ -66,7 +71,7 @@ fun PostDetailScreen(
         Box(
             modifier = Modifier
                 .padding(contentPadding)
-                .padding(16.dp)
+                .padding(horizontal = 16.dp)
                 .fillMaxSize()
         ) {
 
@@ -79,15 +84,29 @@ fun PostDetailScreen(
                 }
 
                 item {
-                    Box(
-                        modifier = Modifier.clip(RoundedCornerShape(16.dp))
-                    ) {
-                        GoogleMapView(
-                            defaultLatLng = LatLng(51.509865, -0.118092)
-                        )
-                    }
+                    GoogleMapView(
+                        defaultLatLng = LatLng(51.509865, -0.118092)
+                    )
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(96.dp))
                 }
             }
+
+            Button(
+                modifier = Modifier.fillMaxWidth().align(Alignment.BottomCenter).padding(bottom = 16.dp),
+                shape = AppThemeButtonShape,
+                onClick = {
+
+                },
+            ) {
+                Text(
+                    text = if (isMyPost) "Close" else "Request Item",
+                    modifier = Modifier.padding(8.dp),
+                )
+            }
+
         }
     }
 }
@@ -170,14 +189,49 @@ fun GoogleMapView(
         position = CameraPosition.fromLatLngZoom(defaultLatLng, 14f)
     }
 
-    GoogleMap(
-        cameraPositionState = cameraPositionState,
-        modifier = Modifier.fillMaxWidth().height(280.dp)
+    Card(
     ) {
-        Marker(
-            state = MarkerState(position = defaultLatLng),
-            snippet = "Selected location",
-        )
+        Column {
+            GoogleMap(
+                cameraPositionState = cameraPositionState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(280.dp)
+            ) {
+                Marker(
+                    state = MarkerState(position = defaultLatLng),
+                    snippet = "Selected location",
+                )
+            }
+
+            Row(
+                modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_location),
+                    contentDescription = ""
+                )
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Column {
+                    Text(
+                        "49 Featherstone Street, EC1Y 8SY, London",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Medium
+                    )
+
+                    Text(
+                        "0.8 miles away",
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
+            }
+
+
+        }
     }
 
 }

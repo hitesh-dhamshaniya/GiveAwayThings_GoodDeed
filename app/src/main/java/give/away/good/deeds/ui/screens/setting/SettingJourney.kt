@@ -128,7 +128,8 @@ fun SettingsJourneyScreen(
                 PostDetailScreen(
                     onBackPress = {
                         navController.popBackStack()
-                    }
+                    },
+                    isMyPost = true
                 )
             }
 

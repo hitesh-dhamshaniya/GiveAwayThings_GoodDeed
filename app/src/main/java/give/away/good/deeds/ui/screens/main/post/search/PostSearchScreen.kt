@@ -46,7 +46,7 @@ fun PostSearchScreen(
                     text = it
                 },
                 placeholder = {
-                    Text("Search posts")
+                    Text("Search give away")
                 },
                 modifier = Modifier.fillMaxWidth(),
                 maxLines = 1,
