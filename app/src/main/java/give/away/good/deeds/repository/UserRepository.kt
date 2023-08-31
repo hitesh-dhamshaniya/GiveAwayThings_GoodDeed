@@ -2,7 +2,6 @@ package give.away.good.deeds.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
 import give.away.good.deeds.network.model.User
 import kotlinx.coroutines.tasks.await
 
@@ -38,7 +37,7 @@ class UserRepositoryImpl(
             }?.let { user ->
                 CallResult.Success(user)
             } ?: CallResult.Failure("")
-        } catch (ex: FirebaseFirestoreException) {
+        } catch (ex: Exception) {
             CallResult.Failure(ex.message)
         }
     }
@@ -54,7 +53,7 @@ class UserRepositoryImpl(
             val document = firestore.collection(COLLECTION_USER).document(userId)
             document.set(user).await()
             CallResult.Success(Unit)
-        } catch (ex: FirebaseFirestoreException) {
+        } catch (ex: Exception) {
             CallResult.Failure(ex.message)
         }
     }
@@ -69,7 +68,7 @@ class UserRepositoryImpl(
                 .update(data)
                 .await()
             CallResult.Success(Unit)
-        } catch (ex: FirebaseFirestoreException) {
+        } catch (ex: Exception) {
             CallResult.Failure(ex.message)
         }
     }

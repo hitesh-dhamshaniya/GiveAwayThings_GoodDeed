@@ -7,7 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import give.away.good.deeds.R
 import give.away.good.deeds.ui.screens.app_common.launchActivity
-import give.away.good.deeds.ui.screens.authentication.LandingActivity
+import give.away.good.deeds.ui.screens.authentication.AuthActivity
 import give.away.good.deeds.ui.screens.main.MainActivity
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -30,7 +30,7 @@ class SplashActivity : AppCompatActivity(R.layout.activity_splash) {
     }
 
     private fun startActivity(isLoggedIn: Boolean) {
-        val activity = if (isLoggedIn) MainActivity::class else LandingActivity::class
+        val activity = if (isLoggedIn) MainActivity::class else AuthActivity::class
         launchActivity(activity)
         finish()
     }

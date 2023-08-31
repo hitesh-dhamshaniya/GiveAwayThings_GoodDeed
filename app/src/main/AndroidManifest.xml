@@ -37,7 +37,7 @@
         </activity>
 
         <activity
-            android:name=".ui.screens.authentication.LandingActivity"
+            android:name=".ui.screens.authentication.AuthActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Main" />
 

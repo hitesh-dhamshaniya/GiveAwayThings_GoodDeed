@@ -24,7 +24,7 @@ class AuthRepositoryImpl(
         return try {
             firebaseAuth.sendPasswordResetEmail(email).await()
             CallResult.Success(Unit)
-        } catch (ex: FirebaseFirestoreException) {
+        } catch (ex: Exception) {
             CallResult.Failure(ex.message)
         }
     }
@@ -33,7 +33,7 @@ class AuthRepositoryImpl(
         return try {
             firebaseAuth.signInWithEmailAndPassword(email, password).await()
             CallResult.Success(Unit)
-        } catch (ex: FirebaseFirestoreException) {
+        } catch (ex: Exception) {
             CallResult.Failure(ex.message)
         }
     }
@@ -42,7 +42,7 @@ class AuthRepositoryImpl(
         return try {
             val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             CallResult.Success(result.user?.uid ?: "")
-        } catch (ex: FirebaseFirestoreException) {
+        } catch (ex: Exception) {
             CallResult.Failure(ex.message)
         }
     }
@@ -58,7 +58,7 @@ class AuthRepositoryImpl(
                 firebaseAuth.currentUser?.updatePassword(newPassword)
             }
             CallResult.Success(Unit)
-        } catch (ex: FirebaseFirestoreException) {
+        } catch (ex: Exception) {
             CallResult.Failure(ex.message)
         }
     }

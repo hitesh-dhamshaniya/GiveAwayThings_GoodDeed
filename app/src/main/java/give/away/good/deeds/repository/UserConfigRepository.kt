@@ -3,7 +3,6 @@ package give.away.good.deeds.repository
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.GeoPoint
 import kotlinx.coroutines.tasks.await
 
@@ -31,7 +30,7 @@ class UserConfigRepositoryImpl(
             }?.let { latLng ->
                 CallResult.Success(latLng)
             } ?: CallResult.Failure("")
-        } catch (ex: FirebaseFirestoreException) {
+        } catch (ex: Exception) {
             CallResult.Failure(ex.message)
         }
     }
@@ -49,7 +48,7 @@ class UserConfigRepositoryImpl(
                     .await()
                 CallResult.Success(Unit)
             } ?: CallResult.Failure("")
-        } catch (ex: FirebaseFirestoreException) {
+        } catch (ex: Exception) {
             CallResult.Failure(ex.message)
         }
     }

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="BaseTheme.Button" parent="Widget.Material3.Button">
-        <item name="android:padding">12dp</item>
+        <item name="android:padding">16dp</item>
         <item name="android:textAllCaps">true</item>
         <item name="cornerRadius">8dp</item>
     </style>
 
     <style name="BaseTheme.Button.OutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
-        <item name="android:padding">12dp</item>
+        <item name="android:padding">16dp</item>
         <item name="android:textAllCaps">true</item>
         <item name="strokeColor">?colorPrimary</item>
         <item name="cornerRadius">8dp</item>

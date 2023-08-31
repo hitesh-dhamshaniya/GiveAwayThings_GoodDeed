@@ -53,7 +53,7 @@
     <string name="msg_note_add_expiry_and_allergy_details"><b>Note:</b> Add Expiry and allergy details</string>
     <string name="msg_add_up_to_5_images_of_the_item">Add up to 5 images of the item</string>
     <string name="title_login_failed">Login</string>
-    <string name="msg_login_failed">Provided credential does not matched, please try again!</string>
+    <string name="msg_login_failed">Incorrect username or password</string>
 
     <string name="action_cancel_registration">Cancel registration</string>
     <string name="action_i_agree_continue_registration">I agree, Continue Registration</string>

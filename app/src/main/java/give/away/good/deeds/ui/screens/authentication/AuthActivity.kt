@@ -7,7 +7,7 @@ import give.away.good.deeds.ui.screens.authentication.module.authModule
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 
-class LandingActivity : AppCompatActivity(R.layout.activity_landing) {
+class AuthActivity : AppCompatActivity(R.layout.activity_auth) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -21,7 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import give.away.good.deeds.R
 import give.away.good.deeds.ui.screens.app_common.SimpleAlertDialog
-import give.away.good.deeds.ui.screens.authentication.LandingActivity
+import give.away.good.deeds.ui.screens.authentication.AuthActivity
 import give.away.good.deeds.ui.screens.main.post.detail.PostDetailScreen
 import give.away.good.deeds.ui.screens.setting.changepassword.ChangePasswordScreen
 import give.away.good.deeds.ui.screens.setting.location.SetupLocationScreen
@@ -68,7 +68,7 @@ fun SettingsJourneyScreen(
                 onConfirm = {
                     viewModel.logout()
                     activity?.finish()
-                    activity?.startActivity(Intent(activity, LandingActivity::class.java))
+                    activity?.startActivity(Intent(activity, AuthActivity::class.java))
                 }
             )
 

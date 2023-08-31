@@ -1,31 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--
-       <style name="Theme.GiveAwayThings_GoodDeeds" parent="android:Theme.Material.Light.NoActionBar" />
-   -->
-    <style name="BaseTheme" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:lineSpacingMultiplier">1.2</item>
-        <item name="android:typeface">normal</item>
-        <item name="background">@color/white</item>
-        <item name="android:windowBackground">@color/white</item>
-
-        <item name="materialButtonStyle">@style/BaseTheme.Button</item>
-        <item name="materialButtonOutlinedStyle">@style/BaseTheme.Button.OutlinedButton</item>
-
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionModeOverlay">true</item>
-    </style>
-
     <style name="AppTheme.Main">
         <!--Do nothing here-->
         <item name="android:statusBarColor">?android:colorBackground</item>
         <item name="android:windowLightStatusBar">true</item>
+
+        <item name="materialButtonStyle">@style/BaseTheme.Button</item>
+        <item name="materialButtonOutlinedStyle">@style/BaseTheme.Button.OutlinedButton</item>
     </style>
 
     <style name="AppTheme.Splash">
@@ -48,9 +29,10 @@
         <item name="android:textColor">?colorPrimary</item>
     </style>
 
-    <style name="AppTextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+    <style name="AppTextInputLayout" parent="Widget.Material3.TextInputLayout.FilledBox">
         <item name="android:layout_width">@dimen/DP0</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="errorIconDrawable">@null</item>
         <item name="hintAnimationEnabled">true</item>
         <item name="hintEnabled">true</item>
     </style>

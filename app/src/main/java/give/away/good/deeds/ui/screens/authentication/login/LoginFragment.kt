@@ -5,6 +5,9 @@ import android.view.View
 import android.widget.EditText
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import give.away.good.deeds.R
@@ -15,6 +18,8 @@ import give.away.good.deeds.ui.screens.app_common.isValidEmail
 import give.away.good.deeds.ui.screens.app_common.startActivity
 import give.away.good.deeds.ui.screens.authentication.common.AuthenticationState
 import give.away.good.deeds.ui.screens.main.MainActivity
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
@@ -37,6 +42,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         handleUIClicks(view)
 
         observeUIChanges()
+
+        edtEmailAdd.setText("dhaval.patel@yopmail.com")
+        edtPassword.setText("Pass1234!")
     }
 
     private fun handleUIClicks(view: View) {
@@ -52,22 +60,26 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun observeUIChanges() {
-        viewModel.uiState.observe(viewLifecycleOwner) { result ->
-            progressIndicator.isVisible = false
-            when (result) {
-                is AuthenticationState.Loading -> {
-                    progressIndicator.isVisible = true
-                }
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collectLatest { uiState ->
+                    progressIndicator.isVisible = false
+                    when (uiState) {
+                        is AuthenticationState.Loading -> {
+                            progressIndicator.isVisible = true
+                        }
 
-                is AuthenticationState.Result -> {
-                    startActivity(MainActivity::class)
-                }
+                        is AuthenticationState.Result -> {
+                            startActivity(MainActivity::class)
+                        }
 
-                is AuthenticationState.Error -> {
-                    showErrorDialog(requireActivity(), getString(R.string.title_login_failed), getString(R.string.msg_login_failed))
-                }
+                        is AuthenticationState.Error -> {
+                            showErrorDialog(requireActivity(), getString(R.string.title_login_failed), getString(R.string.msg_login_failed))
+                        }
 
-                else -> {}
+                        else -> {}
+                    }
+                }
             }
         }
     }
@@ -95,10 +107,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         if (email.editText?.isValidEmail() != true) {
             email.error = getString(R.string.error_please_enter_valid_email_address)
             isValid = false
+        } else {
+            email.error = null
         }
         if (password.editText?.getInputString()?.isEmpty() == true) {
             password.error = getString(R.string.error_please_enter_password)
             isValid = false
+        } else {
+            password.error = null
         }
         return isValid
     }
