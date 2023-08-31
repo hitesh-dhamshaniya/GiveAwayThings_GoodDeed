@@ -1,4 +1,4 @@
-package give.away.good.deeds.ui.screens.post_screens.post.common
+package give.away.good.deeds.ui.screens.main.post.common
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,7 +21,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import give.away.good.deeds.ui.screens.post_screens.post.list.PostImageCarousel
+import give.away.good.deeds.ui.screens.main.post.list.PostImageCarousel
 
 
 @OptIn(ExperimentalMaterial3Api::class)

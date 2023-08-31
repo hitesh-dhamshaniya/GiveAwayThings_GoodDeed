@@ -1,4 +1,4 @@
-package give.away.good.deeds.ui.screens.post_screens.post.detail
+package give.away.good.deeds.ui.screens.main.post.detail
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,7 +37,7 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
-import give.away.good.deeds.ui.screens.post_screens.post.list.PostImageCarousel
+import give.away.good.deeds.ui.screens.main.post.list.PostImageCarousel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

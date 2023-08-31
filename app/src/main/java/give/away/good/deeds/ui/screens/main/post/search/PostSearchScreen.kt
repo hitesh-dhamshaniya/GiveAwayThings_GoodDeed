@@ -1,4 +1,4 @@
-package give.away.good.deeds.ui.screens.post_screens.post.search
+package give.away.good.deeds.ui.screens.main.post.search
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,7 +26,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import give.away.good.deeds.R
-import give.away.good.deeds.ui.screens.post_screens.post.common.PostCard
+import give.away.good.deeds.ui.screens.main.post.common.PostCard
 
 @Composable
 fun PostSearchScreen(

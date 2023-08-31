@@ -1,4 +1,4 @@
-package give.away.good.deeds.ui.screens.post_screens.post
+package give.away.good.deeds.ui.screens.main.search
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,26 +13,26 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import give.away.good.deeds.ui.screens.post_screens.post.add.AddPostScreen
-import give.away.good.deeds.ui.screens.post_screens.post.detail.PostDetailScreen
+import give.away.good.deeds.ui.screens.main.post.detail.PostDetailScreen
+import give.away.good.deeds.ui.screens.main.post.search.PostSearchScreen
 import give.away.good.deeds.ui.theme.AppTheme
 import give.away.good.deeds.utils.contentView
 
-class PostJourney : Fragment() {
+class SearchJourney : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = contentView(ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner)) {
         AppTheme {
-            PostJourneyScreen()
+            SearchJourneyScreen()
         }
     }
 }
 
 
 @Composable
-fun PostJourneyScreen(
+fun SearchJourneyScreen(
     navController: NavHostController = rememberNavController()
 ) {
     Surface(
@@ -40,11 +40,21 @@ fun PostJourneyScreen(
     ) {
         NavHost(
             navController = navController,
-            startDestination = "add_post"
+            startDestination = "search"
         ) {
-            composable("add_post") {
-                AddPostScreen(
+            composable("search") {
+                PostSearchScreen(
+                    navigateToDetail = {
+                        navController.navigate("post_detail")
+                    }
+                )
+            }
 
+            composable("post_detail") {
+                PostDetailScreen(
+                    onBackPress = {
+                        navController.popBackStack()
+                    }
                 )
             }
 

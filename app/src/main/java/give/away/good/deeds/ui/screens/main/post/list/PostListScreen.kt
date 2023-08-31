@@ -1,4 +1,4 @@
-package give.away.good.deeds.ui.screens.post_screens.post.list
+package give.away.good.deeds.ui.screens.main.post.list
 
 
 import androidx.compose.foundation.layout.Arrangement
@@ -18,7 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import give.away.good.deeds.R
-import give.away.good.deeds.ui.screens.post_screens.post.common.PostCard
+import give.away.good.deeds.ui.screens.main.post.common.PostCard
 import give.away.good.deeds.ui.theme.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)

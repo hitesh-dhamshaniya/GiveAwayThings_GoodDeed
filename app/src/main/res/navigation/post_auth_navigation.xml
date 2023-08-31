@@ -7,22 +7,22 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="give.away.good.deeds.ui.screens.post_screens.home.HomeJourney"
+        android:name="give.away.good.deeds.ui.screens.main.home.HomeJourney"
         android:label="Home" />
 
     <fragment
         android:id="@+id/searchFragment"
-        android:name="give.away.good.deeds.ui.screens.post_screens.search.SearchJourney"
+        android:name="give.away.good.deeds.ui.screens.main.search.SearchJourney"
         android:label="Search" />
 
     <fragment
         android:id="@+id/addPostFragment"
-        android:name="give.away.good.deeds.ui.screens.post_screens.post.PostJourney"
+        android:name="give.away.good.deeds.ui.screens.main.post.PostJourney"
         android:label="Add Post" />
 
     <fragment
         android:id="@+id/messageFragment"
-        android:name="give.away.good.deeds.ui.screens.post_screens.messages.MessageJourney"
+        android:name="give.away.good.deeds.ui.screens.main.messages.MessageJourney"
         android:label="Messages" />
 
     <fragment

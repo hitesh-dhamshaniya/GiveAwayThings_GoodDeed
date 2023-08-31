@@ -1,4 +1,4 @@
-package give.away.good.deeds.ui.screens.post_screens
+package give.away.good.deeds.ui.screens.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

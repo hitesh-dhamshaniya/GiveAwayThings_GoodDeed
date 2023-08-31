@@ -1,4 +1,4 @@
-package give.away.good.deeds.ui.screens.post_screens.post.list
+package give.away.good.deeds.ui.screens.main.post.list
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
@@ -18,7 +18,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
 import give.away.good.deeds.ui.screens.app_common.PagerIndicator
-import give.away.good.deeds.ui.screens.post_screens.post.media.ImageFullScreenView
+import give.away.good.deeds.ui.screens.main.post.media.ImageFullScreenView
 
 
 @Composable

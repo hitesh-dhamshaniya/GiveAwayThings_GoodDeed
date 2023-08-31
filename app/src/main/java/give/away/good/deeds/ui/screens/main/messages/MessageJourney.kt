@@ -1,4 +1,4 @@
-package give.away.good.deeds.ui.screens.post_screens.messages
+package give.away.good.deeds.ui.screens.main.messages
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +13,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import give.away.good.deeds.ui.screens.post_screens.messages.list.MessageListScreen
+import give.away.good.deeds.ui.screens.main.messages.list.MessageListScreen
 import give.away.good.deeds.ui.theme.AppTheme
 import give.away.good.deeds.utils.contentView
 

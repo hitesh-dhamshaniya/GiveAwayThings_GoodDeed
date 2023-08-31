@@ -8,7 +8,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import give.away.good.deeds.R
 import give.away.good.deeds.ui.screens.app_common.launchActivity
 import give.away.good.deeds.ui.screens.authentication.LandingActivity
-import give.away.good.deeds.ui.screens.post_screens.MainActivity
+import give.away.good.deeds.ui.screens.main.MainActivity
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 

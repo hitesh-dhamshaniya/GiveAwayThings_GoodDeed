@@ -14,7 +14,7 @@ import give.away.good.deeds.ui.screens.app_common.hideSoftKeyboard
 import give.away.good.deeds.ui.screens.app_common.isValidEmail
 import give.away.good.deeds.ui.screens.app_common.startActivity
 import give.away.good.deeds.ui.screens.authentication.common.AuthenticationState
-import give.away.good.deeds.ui.screens.post_screens.MainActivity
+import give.away.good.deeds.ui.screens.main.MainActivity
 import org.koin.android.ext.android.inject
 
 class LoginFragment : Fragment(R.layout.fragment_login) {

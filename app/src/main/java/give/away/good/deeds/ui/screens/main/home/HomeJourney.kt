@@ -1,4 +1,4 @@
-package give.away.good.deeds.ui.screens.post_screens.search
+package give.away.good.deeds.ui.screens.main.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,26 +13,26 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import give.away.good.deeds.ui.screens.post_screens.post.detail.PostDetailScreen
-import give.away.good.deeds.ui.screens.post_screens.post.search.PostSearchScreen
+import give.away.good.deeds.ui.screens.main.post.detail.PostDetailScreen
+import give.away.good.deeds.ui.screens.main.post.list.PostListScreen
 import give.away.good.deeds.ui.theme.AppTheme
 import give.away.good.deeds.utils.contentView
 
-class SearchJourney : Fragment() {
+class HomeJourney : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ) = contentView(ViewCompositionStrategy.DisposeOnLifecycleDestroyed(viewLifecycleOwner)) {
         AppTheme {
-            SearchJourneyScreen()
+            HomeJourneyScreen()
         }
     }
 }
 
 
 @Composable
-fun SearchJourneyScreen(
+fun HomeJourneyScreen(
     navController: NavHostController = rememberNavController()
 ) {
     Surface(
@@ -40,10 +40,10 @@ fun SearchJourneyScreen(
     ) {
         NavHost(
             navController = navController,
-            startDestination = "search"
+            startDestination = "home"
         ) {
-            composable("search") {
-                PostSearchScreen(
+            composable("home") {
+                PostListScreen(
                     navigateToDetail = {
                         navController.navigate("post_detail")
                     }
@@ -54,9 +54,15 @@ fun SearchJourneyScreen(
                 PostDetailScreen(
                     onBackPress = {
                         navController.popBackStack()
-                    }
+                    },
+                    /*showFullImage = {
+                        val encodedUrl = URLEncoder.encode(it, StandardCharsets.UTF_8.toString())
+                        navController.navigate("post_image/"+encodedUrl)
+                    }*/
                 )
             }
+
+
 
         }
     }

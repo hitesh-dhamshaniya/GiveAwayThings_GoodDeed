@@ -1,4 +1,4 @@
-package give.away.good.deeds.ui.screens.post_screens.post.add
+package give.away.good.deeds.ui.screens.main.post.add
 
 import android.app.Activity
 import android.net.Uri

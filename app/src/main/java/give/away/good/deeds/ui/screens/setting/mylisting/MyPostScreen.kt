@@ -19,7 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import give.away.good.deeds.ui.screens.post_screens.post.common.PostCard
+import give.away.good.deeds.ui.screens.main.post.common.PostCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
