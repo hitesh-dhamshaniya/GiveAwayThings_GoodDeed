@@ -7,59 +7,27 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="give.away.good.deeds.screens.home.HomeFragment"
-        android:label="Home"
-        tools:layout="@layout/fragment_home" />
+        android:name="give.away.good.deeds.ui.screens.main.home.HomeJourney"
+        android:label="Home" />
 
     <fragment
         android:id="@+id/searchFragment"
-        android:name="give.away.good.deeds.screens.search.SearchFragment"
-        android:label="Search"
-        tools:layout="@layout/fragment_search" />
-    <fragment
-        android:id="@+id/messageFragment"
-        android:name="give.away.good.deeds.screens.messages.MessageFragment"
-        android:label="Messages"
-        tools:layout="@layout/fragmnet_messages" />
+        android:name="give.away.good.deeds.ui.screens.main.search.SearchJourney"
+        android:label="Search" />
+
     <fragment
         android:id="@+id/addPostFragment"
-        android:name="give.away.good.deeds.screens.post.AddPostFragment"
-        android:label="Add Post"
-        tools:layout="@layout/fragment_add_post" />
+        android:name="give.away.good.deeds.ui.screens.main.post.PostJourney"
+        android:label="Add Post" />
+
+    <fragment
+        android:id="@+id/messageFragment"
+        android:name="give.away.good.deeds.ui.screens.main.messages.MessageJourney"
+        android:label="Messages" />
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="give.away.good.deeds.screens.settings.SettingsFragment"
-        android:label="Settings"
-        tools:layout="@layout/fragment_settings">
-        <action
-            android:id="@+id/action_settingsFragment_to_setupLocationFragment"
-            app:destination="@id/setupLocationFragment"
-            app:popUpTo="@id/settingsFragment"
-            app:popUpToSaveState="true"
-            app:restoreState="true" />
-        <action
-            android:id="@+id/action_settingsFragment_to_changePasswordFragment"
-            app:destination="@id/changePasswordFragment" />
-        <action
-            android:id="@+id/action_settingsFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
-    </fragment>
+        android:name="give.away.good.deeds.ui.screens.setting.SettingsJourney"
+        android:label="Settings" />
 
-    <fragment
-        android:id="@+id/setupLocationFragment"
-        android:name="give.away.good.deeds.screens.setuplocation.SetupLocationFragment"
-        android:label="Setup Location"
-        tools:layout="@layout/fragment_setup_location" />
-    <include app:graph="@navigation/setting_navigation" />
-    <fragment
-        android:id="@+id/changePasswordFragment"
-        android:name="give.away.good.deeds.screens.changepassword.ChangePasswordFragment"
-        android:label="Change Password"
-        tools:layout="@layout/fragment_change_password" />
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="give.away.good.deeds.screens.profile.ProfileFragment"
-        android:label="ProfileFragment"
-        tools:layout="@layout/fragment_profile" />
 </navigation>

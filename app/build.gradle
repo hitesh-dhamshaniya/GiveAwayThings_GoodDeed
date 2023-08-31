@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
+    id 'org.sonarqube'
 }
 
 android {
@@ -24,17 +25,18 @@ android {
     }
 
     buildFeatures{
-        dataBinding true
+        compose true
+        buildConfig true
     }
 
-    signingConfigs {
+    /*signingConfigs {
         release {
             storeFile file(GiveAwayappFilePath)
             storePassword GiveAwayappKeyStorePassword
             keyPassword GiveAwayappKeyStorePassword
             keyAlias GiveAwayappKeyAlias
         }
-    }
+    }*/
 
     applicationVariants.all { variant ->
         variant.outputs.all {
@@ -49,7 +51,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+           // signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -59,11 +61,9 @@ android {
     kotlinOptions {
         jvmTarget = '17'
     }
-    buildFeatures {
-        compose true
-    }
+
     composeOptions {
-        kotlinCompilerExtensionVersion '1.4.8'
+        kotlinCompilerExtensionVersion '1.5.2'
     }
     packagingOptions {
         resources {
@@ -73,54 +73,35 @@ android {
 }
 
 dependencies {
-
-    implementation 'androidx.core:core-ktx:1.10.1'
-    implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.0')
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
+    implementation platform(libs.compose.bom)
+    implementation libs.bundles.compose
     implementation 'androidx.activity:activity-compose:1.7.2'
-    implementation platform('androidx.compose:compose-bom:2022.10.00')
-    implementation 'androidx.compose.ui:ui'
-    implementation 'androidx.compose.ui:ui-graphics'
-    implementation 'androidx.compose.ui:ui-tooling-preview'
-    implementation 'androidx.compose.material3:material3'
-    implementation 'androidx.viewpager2:viewpager2:1.1.0-beta02'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
-    implementation 'com.github.bumptech.glide:glide:4.12.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'
+    implementation 'androidx.activity:activity-ktx:1.7.2'
+
+    implementation platform(libs.firebase.bom)
+    implementation libs.bundles.firebase
+
+    implementation libs.bundles.navigation
+    implementation libs.bundles.koin
+
     implementation 'androidx.core:core-ktx:1.10.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
-    implementation 'com.google.firebase:firebase-auth-ktx:22.1.0'
-    implementation 'com.google.firebase:firebase-storage-ktx:20.2.1'
-    kapt 'com.github.bumptech.glide:compiler:4.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.viewpager2:viewpager2:1.1.0-beta02'
 
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
+    implementation "io.coil-kt:coil-compose:2.4.0"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1'
 
-    implementation 'io.insert-koin:koin-core:3.4.2'
-
-    implementation 'io.insert-koin:koin-core:3.4.2'
-    implementation 'io.insert-koin:koin-android:3.4.2'
-
-    //implementation 'com.github.dhaval2404:imagepicker:2.1'
     // KTX for the Maps SDK for Android
-    implementation 'com.google.maps.android:maps-ktx:3.2.1'
+    implementation 'com.google.maps.android:maps-ktx:3.4.0'
+    implementation 'com.google.maps.android:maps-utils-ktx:3.4.0'
+    implementation 'com.google.maps.android:maps-compose:2.14.0'
 
-    // (Optional) KTX for the Maps SDK for Android Utility Library
-    implementation 'com.google.maps.android:maps-utils-ktx:3.2.1'
+    implementation "com.airbnb.android:lottie-compose:6.1.0"
 
-    implementation platform('com.google.firebase:firebase-bom:32.2.0')
-    implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx'
-    implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation platform('androidx.compose:compose-bom:2022.10.00')
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
-    debugImplementation 'androidx.compose.ui:ui-tooling'
-    debugImplementation 'androidx.compose.ui:ui-test-manifest'
 }
