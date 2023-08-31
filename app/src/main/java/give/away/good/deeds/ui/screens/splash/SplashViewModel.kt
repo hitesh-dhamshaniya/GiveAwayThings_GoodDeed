@@ -21,7 +21,7 @@ class SplashViewModel(
 
     fun preProcessing() {
         viewModelScope.launch {
-            // if (!BuildConfig.DEBUG)
+            if (!BuildConfig.DEBUG)
                 delay(mSplashDelay)
             _event.send(auth.currentUser != null)
         }

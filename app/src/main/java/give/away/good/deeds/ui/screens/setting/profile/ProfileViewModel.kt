@@ -2,15 +2,16 @@ package give.away.good.deeds.ui.screens.setting.profile
 
 import android.content.Context
 import android.net.Uri
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import give.away.good.deeds.repository.CallResult
 import give.away.good.deeds.repository.MediaRepository
 import give.away.good.deeds.repository.UserRepository
+import give.away.good.deeds.ui.screens.setting.common.SettingState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(
@@ -18,24 +19,23 @@ class ProfileViewModel(
     private val mediaRepository: MediaRepository
 ) : ViewModel() {
 
+    private val _uiState = MutableStateFlow<SettingState<Unit>>(SettingState.None)
+    val uiState: StateFlow<SettingState<Unit>> = _uiState.asStateFlow()
+
     private val defaultErrorMessage = "Something went wrong. Please try again!"
-
-    var updateSuccess by mutableStateOf(false)
-        private set
-
-    var errorMessage by mutableStateOf("")
-        private set
 
     val formState = mutableStateMapOf<String, String>()
 
     fun fetchUser() {
         viewModelScope.launch {
+            _uiState.emit(SettingState.Loading)
             val result = userRepository.getUser()
             if (result is CallResult.Success) {
                 result.data.apply {
                     formState.putAll(this.toMap())
                 }
             }
+            _uiState.emit(SettingState.None)
         }
     }
 
@@ -48,6 +48,7 @@ class ProfileViewModel(
     ) {
 
         viewModelScope.launch {
+            _uiState.emit(SettingState.Loading)
             val updates = mutableMapOf<String, Any>(
                 "firstName" to firstName,
                 "lastName" to lastName,
@@ -64,12 +65,12 @@ class ProfileViewModel(
 
                 val result = userRepository.updateUser(userId, updates)
                 if (result is CallResult.Success) {
-                    updateSuccess = true
+                    _uiState.emit(SettingState.Result())
                 } else if (result is CallResult.Failure) {
-                    errorMessage = result.message ?: ""
+                    _uiState.emit(SettingState.Error(result.message ?: defaultErrorMessage))
                 }
             } catch (ex: Exception) {
-                errorMessage = ex.message ?: defaultErrorMessage
+                _uiState.emit(SettingState.Error(ex.message ?: defaultErrorMessage))
             }
         }
     }

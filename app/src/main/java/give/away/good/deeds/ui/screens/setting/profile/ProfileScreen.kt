@@ -1,5 +1,6 @@
 package give.away.good.deeds.ui.screens.setting.profile
 
+import android.app.Activity
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -30,7 +32,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import give.away.good.deeds.R
 import give.away.good.deeds.ui.screens.app_common.InfoAlertDialog
+import give.away.good.deeds.ui.screens.app_common.STATE_VIEW_FAILURE
+import give.away.good.deeds.ui.screens.app_common.STATE_VIEW_SUCCESS
 import give.away.good.deeds.ui.screens.app_common.SimpleTextFieldView
+import give.away.good.deeds.ui.screens.app_common.StateView
+import give.away.good.deeds.ui.screens.setting.changepassword.ChangePasswordForm
+import give.away.good.deeds.ui.screens.setting.changepassword.ChangePasswordViewModel
+import give.away.good.deeds.ui.screens.setting.common.SettingState
+import give.away.good.deeds.ui.screens.setting.location.LoadingView
 import give.away.good.deeds.ui.theme.AppTheme
 import give.away.good.deeds.ui.theme.AppThemeButtonShape
 import org.koin.androidx.compose.koinViewModel
@@ -64,7 +73,7 @@ fun ProfileScreen(
                 .padding(contentPadding)
                 .fillMaxSize()
         ) {
-            ProfileForm(
+            ProfileFormStateView(
                 onBackPress = onBackPress
             )
         }
@@ -72,40 +81,58 @@ fun ProfileScreen(
 }
 
 @Composable
-fun ProfileForm(
+fun ProfileFormStateView(
     onBackPress: () -> Unit,
     viewModel: ProfileViewModel = koinViewModel()
 ) {
 
-    val context = LocalContext.current
-    if (viewModel.updateSuccess) {
-        LaunchedEffect(Unit, block = {
-            Toast.makeText(context, "Profile updated successfully!", Toast.LENGTH_SHORT).show()
-            onBackPress()
-        })
-    }
-
-    val showDialog = remember { mutableStateOf(false) }
-    if (viewModel.errorMessage.isNotBlank()) {
-        LaunchedEffect(Unit, block = {
-            showDialog.value = true
-        })
-    }
-
-    if (showDialog.value)
-        InfoAlertDialog(
-            title = stringResource(id = R.string.app_name),
-            message = viewModel.errorMessage,
-            onDismiss = {
-                showDialog.value = false
-            }
-        )
-
-    val formState = viewModel.formState
-
     LaunchedEffect(Unit, block = {
         viewModel.fetchUser()
     })
+
+    val uiState = viewModel.uiState.collectAsState()
+
+    when(val state = uiState.value){
+        is SettingState.Result<Unit> -> {
+            StateView(
+                title = "Success!",
+                message = "Profile updated successfully.",
+                actionText = "Done",
+                type = STATE_VIEW_SUCCESS,
+                actionClick = {
+                    onBackPress()
+                }
+            )
+        }
+        is SettingState.Loading -> {
+            LoadingView()
+        }
+        is SettingState.Error -> {
+            StateView(
+                title = "Failure!",
+                message = state.message,
+                actionText = "Try Again",
+                type = STATE_VIEW_FAILURE,
+                actionClick = {
+                    viewModel.fetchUser()
+                }
+            )
+        }
+        is SettingState.None -> {
+            ProfileForm()
+        }
+    }
+}
+
+@Composable
+fun ProfileForm(
+    viewModel: ProfileViewModel = koinViewModel()
+) {
+
+    val formState = viewModel.formState
+    val context = LocalContext.current
+
+
 
     Column(
         modifier = Modifier
