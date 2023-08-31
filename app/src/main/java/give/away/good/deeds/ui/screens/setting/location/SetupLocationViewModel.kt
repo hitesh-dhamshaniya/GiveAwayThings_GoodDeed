@@ -24,6 +24,8 @@ class SetupLocationViewModel(
             val result = userConfigRepository.getLocation()
             if (result is CallResult.Success) {
                 _uiState.emit(result.data)
+            } else {
+                _uiState.emit(defaultLatLng)
             }
         }
     }
