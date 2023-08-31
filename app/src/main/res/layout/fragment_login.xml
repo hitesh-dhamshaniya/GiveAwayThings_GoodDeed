@@ -42,7 +42,8 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTitleEnterDetail"
-        style="@style/AppTextView.Normal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:text="@string/msg_enter_your_details_to_continue"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="@id/glVEnd"

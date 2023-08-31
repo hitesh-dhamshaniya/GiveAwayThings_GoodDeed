@@ -66,7 +66,6 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvMessageRegister"
-        style="@style/AppTextView.Normal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

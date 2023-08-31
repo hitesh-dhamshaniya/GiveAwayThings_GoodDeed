@@ -88,11 +88,10 @@ fun AppTheme(
     content: @Composable() () -> Unit
 ) {
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+        /*dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             if (useDarkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
+        }*/
         useDarkTheme -> DarkColors
         else -> LightColors
     }
