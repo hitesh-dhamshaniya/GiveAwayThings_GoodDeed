@@ -1,4 +1,4 @@
-package give.away.good.deeds.ui.screens.main.post.mypost
+package give.away.good.deeds.ui.screens.main.post.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,24 +12,23 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class MyPostViewModel(
+class PostSearchViewModel(
     private val postRepository: PostRepository,
     private val networkReader: NetworkReader,
 ) : ViewModel() {
 
-
-    private val _uiState = MutableStateFlow<PostState<List<Post>>>(PostState.Loading)
+    private val _uiState = MutableStateFlow<PostState<List<Post>>>(PostState.None)
     val uiState: StateFlow<PostState<List<Post>>> = _uiState.asStateFlow()
 
-    fun fetchPosts() {
+    fun searchPosts(query: String) {
         viewModelScope.launch {
-            if(!networkReader.isConnected()){
+            if (!networkReader.isConnected()) {
                 _uiState.emit(PostState.NoInternet)
                 return@launch
             }
 
             _uiState.emit(PostState.Loading)
-            val result = postRepository.getMyPosts()
+            val result = postRepository.searchPost(query)
             if (result is CallResult.Success) {
                 _uiState.emit(PostState.Result(result.data))
             } else {
@@ -37,6 +36,4 @@ class MyPostViewModel(
             }
         }
     }
-
-
 }

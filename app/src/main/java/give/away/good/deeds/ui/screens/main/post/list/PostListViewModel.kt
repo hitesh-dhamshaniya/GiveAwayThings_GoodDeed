@@ -1,4 +1,4 @@
-package give.away.good.deeds.ui.screens.main.post.mypost
+package give.away.good.deeds.ui.screens.main.post.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,11 +12,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class MyPostViewModel(
+class PostListViewModel(
     private val postRepository: PostRepository,
     private val networkReader: NetworkReader,
 ) : ViewModel() {
-
 
     private val _uiState = MutableStateFlow<PostState<List<Post>>>(PostState.Loading)
     val uiState: StateFlow<PostState<List<Post>>> = _uiState.asStateFlow()
@@ -29,7 +28,7 @@ class MyPostViewModel(
             }
 
             _uiState.emit(PostState.Loading)
-            val result = postRepository.getMyPosts()
+            val result = postRepository.getPost()
             if (result is CallResult.Success) {
                 _uiState.emit(PostState.Result(result.data))
             } else {
@@ -37,6 +36,5 @@ class MyPostViewModel(
             }
         }
     }
-
 
 }

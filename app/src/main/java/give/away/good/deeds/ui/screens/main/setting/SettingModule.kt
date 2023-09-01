@@ -16,13 +16,15 @@ val settingModule = module {
     }
     viewModel {
         ChangePasswordViewModel(
-            authRepository = get()
+            authRepository = get(),
+            networkReader = get(),
         )
     }
     viewModel {
         ProfileViewModel(
             userRepository = get(),
-            mediaRepository = get()
+            mediaRepository = get(),
+            networkReader = get(),
         )
     }
     viewModel {

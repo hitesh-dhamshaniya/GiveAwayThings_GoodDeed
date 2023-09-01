@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import give.away.good.deeds.ui.screens.app_common.NoInternetStateView
 import give.away.good.deeds.ui.screens.app_common.PasswordTextField
 import give.away.good.deeds.ui.screens.app_common.StateView
 import give.away.good.deeds.ui.screens.app_common.StateViewState
@@ -89,6 +90,11 @@ fun ChangePasswordStateView(
         }
         is SettingState.Loading -> {
             LoadingView()
+        }
+        is SettingState.NoInternet -> {
+            NoInternetStateView {
+                viewModel.resetState()
+            }
         }
         is SettingState.Error -> {
             StateView(

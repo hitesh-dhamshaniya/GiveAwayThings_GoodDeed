@@ -1,6 +1,5 @@
 package give.away.good.deeds.ui.screens.main.setting.profile
 
-import android.content.Context
 import android.net.Uri
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.ViewModel
@@ -9,6 +8,7 @@ import give.away.good.deeds.repository.CallResult
 import give.away.good.deeds.repository.MediaRepository
 import give.away.good.deeds.repository.UserRepository
 import give.away.good.deeds.ui.screens.main.setting.common.SettingState
+import give.away.good.deeds.utils.NetworkReader
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +16,8 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel(
     private val userRepository: UserRepository,
-    private val mediaRepository: MediaRepository
+    private val mediaRepository: MediaRepository,
+    private val networkReader: NetworkReader,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<SettingState<Unit>>(SettingState.None)
@@ -40,7 +41,6 @@ class ProfileViewModel(
     }
 
     fun updateProfile(
-        context: Context,
         userId: String,
         firstName: String,
         lastName: String,
@@ -48,6 +48,11 @@ class ProfileViewModel(
     ) {
 
         viewModelScope.launch {
+            if(!networkReader.isConnected()){
+                _uiState.emit(SettingState.NoInternet)
+                return@launch
+            }
+
             _uiState.emit(SettingState.Loading)
             val updates = mutableMapOf<String, Any>(
                 "firstName" to firstName,
@@ -56,9 +61,7 @@ class ProfileViewModel(
 
             try {
                 if (!profilePic.isNullOrBlank() && !profilePic.startsWith("http")) {
-                    mediaRepository.uploadProfileImage(
-                        context, userId, Uri.parse(profilePic)
-                    ).let { url ->
+                    mediaRepository.uploadProfileImage(userId, Uri.parse(profilePic)).let { url ->
                         updates["profilePic"] = url
                     }
                 }

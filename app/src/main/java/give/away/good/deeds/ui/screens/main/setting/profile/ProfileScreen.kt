@@ -27,6 +27,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import give.away.good.deeds.ui.screens.app_common.NoInternetStateView
 import give.away.good.deeds.ui.screens.app_common.SimpleTextFieldView
 import give.away.good.deeds.ui.screens.app_common.StateView
 import give.away.good.deeds.ui.screens.app_common.StateViewState
@@ -99,6 +100,11 @@ fun ProfileFormStateView(
         is SettingState.Loading -> {
             LoadingView()
         }
+        is SettingState.NoInternet -> {
+            NoInternetStateView {
+                viewModel.fetchUser()
+            }
+        }
         is SettingState.Error -> {
             StateView(
                 title = "Failure!",
@@ -120,12 +126,7 @@ fun ProfileFormStateView(
 fun ProfileForm(
     viewModel: ProfileViewModel = koinViewModel()
 ) {
-
     val formState = viewModel.formState
-    val context = LocalContext.current
-
-
-
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -197,7 +198,6 @@ fun ProfileForm(
                 }
                 if (!isError) {
                     viewModel.updateProfile(
-                        context,
                         formState["id"] ?: "",
                         formState["firstName"] ?: "",
                         formState["lastName"] ?: "",

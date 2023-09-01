@@ -21,26 +21,24 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import give.away.good.deeds.network.model.Post
 import give.away.good.deeds.ui.screens.main.post.list.PostImageCarousel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostCard(
+    post: Post,
     isMyPost: Boolean = false,
     onClick: () -> Unit,
 ) {
     Card (
         onClick = onClick
     ){
-        val list = listOf<String>(
-            "https://images.unsplash.com/photo-1551298370-9d3d53740c72?&w=1000&q=80",
-            "https://images.unsplash.com/photo-1618220179428-22790b461013?&w=1000&q=80",
-            "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1000&q=80"
-        )
+
         Column {
             PostImageCarousel(
-                imageList = list,
+                imageList = post.images,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(240.dp)
@@ -81,22 +79,20 @@ fun PostCard(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    "Home Furniture Giveaway",
+                    post.title,
                     style = MaterialTheme.typography.titleMedium
                 )
 
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    "Are you looking to refresh your living space or simply have some furniture that needs a new home? We have a collection of gently used home furniture items that we're giving away for free! Our well-maintained pieces are in good condition and can add comfort and style to your home.",
+                    post.description,
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
-
-
             }
         }
     }
