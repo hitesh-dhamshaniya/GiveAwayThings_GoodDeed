@@ -1,4 +1,4 @@
-package give.away.good.deeds.ui.screens.setting.profile
+package give.away.good.deeds.ui.screens.main.setting.profile
 
 import android.content.Context
 import android.net.Uri
@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import give.away.good.deeds.repository.CallResult
 import give.away.good.deeds.repository.MediaRepository
 import give.away.good.deeds.repository.UserRepository
-import give.away.good.deeds.ui.screens.setting.common.SettingState
+import give.away.good.deeds.ui.screens.main.setting.common.SettingState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

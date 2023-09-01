@@ -1,4 +1,4 @@
-package give.away.good.deeds.ui.screens.setting.location
+package give.away.good.deeds.ui.screens.main.setting.location
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement

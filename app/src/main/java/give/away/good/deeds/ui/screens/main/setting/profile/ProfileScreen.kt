@@ -1,4 +1,4 @@
-package give.away.good.deeds.ui.screens.setting.profile
+package give.away.good.deeds.ui.screens.main.setting.profile
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,8 +30,8 @@ import androidx.compose.ui.unit.dp
 import give.away.good.deeds.ui.screens.app_common.SimpleTextFieldView
 import give.away.good.deeds.ui.screens.app_common.StateView
 import give.away.good.deeds.ui.screens.app_common.StateViewState
-import give.away.good.deeds.ui.screens.setting.common.SettingState
-import give.away.good.deeds.ui.screens.setting.location.LoadingView
+import give.away.good.deeds.ui.screens.main.setting.common.SettingState
+import give.away.good.deeds.ui.screens.main.setting.location.LoadingView
 import give.away.good.deeds.ui.theme.AppTheme
 import give.away.good.deeds.ui.theme.AppThemeButtonShape
 import org.koin.androidx.compose.koinViewModel

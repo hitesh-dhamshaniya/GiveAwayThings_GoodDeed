@@ -1,4 +1,4 @@
-package give.away.good.deeds.ui.screens.setting.profile
+package give.away.good.deeds.ui.screens.main.setting.profile
 
 import android.app.Activity
 import android.net.Uri

@@ -1,4 +1,4 @@
-package give.away.good.deeds.ui.screens.setting.location
+package give.away.good.deeds.ui.screens.main.setting.location
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

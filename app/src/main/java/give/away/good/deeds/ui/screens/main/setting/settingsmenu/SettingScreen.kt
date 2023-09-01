@@ -1,4 +1,4 @@
-package give.away.good.deeds.ui.screens.setting.settingsmenu
+package give.away.good.deeds.ui.screens.main.setting.settingsmenu
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

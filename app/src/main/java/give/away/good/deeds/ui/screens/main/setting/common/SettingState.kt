@@ -1,4 +1,4 @@
-package give.away.good.deeds.ui.screens.setting.common
+package give.away.good.deeds.ui.screens.main.setting.common
 
 sealed class SettingState<out T: Any> {
     data object Loading : SettingState<Nothing>()

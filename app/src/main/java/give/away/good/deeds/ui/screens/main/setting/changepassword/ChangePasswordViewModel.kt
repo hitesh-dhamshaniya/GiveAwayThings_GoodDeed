@@ -1,10 +1,10 @@
-package give.away.good.deeds.ui.screens.setting.changepassword
+package give.away.good.deeds.ui.screens.main.setting.changepassword
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import give.away.good.deeds.repository.AuthRepository
 import give.away.good.deeds.repository.CallResult
-import give.away.good.deeds.ui.screens.setting.common.SettingState
+import give.away.good.deeds.ui.screens.main.setting.common.SettingState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
