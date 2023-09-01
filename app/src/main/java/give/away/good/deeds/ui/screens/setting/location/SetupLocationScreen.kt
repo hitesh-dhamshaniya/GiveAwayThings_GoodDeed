@@ -147,7 +147,7 @@ fun GoogleMapView(
             },
         ) {
             Text(
-                text = "Save",
+                text = "Save".uppercase(),
                 modifier = Modifier.padding(8.dp),
             )
         }

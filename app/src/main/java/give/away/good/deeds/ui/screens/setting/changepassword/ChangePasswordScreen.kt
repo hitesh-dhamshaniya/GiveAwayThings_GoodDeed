@@ -26,9 +26,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import give.away.good.deeds.ui.screens.app_common.PasswordTextField
-import give.away.good.deeds.ui.screens.app_common.STATE_VIEW_FAILURE
-import give.away.good.deeds.ui.screens.app_common.STATE_VIEW_SUCCESS
 import give.away.good.deeds.ui.screens.app_common.StateView
+import give.away.good.deeds.ui.screens.app_common.StateViewState
 import give.away.good.deeds.ui.screens.setting.common.SettingState
 import give.away.good.deeds.ui.screens.setting.location.LoadingView
 import give.away.good.deeds.ui.theme.AppTheme
@@ -82,7 +81,7 @@ fun ChangePasswordStateView(
                 title = "Success!",
                 message = "Password changed successfully!",
                 actionText = "Done",
-                type = STATE_VIEW_SUCCESS,
+                type = StateViewState.SUCCESS,
                 actionClick = {
                     onBackPress()
                 }
@@ -96,7 +95,7 @@ fun ChangePasswordStateView(
                 title = "Failure!",
                 message = state.message,
                 actionText = "Try Again",
-                type = STATE_VIEW_FAILURE,
+                type = StateViewState.FAILURE,
                 actionClick = {
                     viewModel.resetState()
                 }
@@ -210,7 +209,7 @@ fun ChangePasswordForm(
             },
         ) {
             Text(
-                text = "Save",
+                text = "Save".uppercase(),
                 modifier = Modifier.padding(8.dp),
             )
         }

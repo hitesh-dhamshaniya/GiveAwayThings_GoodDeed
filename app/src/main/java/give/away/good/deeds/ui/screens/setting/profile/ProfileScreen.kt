@@ -1,7 +1,5 @@
 package give.away.good.deeds.ui.screens.setting.profile
 
-import android.app.Activity
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -26,18 +24,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import give.away.good.deeds.R
-import give.away.good.deeds.ui.screens.app_common.InfoAlertDialog
-import give.away.good.deeds.ui.screens.app_common.STATE_VIEW_FAILURE
-import give.away.good.deeds.ui.screens.app_common.STATE_VIEW_SUCCESS
 import give.away.good.deeds.ui.screens.app_common.SimpleTextFieldView
 import give.away.good.deeds.ui.screens.app_common.StateView
-import give.away.good.deeds.ui.screens.setting.changepassword.ChangePasswordForm
-import give.away.good.deeds.ui.screens.setting.changepassword.ChangePasswordViewModel
+import give.away.good.deeds.ui.screens.app_common.StateViewState
 import give.away.good.deeds.ui.screens.setting.common.SettingState
 import give.away.good.deeds.ui.screens.setting.location.LoadingView
 import give.away.good.deeds.ui.theme.AppTheme
@@ -98,7 +90,7 @@ fun ProfileFormStateView(
                 title = "Success!",
                 message = "Profile updated successfully.",
                 actionText = "Done",
-                type = STATE_VIEW_SUCCESS,
+                type = StateViewState.SUCCESS,
                 actionClick = {
                     onBackPress()
                 }
@@ -112,7 +104,7 @@ fun ProfileFormStateView(
                 title = "Failure!",
                 message = state.message,
                 actionText = "Try Again",
-                type = STATE_VIEW_FAILURE,
+                type = StateViewState.FAILURE,
                 actionClick = {
                     viewModel.fetchUser()
                 }
@@ -215,7 +207,7 @@ fun ProfileForm(
             },
         ) {
             Text(
-                text = "Save",
+                text = "Save".uppercase(),
                 modifier = Modifier.padding(8.dp),
             )
         }

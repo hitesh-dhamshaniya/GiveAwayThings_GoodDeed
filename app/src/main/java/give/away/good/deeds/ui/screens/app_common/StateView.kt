@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,16 +28,18 @@ import give.away.good.deeds.R
 import give.away.good.deeds.ui.theme.AppTheme
 import give.away.good.deeds.ui.theme.AppThemeButtonShape
 
-const val STATE_VIEW_SUCCESS = 1
-const val STATE_VIEW_FAILURE = 2
-const val STATE_VIEW_NO_INTERNET = 3
+enum class StateViewState {
+    SUCCESS,
+    FAILURE,
+    NO_INTERNET
+}
 
 @Composable
 fun StateView(
     title: String? = null,
     message: String? = null,
     actionText: String? = null,
-    type: Int = STATE_VIEW_SUCCESS,
+    type: StateViewState = StateViewState.SUCCESS,
     actionClick: (() -> Unit)? = null,
     @DrawableRes icon: Int? = null,
 ) {
@@ -51,7 +55,7 @@ fun StateView(
         Image(
             painter = painterResource(id = icon ?: getTypeIcon(type)),
             contentDescription = "",
-            modifier = Modifier.size(120.dp),
+            modifier = Modifier.size(180.dp),
             colorFilter = ColorFilter.tint(getTypeTint(type))
         )
 
@@ -59,9 +63,10 @@ fun StateView(
         if (title != null) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                fontWeight = FontWeight.Medium
             )
         }
 
@@ -69,9 +74,10 @@ fun StateView(
         if (message != null) {
             Text(
                 text = message,
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                fontWeight = FontWeight.Normal
             )
 
         }
@@ -83,9 +89,10 @@ fun StateView(
                 onClick = {
                     actionClick?.invoke()
                 },
+                 modifier = Modifier.defaultMinSize(minWidth = 120.dp)
             ) {
                 Text(
-                    text = actionText,
+                    text = actionText.uppercase(),
                     modifier = Modifier.padding(8.dp),
                 )
             }
@@ -95,20 +102,20 @@ fun StateView(
 
 }
 
-private fun getTypeTint(type: Int): Color {
+private fun getTypeTint(type: StateViewState): Color {
     return when (type) {
-        STATE_VIEW_SUCCESS -> Color(0XFF009688)
-        STATE_VIEW_FAILURE -> Color(0XFFF44336)
-        STATE_VIEW_NO_INTERNET -> Color(0XFF039BE5)
+        StateViewState.SUCCESS -> Color(0XFF00AA8D)
+        StateViewState.FAILURE -> Color(0XFFF44336)
+        StateViewState.NO_INTERNET -> Color(0XFF039BE5)
         else -> Color(0XFF9E9E9E)
     }
 }
 
-private fun getTypeIcon(type: Int): Int {
+private fun getTypeIcon(type: StateViewState): Int {
     return when (type) {
-        STATE_VIEW_SUCCESS -> R.drawable.ic_success_24px
-        STATE_VIEW_FAILURE -> R.drawable.ic_error_24px
-        STATE_VIEW_NO_INTERNET -> R.drawable.ic_no_network_24px
+        StateViewState.SUCCESS -> R.drawable.ic_success_24px
+        StateViewState.FAILURE -> R.drawable.ic_error_24px
+        StateViewState.NO_INTERNET -> R.drawable.ic_no_network_24px
         else -> R.drawable.ic_success_24px
     }
 }
@@ -120,11 +127,10 @@ fun StateViewPreview() {
     AppTheme {
 
         StateView(
-          //  title = "Something went wrong!",
+            title = "Something went wrong!",
             message = "Failed to change the password. Please try again.",
-            icon = R.drawable.ic_error_24px,
             actionText = "Try Again",
-            type = 2
+            type = StateViewState.SUCCESS
         )
 
     }
