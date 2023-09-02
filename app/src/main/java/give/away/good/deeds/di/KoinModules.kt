@@ -61,7 +61,7 @@ val appViewModules = module {
         UserConfigRepositoryImpl(get(), get())
     }
     factory<PostRepository> {
-        PostRepositoryImpl(get(), get(), get())
+        PostRepositoryImpl(get(), get(), get(), get())
     }
     factory<ChatRepository> {
         ChatRepositoryImpl(get(),get() ,get())

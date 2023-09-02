@@ -3,6 +3,7 @@ package give.away.good.deeds.ui.screens.main.post.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import give.away.good.deeds.network.model.Post
+import give.away.good.deeds.network.model.PostInfo
 import give.away.good.deeds.repository.CallResult
 import give.away.good.deeds.repository.PostRepository
 import give.away.good.deeds.ui.screens.state.AppState
@@ -18,8 +19,8 @@ class PostListViewModel(
     private val networkReader: NetworkReader,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<AppState<List<Post>>>(AppState.Loading)
-    val uiState: StateFlow<AppState<List<Post>>> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow<AppState<List<PostInfo>>>(AppState.Loading)
+    val uiState: StateFlow<AppState<List<PostInfo>>> = _uiState.asStateFlow()
 
     fun fetchPosts() {
         viewModelScope.launch {

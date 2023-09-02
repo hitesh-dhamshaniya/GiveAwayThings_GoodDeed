@@ -19,6 +19,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import give.away.good.deeds.network.model.Post
+import give.away.good.deeds.network.model.PostInfo
 import give.away.good.deeds.ui.screens.app_common.EmptyResultStateView
 import give.away.good.deeds.ui.screens.app_common.ErrorStateView
 import give.away.good.deeds.ui.screens.app_common.NoInternetStateView
@@ -66,11 +67,11 @@ fun MyPostScreen(
 
             val uiState = viewModel.uiState.collectAsState()
             when (val state = uiState.value) {
-                is AppState.Result<List<Post>> -> {
+                is AppState.Result<List<PostInfo>> -> {
                     PostList(
                         postList = state.data ?: emptyList(),
                         onClick = { post ->
-                            onPostClick?.invoke(post)
+                            onPostClick?.invoke(post.post)
                         },
                     )
                 }
@@ -88,7 +89,7 @@ fun MyPostScreen(
                         }
                         ErrorCause.NO_RESULT -> {
                             EmptyResultStateView(
-                                title = "No Give Away Things",
+                                title = "No Post Found!",
                                 message = "You haven't created any post yet. Once you create a post it will be visible here."
                             )
                         }

@@ -2,14 +2,15 @@ package give.away.good.deeds.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import give.away.good.deeds.network.model.ChatGroup
+import give.away.good.deeds.network.model.ChatGroupMessage
 import give.away.good.deeds.network.model.ChatMessage
 import give.away.good.deeds.network.model.toChatMessage
-import give.away.good.deeds.network.model.toPost
 import kotlinx.coroutines.tasks.await
 
-private const val COLLECTION_CHAT_GROUP: String = "chat-group"
-private const val COLLECTION_CHAT_MESSAGES: String = "chat-messages"
+ const val COLLECTION_CHAT_GROUP: String = "chat-group"
+ const val COLLECTION_CHAT_MESSAGES: String = "chat-messages"
 
 interface ChatRepository {
 
@@ -18,6 +19,8 @@ interface ChatRepository {
     suspend fun sendMessage(groupId: String, chatMessage: ChatMessage): CallResult<Unit>
 
     suspend fun getMyChatGroups(): CallResult<List<ChatGroup>>
+
+    suspend fun getChatMessages(groupId: String): CallResult<ChatGroupMessage>
 
 }
 
@@ -81,6 +84,7 @@ class ChatRepositoryImpl(
                 val message = firestore.collection(COLLECTION_CHAT_GROUP)
                     .document(document.id)
                     .collection(COLLECTION_CHAT_MESSAGES)
+                    .orderBy("timestamp", Query.Direction.DESCENDING)
                     .limit(1)
                     .get()
                     .await()
@@ -98,6 +102,38 @@ class ChatRepositoryImpl(
             CallResult.Failure(ex.message)
         }
     }
+
+    override suspend fun getChatMessages(groupId: String): CallResult<ChatGroupMessage> {
+        return try {
+            val userId = getCurrentUserId() ?: ""
+            val snapshot = firestore.collection(COLLECTION_CHAT_GROUP)
+                .document(groupId)
+                .get()
+                .await()
+
+            val participants = snapshot.get("participants") as? List<String> ?: emptyList()
+            val participants1 = participants.toMutableList()
+            participants1.remove(userId)
+            val participantId = participants1.first()
+
+            val messageList = firestore.collection(COLLECTION_CHAT_GROUP)
+                .document(groupId)
+                .collection(COLLECTION_CHAT_MESSAGES)
+                .get()
+                .await()
+
+
+            CallResult.Success(ChatGroupMessage(
+                groupId = groupId,
+                me = userRepository.getUserFromCache(getCurrentUserId() ?: ""),
+                user = userRepository.getUserFromCache(participantId),
+                messageList = messageList.map { it.toChatMessage() }
+            ))
+        } catch (ex: Exception) {
+            CallResult.Failure(ex.message)
+        }
+    }
+
 
     private fun getCurrentUserId(): String? {
         return firebaseAuth.currentUser?.uid

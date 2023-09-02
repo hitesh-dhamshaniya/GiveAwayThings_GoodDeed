@@ -1,6 +1,7 @@
 package give.away.good.deeds.ui.screens.main.post.list
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,6 +27,7 @@ import give.away.good.deeds.ui.screens.main.post.media.ImageFullScreenView
 fun PostImageCarousel(
     imageList : List<String>,
     modifier: Modifier = Modifier,
+    showFullImage: Boolean = false
 ) {
     val pageCount = imageList.size
     val pagerState = rememberPagerState { pageCount }
@@ -55,19 +57,24 @@ fun PostImageCarousel(
         HorizontalPager(
             state = pagerState
         ) { pageIndex ->
+            var modifier1 = Modifier.fillMaxSize()
+            if (showFullImage) {
+                modifier1 = modifier1.clickable {
+                    showDialog.value = imageList[pageIndex]
+                }
+            }
+
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clickable {
-                        showDialog.value = imageList[pageIndex]
-                    },
+                modifier = modifier1,
                 contentAlignment = Alignment.TopCenter
             ) {
                 AsyncImage(
                     model = imageList[pageIndex],
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Gray),
                     contentDescription = "",
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
                 )
             }
         }

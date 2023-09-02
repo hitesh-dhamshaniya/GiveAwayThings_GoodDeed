@@ -49,8 +49,10 @@ fun MessageJourneyScreen(
                 )
             }
 
-            composable("chat") {
+            composable("chat/{groupId}") { backStackEntry ->
+                val groupId = backStackEntry.arguments?.getString("groupId")
                 MessageDetailScreen(
+                    groupId = groupId ?: "",
                     navController = navController,
                 )
             }

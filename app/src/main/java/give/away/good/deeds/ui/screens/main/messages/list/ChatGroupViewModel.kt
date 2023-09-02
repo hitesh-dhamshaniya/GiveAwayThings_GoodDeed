@@ -3,7 +3,6 @@ package give.away.good.deeds.ui.screens.main.messages.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import give.away.good.deeds.network.model.ChatGroup
-import give.away.good.deeds.network.model.Post
 import give.away.good.deeds.repository.CallResult
 import give.away.good.deeds.repository.ChatRepository
 import give.away.good.deeds.ui.screens.state.AppState
@@ -31,7 +30,11 @@ class ChatGroupViewModel(
 
             val result = chatRepository.getMyChatGroups()
             if (result is CallResult.Success) {
-                _uiState.emit(AppState.Result(result.data))
+                if (result.data.isEmpty()) {
+                    _uiState.emit(AppState.Error(cause = ErrorCause.NO_RESULT))
+                } else {
+                    _uiState.emit(AppState.Result(result.data))
+                }
             } else {
                 _uiState.emit(AppState.Error(cause = ErrorCause.NO_RESULT))
             }

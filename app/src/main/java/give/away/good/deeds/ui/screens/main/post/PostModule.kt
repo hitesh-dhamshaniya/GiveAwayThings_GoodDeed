@@ -35,6 +35,6 @@ val postModule = module {
         ChatGroupViewModel(get(), get())
     }
     viewModel {
-        ChatViewModel(get(), get())
+        ChatViewModel(get(), get(), get())
     }
 }

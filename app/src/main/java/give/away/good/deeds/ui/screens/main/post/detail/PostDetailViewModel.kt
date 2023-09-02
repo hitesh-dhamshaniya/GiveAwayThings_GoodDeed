@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import give.away.good.deeds.network.model.ChatMessage
 import give.away.good.deeds.network.model.Post
+import give.away.good.deeds.network.model.PostInfo
 import give.away.good.deeds.repository.AuthRepository
 import give.away.good.deeds.repository.CallResult
 import give.away.good.deeds.repository.ChatRepository
@@ -23,8 +24,8 @@ class PostDetailViewModel(
     private val networkReader: NetworkReader,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<AppState<Post>>(AppState.Loading)
-    val uiState: StateFlow<AppState<Post>> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow<AppState<PostInfo>>(AppState.Loading)
+    val uiState: StateFlow<AppState<PostInfo>> = _uiState.asStateFlow()
 
     fun isMyPost(post: Post): Boolean{
         return authRepository.getUserId() == post.userId
@@ -82,7 +83,6 @@ class PostDetailViewModel(
                     _uiState.emit(AppState.Error(message = result.message ?: ""))
                 }
             }
-            createChatGroup(post)
         }
     }
 

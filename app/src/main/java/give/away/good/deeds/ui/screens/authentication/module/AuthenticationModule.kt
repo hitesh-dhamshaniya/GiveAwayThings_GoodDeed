@@ -10,12 +10,14 @@ val authModule = module {
     viewModel {
         LoginViewModel(
             authRepository = get(),
+            networkReader = get(),
         )
     }
 
     viewModel {
         ForgotPasswordViewModel(
             authRepository = get(),
+            networkReader = get(),
         )
     }
 
@@ -23,6 +25,7 @@ val authModule = module {
         RegisterViewModel(
             authRepository = get(),
             userRepository = get(),
+            networkReader = get(),
         )
     }
 

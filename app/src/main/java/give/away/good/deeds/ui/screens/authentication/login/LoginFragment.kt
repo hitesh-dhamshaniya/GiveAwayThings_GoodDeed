@@ -43,8 +43,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         observeUIChanges()
 
-        edtEmailAdd.setText("dhaval.patel@yopmail.com")
-        edtPassword.setText("Pass1234!")
+      //  edtEmailAdd.setText("dhaval.patel@yopmail.com")
+       // edtPassword.setText("Pass123!")
     }
 
     private fun handleUIClicks(view: View) {
@@ -62,7 +62,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private fun observeUIChanges() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collectLatest { uiState ->
+                viewModel.events.collectLatest { uiState ->
                     progressIndicator.isVisible = false
                     when (uiState) {
                         is AuthenticationState.Loading -> {
@@ -71,10 +71,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
                         is AuthenticationState.Result -> {
                             startActivity(MainActivity::class)
+                            requireActivity().finish()
                         }
 
                         is AuthenticationState.Error -> {
                             showErrorDialog(requireActivity(), getString(R.string.title_login_failed), getString(R.string.msg_login_failed))
+                        }
+                        is AuthenticationState.NoInternet -> {
+                            showErrorDialog(requireActivity(), getString(R.string.title_login_failed), getString(R.string.error_no_internet))
                         }
 
                         else -> {}

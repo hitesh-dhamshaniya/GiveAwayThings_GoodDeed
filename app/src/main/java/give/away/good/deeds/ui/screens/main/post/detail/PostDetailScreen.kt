@@ -45,9 +45,11 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import give.away.good.deeds.R
 import give.away.good.deeds.network.model.Post
+import give.away.good.deeds.network.model.PostInfo
 import give.away.good.deeds.ui.screens.app_common.ErrorStateView
 import give.away.good.deeds.ui.screens.app_common.LottieAnimationView
 import give.away.good.deeds.ui.screens.app_common.NoInternetStateView
+import give.away.good.deeds.ui.screens.app_common.ProfileAvatar
 import give.away.good.deeds.ui.screens.app_common.SimpleAlertDialog
 import give.away.good.deeds.ui.screens.main.post.list.PostImageCarousel
 import give.away.good.deeds.ui.screens.main.setting.location.LoadingView
@@ -95,7 +97,7 @@ fun PostDetailScreen(
 
             val uiState = viewModel.uiState.collectAsState()
             when (val state = uiState.value) {
-                is AppState.Result<Post> -> {
+                is AppState.Result<PostInfo> -> {
                     val post = state.data
                     if (post == null) {
                         LaunchedEffect(Unit) {
@@ -103,7 +105,7 @@ fun PostDetailScreen(
                         }
                     } else {
                         PostDetailActionView(
-                            post = post,
+                            postInfo = post,
                             onBackPress = onBackPress
                         )
                     }
@@ -148,10 +150,11 @@ fun PostDetailScreen(
 
 @Composable
 fun PostDetailActionView(
-    post: Post,
+    postInfo: PostInfo,
     onBackPress: () -> Unit,
     viewModel: PostDetailViewModel = koinViewModel()
 ) {
+    val post = postInfo.post
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -160,7 +163,7 @@ fun PostDetailActionView(
         ) {
 
             item {
-                PostDetailView(post)
+                PostDetailView(postInfo)
             }
 
             val location = post.location
@@ -181,7 +184,7 @@ fun PostDetailActionView(
         if (showGiveAwayDialog.value)
             SimpleAlertDialog(
                 title = "Did you give away to someone?",
-                message = "Are you sure you want to close give away?\n\nChoose YES option if you've given away items to community members.",
+                message = "Are you sure you want to close give away?\nChoose YES option if you've given away items to community members.",
                 confirmAction = "Yes",
                 dismissAction = "No",
                 onDismiss = {
@@ -284,9 +287,10 @@ fun PostDetailActionView(
 
 @Composable
 fun PostDetailView(
-    post: Post,
+    postInfo: PostInfo,
     viewModel: PostDetailViewModel = koinViewModel()
 ) {
+    val post = postInfo.post
     Card {
         Column {
             PostImageCarousel(
@@ -294,6 +298,7 @@ fun PostDetailView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(240.dp),
+                showFullImage = true
             )
 
             Column(
@@ -303,13 +308,12 @@ fun PostDetailView(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    AsyncImage(
-                        model = "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=512&q=80",
+
+                    ProfileAvatar(
+                        profileUrl = postInfo.user?.profilePic ?: "",
                         modifier = Modifier
                             .size(48.dp)
                             .clip(RoundedCornerShape(24.dp)),
-                        contentDescription = "",
-                        contentScale = ContentScale.Crop
                     )
 
                     Spacer(modifier = Modifier.width(8.dp))

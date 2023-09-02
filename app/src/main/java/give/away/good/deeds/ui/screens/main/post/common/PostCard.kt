@@ -29,6 +29,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import give.away.good.deeds.network.model.Post
+import give.away.good.deeds.network.model.PostInfo
+import give.away.good.deeds.ui.screens.app_common.ProfileAvatar
 import give.away.good.deeds.ui.screens.main.post.list.PostImageCarousel
 import org.koin.androidx.compose.koinViewModel
 
@@ -36,15 +38,16 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostCard(
-    post: Post,
-    onClick: (Post) -> Unit,
+    postInfo: PostInfo,
+    onClick: (PostInfo) -> Unit,
     viewModel: PostViewModel = koinViewModel()
 ) {
+    val post = postInfo.post
     val isMyPost = viewModel.isMyPost(post)
 
     Card (
         onClick = {
-            onClick(post)
+            onClick(postInfo)
         }
     ){
 
@@ -74,20 +77,18 @@ fun PostCard(
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        AsyncImage(
-                            model = "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=512&q=80",
+                        ProfileAvatar(
+                            profileUrl = postInfo.user?.profilePic ?: "",
                             modifier = Modifier
                                 .size(48.dp)
                                 .clip(RoundedCornerShape(24.dp)),
-                            contentDescription = "",
-                            contentScale = ContentScale.Crop
                         )
 
                         Spacer(modifier = Modifier.width(8.dp))
 
                         Column {
                             Text(
-                                "David Warner",
+                                postInfo.user?.getName() ?: "",
                                 style = MaterialTheme.typography.titleMedium
                             )
 
@@ -122,8 +123,8 @@ fun PostCard(
 
 @Composable
 fun PostList(
-    postList: List<Post>,
-    onClick: (Post) -> Unit,
+    postList: List<PostInfo>,
+    onClick: (PostInfo) -> Unit,
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -131,7 +132,7 @@ fun PostList(
     ) {
         items(postList) { post ->
             PostCard(
-                post = post,
+                postInfo = post,
                 onClick = onClick
             )
         }

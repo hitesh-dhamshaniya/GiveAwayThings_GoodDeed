@@ -145,7 +145,7 @@ fun MessageCard(
 ) {
     Card(
         onClick = {
-            navController?.navigate("chat")
+            navController?.navigate("chat/${chatGroup.id}")
         }
     ) {
         Row(
@@ -189,13 +189,4 @@ fun MessageCard(
         }
     }
 
-}
-
-private fun getRelativeTime(date: Date?) : String {
-    val now = System.currentTimeMillis();
-    return DateUtils.getRelativeTimeSpanString(
-        date?.time ?: 0,
-        now,
-        DateUtils.DAY_IN_MILLIS
-    ).toString()
 }

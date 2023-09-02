@@ -4,6 +4,7 @@ import android.net.Uri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import give.away.good.deeds.network.model.Post
+import give.away.good.deeds.network.model.PostInfo
 import give.away.good.deeds.network.model.toPost
 import kotlinx.coroutines.tasks.await
 
@@ -16,13 +17,13 @@ interface PostRepository {
         images: List<Uri>
     ): CallResult<Unit>
 
-    suspend fun getPost(postId: String): CallResult<Post>
+    suspend fun getPost(postId: String): CallResult<PostInfo>
 
-    suspend fun getPost(): CallResult<List<Post>>
+    suspend fun getPost(): CallResult<List<PostInfo>>
 
-    suspend fun getMyPosts(): CallResult<List<Post>>
+    suspend fun getMyPosts(): CallResult<List<PostInfo>>
 
-    suspend fun searchPost(query: String): CallResult<List<Post>>
+    suspend fun searchPost(query: String): CallResult<List<PostInfo>>
 
     suspend fun updatePostStatus(postId: String, status: Int): CallResult<Unit>
 
@@ -34,6 +35,7 @@ class PostRepositoryImpl(
     private val auth: FirebaseAuth,
     private val firestore: FirebaseFirestore,
     private val mediaRepository: MediaRepository,
+    private val userRepository: UserRepository
 ) : PostRepository {
     override suspend fun createPost(post: Post, images: List<Uri>): CallResult<Unit> {
         return try {
@@ -55,18 +57,23 @@ class PostRepositoryImpl(
         }
     }
 
-    override suspend fun getPost(postId: String): CallResult<Post> {
+    override suspend fun getPost(postId: String): CallResult<PostInfo> {
         return try {
             val snapshot = firestore.collection(COLLECTION_POST).document(postId)
                 .get()
                 .await()
-            CallResult.Success(snapshot.toPost())
+            val post = snapshot.toPost()
+            val postInfo = PostInfo(
+                user = userRepository.getUserFromCache(post.userId),
+                post = post
+            )
+            CallResult.Success(postInfo)
         } catch (ex: Exception) {
             CallResult.Failure(ex.message)
         }
     }
 
-    override suspend fun getPost(): CallResult<List<Post>> {
+    override suspend fun getPost(): CallResult<List<PostInfo>> {
         return try {
             val snapshot = firestore.collection(COLLECTION_POST)
                 .whereEqualTo("status", 1)
@@ -74,7 +81,11 @@ class PostRepositoryImpl(
                 .get()
                 .await()
             val list = snapshot.documents.map {
-                it.toPost()
+                val post = it.toPost()
+                PostInfo(
+                    user = userRepository.getUserFromCache(post.userId),
+                    post = post
+                )
             }
             CallResult.Success(list)
         } catch (ex: Exception) {
@@ -82,14 +93,18 @@ class PostRepositoryImpl(
         }
     }
 
-    override suspend fun getMyPosts(): CallResult<List<Post>> {
+    override suspend fun getMyPosts(): CallResult<List<PostInfo>> {
         return try {
             val snapshot = firestore.collection(COLLECTION_POST)
                 .whereEqualTo("userId", getCurrentUserId())
                 .get()
                 .await()
             val list = snapshot.documents.map {
-                it.toPost()
+                val post = it.toPost()
+                PostInfo(
+                    user = userRepository.getUserFromCache(post.userId),
+                    post = post
+                )
             }
             CallResult.Success(list)
         } catch (ex: Exception) {
@@ -97,7 +112,7 @@ class PostRepositoryImpl(
         }
     }
 
-    override suspend fun searchPost(query: String): CallResult<List<Post>> {
+    override suspend fun searchPost(query: String): CallResult<List<PostInfo>> {
         return try {
             val keywords = query.lowercase().split("\\s+".toRegex())
 
@@ -108,7 +123,11 @@ class PostRepositoryImpl(
                 .get()
                 .await()
             val list = snapshot.documents.map {
-                it.toPost()
+                val post = it.toPost()
+                PostInfo(
+                    user = userRepository.getUserFromCache(post.userId),
+                    post = post
+                )
             }
             CallResult.Success(list)
         } catch (ex: Exception) {
@@ -136,7 +155,7 @@ class PostRepositoryImpl(
         return try {
             val result = getPost(postId)
             if (result is CallResult.Success) {
-                val requestedUsers = result.data.requestedUsers.toMutableSet()
+                val requestedUsers = result.data.post.requestedUsers.toMutableSet()
                 requestedUsers.add(getCurrentUserId())
 
                 val data = hashMapOf<String, Any>(

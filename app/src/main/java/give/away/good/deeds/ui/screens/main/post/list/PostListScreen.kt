@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import give.away.good.deeds.R
 import give.away.good.deeds.network.model.Post
+import give.away.good.deeds.network.model.PostInfo
 import give.away.good.deeds.ui.screens.app_common.ErrorStateView
 import give.away.good.deeds.ui.screens.app_common.NoInternetStateView
 import give.away.good.deeds.ui.screens.app_common.NoResultStateView
@@ -57,11 +58,11 @@ fun PostListScreen(
             val uiState = viewModel.uiState.collectAsState()
 
             when (val state = uiState.value) {
-                is AppState.Result<List<Post>> -> {
+                is AppState.Result<List<PostInfo>> -> {
                     PostList(
                         postList = state.data ?: emptyList(),
                         onClick = { post ->
-                            onPostClick?.invoke(post)
+                            onPostClick?.invoke(post.post)
                         },
                     )
                 }

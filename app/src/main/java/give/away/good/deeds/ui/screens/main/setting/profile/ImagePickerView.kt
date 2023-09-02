@@ -47,10 +47,12 @@ fun ProfileImageView(
 
             if (!imageUri.isNullOrBlank()) {
                 AsyncImage(
-                    model = if(imageUri.startsWith("http")) imageUri else Uri.parse(imageUri),
+                    model = if (imageUri.startsWith("http")) imageUri else Uri.parse(imageUri),
                     modifier = Modifier.fillMaxSize(),
                     contentDescription = "",
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
+                    placeholder = painterResource(R.drawable.ic_avatar_placeholder),
+                    error = painterResource(R.drawable.ic_avatar_placeholder),
                 )
             } else {
                 Image(
