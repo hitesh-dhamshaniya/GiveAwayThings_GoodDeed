@@ -26,6 +26,8 @@ interface PostRepository {
 
     suspend fun updatePostStatus(postId: String, status: Int): CallResult<Unit>
 
+    suspend fun requestPost(postId: String): CallResult<Unit>
+
 }
 
 class PostRepositoryImpl(
@@ -124,6 +126,29 @@ class PostRepositoryImpl(
                 .update(docData)
                 .await()
 
+            CallResult.Success(Unit)
+        } catch (ex: Exception) {
+            CallResult.Failure(ex.message)
+        }
+    }
+
+    override suspend fun requestPost(postId: String): CallResult<Unit> {
+        return try {
+            val result = getPost(postId)
+            if (result is CallResult.Success) {
+                val requestedUsers = result.data.requestedUsers.toMutableSet()
+                requestedUsers.add(getCurrentUserId())
+
+                val data = hashMapOf<String, Any>(
+                    "requestedUsers" to requestedUsers.toList()
+                )
+                firestore.collection(COLLECTION_POST)
+                    .document(postId)
+                    .update(data)
+                    .await()
+            } else if (result is CallResult.Failure) {
+                CallResult.Failure(result.message)
+            }
             CallResult.Success(Unit)
         } catch (ex: Exception) {
             CallResult.Failure(ex.message)

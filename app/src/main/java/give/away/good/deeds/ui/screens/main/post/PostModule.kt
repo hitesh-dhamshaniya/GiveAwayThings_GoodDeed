@@ -1,5 +1,7 @@
 package give.away.good.deeds.ui.screens.main.post
 
+import give.away.good.deeds.ui.screens.main.messages.detail.ChatViewModel
+import give.away.good.deeds.ui.screens.main.messages.list.ChatGroupViewModel
 import give.away.good.deeds.ui.screens.main.post.add.AddPostViewModel
 import give.away.good.deeds.ui.screens.main.post.common.PostViewModel
 import give.away.good.deeds.ui.screens.main.post.detail.PostDetailViewModel
@@ -23,9 +25,16 @@ val postModule = module {
         PostSearchViewModel(get(), get())
     }
     viewModel {
-        PostDetailViewModel(get(), get(), get())
+        PostDetailViewModel(get(), get(), get(), get())
     }
     viewModel {
         PostViewModel(get())
+    }
+
+    viewModel {
+        ChatGroupViewModel(get(), get())
+    }
+    viewModel {
+        ChatViewModel(get(), get())
     }
 }

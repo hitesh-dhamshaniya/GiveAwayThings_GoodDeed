@@ -207,6 +207,21 @@ fun PostDetailActionView(
                 }
             )
 
+        val showRequestDialog = remember { mutableStateOf(false) }
+        if (showRequestDialog.value)
+            SimpleAlertDialog(
+                title = "Request \"${post.title}\"",
+                message = "Are you sure you want to request the give away?",
+                confirmAction = "Yes",
+                dismissAction = "No",
+                onDismiss = {
+                    showRequestDialog.value = false
+                },
+                onConfirm = {
+                    viewModel.sendRequest(post)
+                }
+            )
+
         if (viewModel.isMyPost(post)) {
             if (!post.isClosed() && !post.isCancelled()) {
                 Row(
@@ -255,6 +270,7 @@ fun PostDetailActionView(
                     .padding(bottom = 16.dp),
                 shape = AppThemeButtonShape,
                 onClick = {
+                    showRequestDialog.value = true
                 },
             ) {
                 Text(

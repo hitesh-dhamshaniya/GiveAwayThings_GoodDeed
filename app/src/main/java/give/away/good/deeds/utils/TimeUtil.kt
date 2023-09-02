@@ -1,0 +1,41 @@
+package give.away.good.deeds.utils
+
+import android.text.format.DateUtils
+import java.util.Date
+import java.util.concurrent.TimeUnit
+
+private const val SECOND_MILLIS = 1
+private const val MINUTE_MILLIS = 60 * SECOND_MILLIS
+private const val HOUR_MILLIS = 60 * MINUTE_MILLIS
+private const val DAY_MILLIS = 24 * HOUR_MILLIS
+
+object TimeAgo {
+
+    fun timeAgo(timeInMillis: Long): String {
+        val time = TimeUnit.MILLISECONDS.toSeconds(timeInMillis)
+        val now = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())
+        if (time > now || time <= 0) {
+            return "in the future"
+        }
+
+        val diff = now - time
+        return when {
+            diff < MINUTE_MILLIS -> "Just now"
+            diff < 2 * MINUTE_MILLIS -> "a minute ago"
+            diff < 60 * MINUTE_MILLIS -> "${diff / MINUTE_MILLIS} minutes ago"
+            diff < 2 * HOUR_MILLIS -> "an hour ago"
+            diff < 24 * HOUR_MILLIS -> "${diff / HOUR_MILLIS} hours ago"
+            diff < 48 * HOUR_MILLIS -> "yesterday"
+            else -> getRelativeTime(time)
+        }
+    }
+
+    private fun getRelativeTime(time: Long) : String {
+        val now = System.currentTimeMillis();
+        return DateUtils.getRelativeTimeSpanString(
+            time,
+            now,
+            DateUtils.DAY_IN_MILLIS
+        ).toString()
+    }
+}

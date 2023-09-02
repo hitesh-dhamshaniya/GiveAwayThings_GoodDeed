@@ -10,6 +10,8 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import give.away.good.deeds.repository.AuthRepository
 import give.away.good.deeds.repository.AuthRepositoryImpl
+import give.away.good.deeds.repository.ChatRepository
+import give.away.good.deeds.repository.ChatRepositoryImpl
 import give.away.good.deeds.repository.MediaRepository
 import give.away.good.deeds.repository.MediaRepositoryImpl
 import give.away.good.deeds.repository.PostRepository
@@ -60,6 +62,9 @@ val appViewModules = module {
     }
     factory<PostRepository> {
         PostRepositoryImpl(get(), get(), get())
+    }
+    factory<ChatRepository> {
+        ChatRepositoryImpl(get(),get() ,get())
     }
 
 }

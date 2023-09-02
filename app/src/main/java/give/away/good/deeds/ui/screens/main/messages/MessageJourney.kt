@@ -40,10 +40,10 @@ fun MessageJourneyScreen(
     ) {
         NavHost(
             navController = navController,
-            startDestination = "messages"
+            startDestination = "chat_group"
         ) {
 
-            composable("messages") {
+            composable("chat_group") {
                 MessageListScreen(
                     navController = navController,
                 )
