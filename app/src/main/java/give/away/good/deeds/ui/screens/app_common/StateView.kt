@@ -223,6 +223,15 @@ fun NoResultStateView(
 }
 
 @Composable
+fun EmptyResultStateView() {
+    StateViewWithLottie(
+        resId = R.raw.animation_no_result,
+        title = "No Result Found",
+        message = "Sorry, We couldn't find what you're looking for. Please try again.",
+    )
+}
+
+@Composable
 fun ErrorStateView(
     title: String? = null,
     message: String? = null,

@@ -30,7 +30,11 @@ class PostSearchViewModel(
             _uiState.emit(PostState.Loading)
             val result = postRepository.searchPost(query)
             if (result is CallResult.Success) {
-                _uiState.emit(PostState.Result(result.data))
+                if (result.data.isEmpty()) {
+                    _uiState.emit(PostState.Empty)
+                } else {
+                    _uiState.emit(PostState.Result(result.data))
+                }
             } else {
                 _uiState.emit(PostState.Empty)
             }

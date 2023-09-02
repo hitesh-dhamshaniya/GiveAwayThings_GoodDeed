@@ -20,6 +20,7 @@ data class Post(
     val pickupDateTime: Date? = null,
 
     val status: Int = 1,
+    val keywords: List<String> = emptyList(),
 
     // list of users
     val requestedUsers: List<String> = emptyList(),
@@ -33,10 +34,19 @@ data class Post(
         //"images" to images,
         "quantity" to quantity,
         "location" to location?.let { GeoPoint(it.latitude, it.longitude) },
+        "keywords" to prepareKeywords(),
+        "status" to 1,
 
         "quantity" to quantity,
         "createdDateTime" to FieldValue.serverTimestamp(),
     )
+
+    private fun prepareKeywords(): List<String> {
+        val keywords = mutableSetOf<String>()
+        keywords.addAll(title.lowercase().split("\\s+".toRegex()))
+        keywords.addAll(description.lowercase().split("\\s+".toRegex()))
+        return keywords.toList()
+    }
 
     fun isActive() = status == 1
 
@@ -60,6 +70,7 @@ fun DocumentSnapshot.toPost(): Post {
 
         images = get("images") as? List<String> ?: emptyList(),
         requestedUsers = get("requestedUsers") as? List<String> ?: emptyList(),
+        keywords = get("keywords") as? List<String> ?: emptyList(),
 
         createdDateTime = getTimestamp("createdDateTime")?.toDate() ?: Date(),
         pickupDateTime = getTimestamp("pickupDateTime")?.toDate(),

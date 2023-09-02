@@ -72,17 +72,19 @@ fun PostImageCarousel(
             }
         }
 
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.BottomCenter
-        ) {
+        if (pageCount > 1) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter
+            ) {
 
-            PagerIndicator(
-                pagerState = pagerState,
-                indicatorCount = pageCount,
-                activeColor = MaterialTheme.colorScheme.primary,
-                inActiveColor = Color.White
-            )
+                PagerIndicator(
+                    pagerState = pagerState,
+                    indicatorCount = pageCount,
+                    activeColor = MaterialTheme.colorScheme.primary,
+                    inActiveColor = Color.White
+                )
+            }
         }
     }
 }

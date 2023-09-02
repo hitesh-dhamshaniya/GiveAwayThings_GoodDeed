@@ -4,6 +4,8 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.tasks.await
 
 interface AuthRepository {
+    suspend fun isLoggedIn(): Boolean
+
     suspend fun forgotPassword(email: String): CallResult<Unit>
 
     suspend fun login(email: String, password: String): CallResult<Unit>
@@ -18,6 +20,7 @@ interface AuthRepository {
 class AuthRepositoryImpl(
     private val firebaseAuth: FirebaseAuth
 ) : AuthRepository {
+    override suspend fun isLoggedIn() = firebaseAuth.currentUser !=null
 
     override suspend fun forgotPassword(email: String): CallResult<Unit> {
         return try {

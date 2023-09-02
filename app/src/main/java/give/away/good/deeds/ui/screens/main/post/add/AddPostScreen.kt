@@ -17,13 +17,20 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import give.away.good.deeds.ui.screens.app_common.NoInternetStateView
 import give.away.good.deeds.ui.screens.app_common.SimpleTextFieldView
+import give.away.good.deeds.ui.screens.app_common.StateView
+import give.away.good.deeds.ui.screens.app_common.StateViewState
+import give.away.good.deeds.ui.screens.main.setting.location.LoadingView
+import give.away.good.deeds.ui.screens.state.AppState
+import give.away.good.deeds.ui.screens.state.ErrorCause
 import give.away.good.deeds.ui.theme.AppTheme
 import give.away.good.deeds.ui.theme.AppThemeButtonShape
 import org.koin.androidx.compose.koinViewModel
@@ -31,6 +38,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddPostScreen(
+    viewModel: AddPostViewModel = koinViewModel()
 ) {
     Scaffold(topBar = {
         TopAppBar(
@@ -48,7 +56,50 @@ fun AddPostScreen(
                 .padding(contentPadding)
                 .fillMaxSize()
         ) {
-            AddPostForm()
+
+            val uiState = viewModel.uiState.collectAsState()
+            when(val state = uiState.value){
+                is AppState.Result<Unit> -> {
+                    StateView(
+                        title = "Post Created!",
+                        message = "Thank you for being a part of our wonderful community.",
+                        actionText = "Done",
+                        type = StateViewState.SUCCESS,
+                        actionClick = {
+                            viewModel.resetState()
+                        }
+                    )
+                }
+                is AppState.Loading -> {
+                    LoadingView()
+                }
+                is AppState.Error -> {
+                    when(state.cause){
+                        ErrorCause.NO_INTERNET -> {
+                            NoInternetStateView {
+                                viewModel.resetNetworkState()
+                            }
+                        }
+                        ErrorCause.UNKNOWN -> {
+                            StateView(
+                                title = "Failure!",
+                                message = state.message,
+                                actionText = "Try Again",
+                                type = StateViewState.FAILURE,
+                                actionClick = {
+                                    viewModel.resetNetworkState()
+                                }
+                            )
+                        }
+                        else -> {
+
+                        }
+                    }
+                }
+                is AppState.Ideal -> {
+                    AddPostForm()
+                }
+            }
         }
     }
 }

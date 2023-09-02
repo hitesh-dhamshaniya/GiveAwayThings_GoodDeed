@@ -29,9 +29,11 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import give.away.good.deeds.R
 import give.away.good.deeds.network.model.Post
+import give.away.good.deeds.ui.screens.app_common.EmptyResultStateView
 import give.away.good.deeds.ui.screens.app_common.ErrorStateView
 import give.away.good.deeds.ui.screens.app_common.LottieAnimationView
 import give.away.good.deeds.ui.screens.app_common.NoInternetStateView
+import give.away.good.deeds.ui.screens.app_common.NoResultStateView
 import give.away.good.deeds.ui.screens.main.post.common.PostCard
 import give.away.good.deeds.ui.screens.main.post.common.PostState
 import give.away.good.deeds.ui.screens.main.setting.location.LoadingView
@@ -58,7 +60,9 @@ fun PostSearchScreen(
                 placeholder = {
                     Text("Search give away")
                 },
-                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
                 maxLines = 1,
                 leadingIcon = {
                     Icon(
@@ -88,9 +92,7 @@ fun PostSearchScreen(
                 }
 
                 is PostState.Empty -> {
-                    NoInternetStateView {
-                        viewModel.searchPosts(text)
-                    }
+                    EmptyResultStateView()
                 }
 
                 is PostState.Error -> {

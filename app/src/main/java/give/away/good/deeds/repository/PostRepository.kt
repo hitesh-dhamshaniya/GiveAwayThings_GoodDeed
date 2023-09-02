@@ -53,7 +53,7 @@ class PostRepositoryImpl(
         return try {
             val snapshot = firestore.collection(COLLECTION_POST)
                 .whereEqualTo("status", 1)
-                //.whereNotEqualTo("userId", getCurrentUserId())
+                .whereNotEqualTo("userId", getCurrentUserId())
                 .get()
                 .await()
             val list = snapshot.documents.map {
@@ -82,9 +82,12 @@ class PostRepositoryImpl(
 
     override suspend fun searchPost(query: String): CallResult<List<Post>> {
         return try {
+            val keywords = query.lowercase().split("\\s+".toRegex())
+
             val snapshot = firestore.collection(COLLECTION_POST)
                 .whereEqualTo("status", 1)
-                //.whereNotEqualTo("userId", getCurrentUserId())
+                .whereArrayContainsAny("keywords", keywords)
+                .whereNotEqualTo("userId", getCurrentUserId())
                 .get()
                 .await()
             val list = snapshot.documents.map {
