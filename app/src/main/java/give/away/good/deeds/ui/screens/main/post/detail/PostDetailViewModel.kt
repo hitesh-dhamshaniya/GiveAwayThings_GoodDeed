@@ -44,4 +44,23 @@ class PostDetailViewModel(
             }
         }
     }
+
+    fun setPostStatus(post: Post, status: Int) {
+        viewModelScope.launch {
+            if(!networkReader.isConnected()){
+                _uiState.emit(AppState.Error(cause = ErrorCause.NO_INTERNET))
+                return@launch
+            }
+
+            _uiState.emit(AppState.Loading)
+            when (val result = postRepository.updatePostStatus(post.id, status)) {
+                is CallResult.Success -> {
+                    _uiState.emit(AppState.Result())
+                }
+                is CallResult.Failure -> {
+                    _uiState.emit(AppState.Error(message = result.message ?: ""))
+                }
+            }
+        }
+    }
 }

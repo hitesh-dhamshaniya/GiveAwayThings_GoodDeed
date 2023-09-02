@@ -24,6 +24,8 @@ interface PostRepository {
 
     suspend fun searchPost(query: String): CallResult<List<Post>>
 
+    suspend fun updatePostStatus(postId: String, status: Int): CallResult<Unit>
+
 }
 
 class PostRepositoryImpl(
@@ -107,6 +109,22 @@ class PostRepositoryImpl(
                 it.toPost()
             }
             CallResult.Success(list)
+        } catch (ex: Exception) {
+            CallResult.Failure(ex.message)
+        }
+    }
+
+    override suspend fun updatePostStatus(postId: String, status: Int): CallResult<Unit> {
+        return try {
+            val docData = hashMapOf<String, Any>(
+                "status" to status
+            )
+            firestore.collection(COLLECTION_POST)
+                .document(postId)
+                .update(docData)
+                .await()
+
+            CallResult.Success(Unit)
         } catch (ex: Exception) {
             CallResult.Failure(ex.message)
         }

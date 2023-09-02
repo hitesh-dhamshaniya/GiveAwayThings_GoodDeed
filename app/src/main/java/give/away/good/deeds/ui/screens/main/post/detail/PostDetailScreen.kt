@@ -27,6 +27,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,6 +48,7 @@ import give.away.good.deeds.network.model.Post
 import give.away.good.deeds.ui.screens.app_common.ErrorStateView
 import give.away.good.deeds.ui.screens.app_common.LottieAnimationView
 import give.away.good.deeds.ui.screens.app_common.NoInternetStateView
+import give.away.good.deeds.ui.screens.app_common.SimpleAlertDialog
 import give.away.good.deeds.ui.screens.main.post.list.PostImageCarousel
 import give.away.good.deeds.ui.screens.main.setting.location.LoadingView
 import give.away.good.deeds.ui.screens.state.AppState
@@ -93,9 +96,17 @@ fun PostDetailScreen(
             val uiState = viewModel.uiState.collectAsState()
             when (val state = uiState.value) {
                 is AppState.Result<Post> -> {
-                    PostDetailActionView(
-                        post = state.data!!
-                    )
+                    val post = state.data
+                    if (post == null) {
+                        LaunchedEffect(Unit) {
+                            onBackPress()
+                        }
+                    } else {
+                        PostDetailActionView(
+                            post = post,
+                            onBackPress = onBackPress
+                        )
+                    }
                 }
 
                 is AppState.Loading -> {
@@ -138,6 +149,7 @@ fun PostDetailScreen(
 @Composable
 fun PostDetailActionView(
     post: Post,
+    onBackPress: () -> Unit,
     viewModel: PostDetailViewModel = koinViewModel()
 ) {
     Box(
@@ -165,20 +177,91 @@ fun PostDetailActionView(
             }
         }
 
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 16.dp),
-            shape = AppThemeButtonShape,
-            onClick = {
-
-            },
-        ) {
-            Text(
-                text = if (viewModel.isMyPost(post)) "Close" else "Request Item",
-                modifier = Modifier.padding(8.dp),
+        val showGiveAwayDialog = remember { mutableStateOf(false) }
+        if (showGiveAwayDialog.value)
+            SimpleAlertDialog(
+                title = "Did you give away to someone?",
+                message = "Are you sure you want to close give away?\n\nChoose YES option if you've given away items to community members.",
+                confirmAction = "Yes",
+                dismissAction = "No",
+                onDismiss = {
+                    showGiveAwayDialog.value = false
+                },
+                onConfirm = {
+                    viewModel.setPostStatus(post, 0)
+                }
             )
+
+        val showCloseDialog = remember { mutableStateOf(false) }
+        if (showCloseDialog.value)
+            SimpleAlertDialog(
+                title = "Is your item no longer available for give away?",
+                message = "Are you sure you want to cancel give away?\nChoose YES option if item is no longer available for give away.",
+                confirmAction = "Yes",
+                dismissAction = "No",
+                onDismiss = {
+                    showCloseDialog.value = false
+                },
+                onConfirm = {
+                    viewModel.setPostStatus(post, -1)
+                }
+            )
+
+        if (viewModel.isMyPost(post)) {
+            if (!post.isClosed() && !post.isCancelled()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter)
+                ) {
+                    Button(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(bottom = 16.dp),
+                        shape = AppThemeButtonShape,
+                        onClick = {
+                            showGiveAwayDialog.value = true
+                        },
+                    ) {
+                        Text(
+                            text = "Done".uppercase(),
+                            modifier = Modifier.padding(8.dp),
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    Button(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(bottom = 16.dp),
+                        shape = AppThemeButtonShape,
+                        onClick = {
+                            showCloseDialog.value = true
+                        },
+                    ) {
+                        Text(
+                            text = "Cancel".uppercase(),
+                            modifier = Modifier.padding(8.dp),
+                        )
+                    }
+                }
+            }
+        } else {
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 16.dp),
+                shape = AppThemeButtonShape,
+                onClick = {
+                },
+            ) {
+                Text(
+                    text = "Request Item",
+                    modifier = Modifier.padding(8.dp),
+                )
+            }
         }
     }
 }

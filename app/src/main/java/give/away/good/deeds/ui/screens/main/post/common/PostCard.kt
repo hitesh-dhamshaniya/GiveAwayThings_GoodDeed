@@ -1,6 +1,8 @@
 package give.away.good.deeds.ui.screens.main.post.common
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,7 +22,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -45,12 +49,22 @@ fun PostCard(
     ){
 
         Column {
-            PostImageCarousel(
-                imageList = post.images,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(240.dp)
-            )
+            Box {
+                PostImageCarousel(
+                    imageList = post.images,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(240.dp)
+                )
+
+                if (isMyPost) {
+                    PostStatusBadge(
+                        post = post,
+                        modifier = Modifier.align(Alignment.TopEnd)
+                    )
+                }
+            }
+
 
             Column(
                 modifier = Modifier.padding(16.dp)
@@ -127,4 +141,36 @@ fun PostList(
         }
 
     }
+}
+
+@Composable
+fun PostStatusBadge(
+    post: Post,
+    modifier: Modifier
+) {
+    val text: String
+    val backgroundColor: Color
+    if (post.isActive()) {
+        text = "Active"
+        backgroundColor = Color(0xFF03A9F4)
+    } else if (post.isClosed()) {
+        text = "Give Away"
+        backgroundColor = Color(0xFF009688)
+    } else {
+        text = "Cancelled"
+        backgroundColor = Color(0xFFF44336)
+    }
+
+    Text(
+        text = text.uppercase(),
+        style = MaterialTheme.typography.labelSmall,
+        fontWeight = FontWeight.Medium,
+        color = Color.White,
+
+        modifier = modifier
+            .padding(16.dp)
+            .clip(RoundedCornerShape(24.dp))
+            .background(backgroundColor.copy(alpha = 0.7f))
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+    )
 }
