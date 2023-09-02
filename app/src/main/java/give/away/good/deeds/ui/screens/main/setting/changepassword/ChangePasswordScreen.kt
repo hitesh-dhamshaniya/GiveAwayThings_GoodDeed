@@ -29,8 +29,9 @@ import give.away.good.deeds.ui.screens.app_common.NoInternetStateView
 import give.away.good.deeds.ui.screens.app_common.PasswordTextField
 import give.away.good.deeds.ui.screens.app_common.StateView
 import give.away.good.deeds.ui.screens.app_common.StateViewState
-import give.away.good.deeds.ui.screens.main.setting.common.SettingState
 import give.away.good.deeds.ui.screens.main.setting.location.LoadingView
+import give.away.good.deeds.ui.screens.state.AppState
+import give.away.good.deeds.ui.screens.state.ErrorCause
 import give.away.good.deeds.ui.theme.AppTheme
 import give.away.good.deeds.ui.theme.AppThemeButtonShape
 import org.koin.androidx.compose.koinViewModel
@@ -77,7 +78,7 @@ fun ChangePasswordStateView(
     val uiState = viewModel.uiState.collectAsState()
 
     when(val state = uiState.value){
-        is SettingState.Result<Unit> -> {
+        is AppState.Result<Unit> -> {
             StateView(
                 title = "Success!",
                 message = "Password changed successfully!",
@@ -88,27 +89,33 @@ fun ChangePasswordStateView(
                 }
             )
         }
-        is SettingState.Loading -> {
+        is AppState.Loading -> {
             LoadingView()
         }
-        is SettingState.NoInternet -> {
-            NoInternetStateView {
-                viewModel.resetState()
-            }
-        }
-        is SettingState.Error -> {
-            StateView(
-                title = "Failure!",
-                message = state.message,
-                actionText = "Try Again",
-                type = StateViewState.FAILURE,
-                actionClick = {
-                    viewModel.resetState()
-                }
-            )
-        }
-        is SettingState.None -> {
+        is AppState.Ideal -> {
             ChangePasswordForm()
+        }
+        is AppState.Error -> {
+            when(state.cause){
+                ErrorCause.NO_INTERNET -> {
+                    NoInternetStateView {
+                        viewModel.resetState()
+                    }
+                }
+                ErrorCause.UNKNOWN -> {
+                    StateView(
+                        title = "Failure!",
+                        message = state.message,
+                        actionText = "Try Again",
+                        type = StateViewState.FAILURE,
+                        actionClick = {
+                            viewModel.resetState()
+                        }
+                    )
+                }
+                else -> {
+                }
+            }
         }
     }
 }

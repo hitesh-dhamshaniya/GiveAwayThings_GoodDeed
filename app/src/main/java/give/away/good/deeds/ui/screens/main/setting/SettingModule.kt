@@ -3,7 +3,7 @@ package give.away.good.deeds.ui.screens.main.setting
 import give.away.good.deeds.ui.screens.main.setting.changepassword.ChangePasswordViewModel
 import give.away.good.deeds.ui.screens.main.setting.location.SetupLocationViewModel
 import give.away.good.deeds.ui.screens.main.setting.profile.ProfileViewModel
-import give.away.good.deeds.ui.screens.main.setting.settingsmenu.SettingViewModel
+import give.away.good.deeds.ui.screens.main.setting.menu.SettingViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

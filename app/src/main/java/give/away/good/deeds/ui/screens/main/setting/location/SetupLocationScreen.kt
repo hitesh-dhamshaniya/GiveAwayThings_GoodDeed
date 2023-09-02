@@ -82,8 +82,6 @@ fun LocationScreenView(
     })
 
     val latLng by viewModel.uiState.collectAsState()
-
-
     if (latLng == null) {
         LoadingView()
     } else {

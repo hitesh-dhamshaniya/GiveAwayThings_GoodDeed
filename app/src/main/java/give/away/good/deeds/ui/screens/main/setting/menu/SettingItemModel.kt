@@ -1,4 +1,4 @@
-package give.away.good.deeds.ui.screens.main.setting.settingsmenu
+package give.away.good.deeds.ui.screens.main.setting.menu
 
 import give.away.good.deeds.R
 

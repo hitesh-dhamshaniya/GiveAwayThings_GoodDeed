@@ -5,7 +5,8 @@ import androidx.lifecycle.viewModelScope
 import give.away.good.deeds.network.model.Post
 import give.away.good.deeds.repository.CallResult
 import give.away.good.deeds.repository.PostRepository
-import give.away.good.deeds.ui.screens.main.post.common.PostState
+import give.away.good.deeds.ui.screens.state.AppState
+import give.away.good.deeds.ui.screens.state.ErrorCause
 import give.away.good.deeds.utils.NetworkReader
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,26 +18,25 @@ class PostSearchViewModel(
     private val networkReader: NetworkReader,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<PostState<List<Post>>>(PostState.None)
-    val uiState: StateFlow<PostState<List<Post>>> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow<AppState<List<Post>>>(AppState.Ideal)
+    val uiState: StateFlow<AppState<List<Post>>> = _uiState.asStateFlow()
 
     fun searchPosts(query: String) {
         viewModelScope.launch {
-            if (!networkReader.isConnected()) {
-                _uiState.emit(PostState.NoInternet)
+            if(!networkReader.isConnected()){
+                _uiState.emit(AppState.Error(cause = ErrorCause.NO_INTERNET))
                 return@launch
             }
 
-            _uiState.emit(PostState.Loading)
-            val result = postRepository.searchPost(query)
-            if (result is CallResult.Success) {
-                if (result.data.isEmpty()) {
-                    _uiState.emit(PostState.Empty)
-                } else {
-                    _uiState.emit(PostState.Result(result.data))
+            _uiState.emit(AppState.Loading)
+            when (val result = postRepository.searchPost(query)) {
+                is CallResult.Success -> {
+                    _uiState.emit(AppState.Result(result.data))
                 }
-            } else {
-                _uiState.emit(PostState.Empty)
+
+                else -> {
+                    _uiState.emit(AppState.Error(cause = ErrorCause.NO_RESULT))
+                }
             }
         }
     }

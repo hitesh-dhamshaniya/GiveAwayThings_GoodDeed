@@ -5,7 +5,8 @@ import androidx.lifecycle.viewModelScope
 import give.away.good.deeds.network.model.Post
 import give.away.good.deeds.repository.CallResult
 import give.away.good.deeds.repository.PostRepository
-import give.away.good.deeds.ui.screens.main.post.common.PostState
+import give.away.good.deeds.ui.screens.state.AppState
+import give.away.good.deeds.ui.screens.state.ErrorCause
 import give.away.good.deeds.utils.NetworkReader
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,22 +18,22 @@ class PostListViewModel(
     private val networkReader: NetworkReader,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<PostState<List<Post>>>(PostState.Loading)
-    val uiState: StateFlow<PostState<List<Post>>> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow<AppState<List<Post>>>(AppState.Loading)
+    val uiState: StateFlow<AppState<List<Post>>> = _uiState.asStateFlow()
 
     fun fetchPosts() {
         viewModelScope.launch {
             if(!networkReader.isConnected()){
-                _uiState.emit(PostState.NoInternet)
+                _uiState.emit(AppState.Error(cause = ErrorCause.NO_INTERNET))
                 return@launch
             }
 
-            _uiState.emit(PostState.Loading)
+            _uiState.emit(AppState.Loading)
             val result = postRepository.getPost()
             if (result is CallResult.Success) {
-                _uiState.emit(PostState.Result(result.data))
+                _uiState.emit(AppState.Result(result.data))
             } else {
-                _uiState.emit(PostState.Empty)
+                _uiState.emit(AppState.Error(cause = ErrorCause.NO_RESULT))
             }
         }
     }

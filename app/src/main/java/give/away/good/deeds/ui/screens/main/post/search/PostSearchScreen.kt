@@ -33,10 +33,10 @@ import give.away.good.deeds.ui.screens.app_common.EmptyResultStateView
 import give.away.good.deeds.ui.screens.app_common.ErrorStateView
 import give.away.good.deeds.ui.screens.app_common.LottieAnimationView
 import give.away.good.deeds.ui.screens.app_common.NoInternetStateView
-import give.away.good.deeds.ui.screens.app_common.NoResultStateView
 import give.away.good.deeds.ui.screens.main.post.common.PostCard
-import give.away.good.deeds.ui.screens.main.post.common.PostState
 import give.away.good.deeds.ui.screens.main.setting.location.LoadingView
+import give.away.good.deeds.ui.screens.state.AppState
+import give.away.good.deeds.ui.screens.state.ErrorCause
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -74,37 +74,43 @@ fun PostSearchScreen(
 
             val uiState = viewModel.uiState.collectAsState()
             when (val state = uiState.value) {
-                is PostState.Result<List<Post>> -> {
+                is AppState.Result<List<Post>> -> {
                     PostList(
                         postList = state.data ?: emptyList(),
                         navigateToDetail = navigateToDetail,
                     )
                 }
 
-                is PostState.Loading -> {
+                is AppState.Loading -> {
                     LoadingView()
                 }
 
-                is PostState.NoInternet -> {
-                    NoInternetStateView {
-                        viewModel.searchPosts(text)
+                is AppState.Error -> {
+                    when(state.cause){
+                        ErrorCause.NO_INTERNET -> {
+                            NoInternetStateView {
+                                viewModel.searchPosts(text)
+                            }
+                        }
+                        ErrorCause.NO_RESULT -> {
+                            EmptyResultStateView()
+                        }
+                        ErrorCause.UNKNOWN -> {
+                            ErrorStateView(
+                                title = "Couldn't Search Posts!",
+                                message = state.message,
+                            ) {
+                                viewModel.searchPosts(text)
+                            }
+                        }
+                        else -> {
+                            LottieAnimationView(
+                                resId = R.raw.lottie_animation_llxxvzkf
+                            )
+                        }
                     }
                 }
-
-                is PostState.Empty -> {
-                    EmptyResultStateView()
-                }
-
-                is PostState.Error -> {
-                    ErrorStateView(
-                        title = "Couldn't Search Posts!",
-                        message = state.message,
-                    ) {
-                        viewModel.searchPosts(text)
-                    }
-                }
-
-                else -> {
+                is AppState.Ideal -> {
                     LottieAnimationView(
                         resId = R.raw.lottie_animation_llxxvzkf
                     )

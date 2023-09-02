@@ -7,7 +7,8 @@ import androidx.lifecycle.viewModelScope
 import give.away.good.deeds.repository.CallResult
 import give.away.good.deeds.repository.MediaRepository
 import give.away.good.deeds.repository.UserRepository
-import give.away.good.deeds.ui.screens.main.setting.common.SettingState
+import give.away.good.deeds.ui.screens.state.AppState
+import give.away.good.deeds.ui.screens.state.ErrorCause
 import give.away.good.deeds.utils.NetworkReader
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,8 +21,8 @@ class ProfileViewModel(
     private val networkReader: NetworkReader,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<SettingState<Unit>>(SettingState.None)
-    val uiState: StateFlow<SettingState<Unit>> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow<AppState<Unit>>(AppState.Ideal)
+    val uiState: StateFlow<AppState<Unit>> = _uiState.asStateFlow()
 
     private val defaultErrorMessage = "Something went wrong. Please try again!"
 
@@ -29,14 +30,14 @@ class ProfileViewModel(
 
     fun fetchUser() {
         viewModelScope.launch {
-            _uiState.emit(SettingState.Loading)
+            _uiState.emit(AppState.Loading)
             val result = userRepository.getUser()
             if (result is CallResult.Success) {
                 result.data.apply {
                     formState.putAll(this.toMap())
                 }
             }
-            _uiState.emit(SettingState.None)
+            _uiState.emit(AppState.Ideal)
         }
     }
 
@@ -49,11 +50,11 @@ class ProfileViewModel(
 
         viewModelScope.launch {
             if(!networkReader.isConnected()){
-                _uiState.emit(SettingState.NoInternet)
+                _uiState.emit(AppState.Error(cause = ErrorCause.NO_INTERNET))
                 return@launch
             }
 
-            _uiState.emit(SettingState.Loading)
+            _uiState.emit(AppState.Loading)
             val updates = mutableMapOf<String, Any>(
                 "firstName" to firstName,
                 "lastName" to lastName,
@@ -68,12 +69,12 @@ class ProfileViewModel(
 
                 val result = userRepository.updateUser(userId, updates)
                 if (result is CallResult.Success) {
-                    _uiState.emit(SettingState.Result())
+                    _uiState.emit(AppState.Result())
                 } else if (result is CallResult.Failure) {
-                    _uiState.emit(SettingState.Error(result.message ?: defaultErrorMessage))
+                    _uiState.emit(AppState.Error(message = result.message ?: defaultErrorMessage))
                 }
             } catch (ex: Exception) {
-                _uiState.emit(SettingState.Error(ex.message ?: defaultErrorMessage))
+                _uiState.emit(AppState.Error(message = ex.message ?: defaultErrorMessage))
             }
         }
     }

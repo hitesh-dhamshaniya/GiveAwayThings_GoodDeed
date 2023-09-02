@@ -55,10 +55,6 @@ fun HomeJourneyScreen(
                     onBackPress = {
                         navController.popBackStack()
                     },
-                    /*showFullImage = {
-                        val encodedUrl = URLEncoder.encode(it, StandardCharsets.UTF_8.toString())
-                        navController.navigate("post_image/"+encodedUrl)
-                    }*/
                 )
             }
 

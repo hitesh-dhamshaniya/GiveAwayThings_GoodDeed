@@ -211,23 +211,28 @@ fun NoInternetStateView(
 
 @Composable
 fun NoResultStateView(
+    title: String? = null,
+    message: String? = null,
     onAction: () -> Unit
 ) {
     StateViewWithLottie(
         resId = R.raw.animation_no_result,
-        title = "No Result Found",
-        message = "Sorry, We couldn't find what you're looking for. Please try again.",
+        title = title ?: "No Result Found",
+        message = message ?: "Sorry, We couldn't find what you're looking for. Please try again.",
         actionText = "Try Again",
         actionClick = onAction
     )
 }
 
 @Composable
-fun EmptyResultStateView() {
+fun EmptyResultStateView(
+    title: String? = null,
+    message: String? = null,
+) {
     StateViewWithLottie(
         resId = R.raw.animation_no_result,
-        title = "No Result Found",
-        message = "Sorry, We couldn't find what you're looking for. Please try again.",
+        title = title ?: "No Result Found",
+        message = message ?: "Sorry, We couldn't find what you're looking for. Please try again.",
     )
 }
 

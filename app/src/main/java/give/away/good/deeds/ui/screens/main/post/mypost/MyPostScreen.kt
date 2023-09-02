@@ -23,12 +23,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import give.away.good.deeds.network.model.Post
+import give.away.good.deeds.ui.screens.app_common.EmptyResultStateView
 import give.away.good.deeds.ui.screens.app_common.ErrorStateView
 import give.away.good.deeds.ui.screens.app_common.NoInternetStateView
-import give.away.good.deeds.ui.screens.app_common.NoResultStateView
+import give.away.good.deeds.ui.screens.main.post.add.AddPostForm
 import give.away.good.deeds.ui.screens.main.post.common.PostCard
-import give.away.good.deeds.ui.screens.main.post.common.PostState
 import give.away.good.deeds.ui.screens.main.setting.location.LoadingView
+import give.away.good.deeds.ui.screens.state.AppState
+import give.away.good.deeds.ui.screens.state.ErrorCause
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,42 +70,46 @@ fun MyPostScreen(
             })
 
             val uiState = viewModel.uiState.collectAsState()
-
             when (val state = uiState.value) {
-                is PostState.Result<List<Post>> -> {
+                is AppState.Result<List<Post>> -> {
                     PostList(
                         postList = state.data ?: emptyList(),
                         navigateToDetail = navigateToDetail,
                     )
                 }
 
-                is PostState.Loading -> {
+                is AppState.Loading -> {
                     LoadingView()
                 }
 
-                is PostState.NoInternet -> {
-                    NoInternetStateView {
-                        viewModel.fetchPosts()
+                is AppState.Error -> {
+                    when(state.cause){
+                        ErrorCause.NO_INTERNET -> {
+                            NoInternetStateView {
+                                viewModel.fetchPosts()
+                            }
+                        }
+                        ErrorCause.NO_RESULT -> {
+                            EmptyResultStateView(
+                                title = "No Give Away Things",
+                                message = "You haven't created any post yet. Once you create a post it will be visible here."
+                            )
+                        }
+                        ErrorCause.UNKNOWN -> {
+                            ErrorStateView(
+                                title = "Couldn't Load Posts!",
+                                message = state.message,
+                            ) {
+                                viewModel.fetchPosts()
+                            }
+                        }
+                        else -> {
+
+                        }
                     }
                 }
-
-                is PostState.Empty -> {
-                    NoResultStateView {
-                        viewModel.fetchPosts()
-                    }
-                }
-
-                is PostState.Error -> {
-                    ErrorStateView(
-                        title = "Couldn't Load Posts!",
-                        message = state.message,
-                    ) {
-                        viewModel.fetchPosts()
-                    }
-                }
-
-                else -> {
-
+                is AppState.Ideal -> {
+                    AddPostForm()
                 }
             }
         }
