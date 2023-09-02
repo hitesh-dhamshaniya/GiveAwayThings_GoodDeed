@@ -25,6 +25,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,14 +42,23 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import give.away.good.deeds.R
+import give.away.good.deeds.network.model.Post
+import give.away.good.deeds.ui.screens.app_common.ErrorStateView
+import give.away.good.deeds.ui.screens.app_common.LottieAnimationView
+import give.away.good.deeds.ui.screens.app_common.NoInternetStateView
 import give.away.good.deeds.ui.screens.main.post.list.PostImageCarousel
+import give.away.good.deeds.ui.screens.main.setting.location.LoadingView
+import give.away.good.deeds.ui.screens.state.AppState
+import give.away.good.deeds.ui.screens.state.ErrorCause
 import give.away.good.deeds.ui.theme.AppThemeButtonShape
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostDetailScreen(
-    isMyPost: Boolean = false,
+    postId: String,
     onBackPress: () -> Unit,
+    viewModel: PostDetailViewModel = koinViewModel()
 ) {
     Scaffold(topBar = {
         TopAppBar(
@@ -75,55 +86,112 @@ fun PostDetailScreen(
                 .fillMaxSize()
         ) {
 
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
+            LaunchedEffect(Unit, block = {
+                viewModel.getPost(postId)
+            })
 
-                item {
-                    PostDetailView()
-                }
-
-                item {
-                    GoogleMapView(
-                        defaultLatLng = LatLng(51.509865, -0.118092)
+            val uiState = viewModel.uiState.collectAsState()
+            when (val state = uiState.value) {
+                is AppState.Result<Post> -> {
+                    PostDetailActionView(
+                        post = state.data!!
                     )
                 }
 
-                item {
-                    Spacer(modifier = Modifier.height(96.dp))
+                is AppState.Loading -> {
+                    LoadingView()
+                }
+
+                is AppState.Error -> {
+                    when (state.cause) {
+                        ErrorCause.NO_INTERNET -> {
+                            NoInternetStateView {
+                                viewModel.getPost(postId)
+                            }
+                        }
+
+                        ErrorCause.UNKNOWN -> {
+                            ErrorStateView(
+                                title = "Couldn't Load Post!",
+                                message = state.message,
+                            ) {
+                                viewModel.getPost(postId)
+                            }
+                        }
+
+                        else -> {
+                            LottieAnimationView(
+                                resId = R.raw.animation_no_result
+                            )
+                        }
+                    }
+                }
+
+                is AppState.Ideal -> {
+                    // do nothing
                 }
             }
-
-            Button(
-                modifier = Modifier.fillMaxWidth().align(Alignment.BottomCenter).padding(bottom = 16.dp),
-                shape = AppThemeButtonShape,
-                onClick = {
-
-                },
-            ) {
-                Text(
-                    text = if (isMyPost) "Close" else "Request Item",
-                    modifier = Modifier.padding(8.dp),
-                )
-            }
-
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PostDetailActionView(
+    post: Post,
+    viewModel: PostDetailViewModel = koinViewModel()
+) {
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+
+            item {
+                PostDetailView(post)
+            }
+
+            val location = post.location
+            if (location != null) {
+                item {
+                    GoogleMapView(
+                        defaultLatLng = post.location
+                    )
+                }
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(96.dp))
+            }
+        }
+
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 16.dp),
+            shape = AppThemeButtonShape,
+            onClick = {
+
+            },
+        ) {
+            Text(
+                text = if (viewModel.isMyPost(post)) "Close" else "Request Item",
+                modifier = Modifier.padding(8.dp),
+            )
+        }
+    }
+}
+
 @Composable
 fun PostDetailView(
+    post: Post,
+    viewModel: PostDetailViewModel = koinViewModel()
 ) {
     Card {
-        val list = listOf<String>(
-            "https://images.unsplash.com/photo-1551298370-9d3d53740c72?&w=1000&q=80",
-            "https://images.unsplash.com/photo-1618220179428-22790b461013?&w=1000&q=80",
-            "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1000&q=80"
-        )
         Column {
             PostImageCarousel(
-                imageList = list,
+                imageList = post.images,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(240.dp),
@@ -163,14 +231,14 @@ fun PostDetailView(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    "Home Furniture Giveaway",
+                    post.title,
                     style = MaterialTheme.typography.titleMedium
                 )
 
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    "Are you looking to refresh your living space or simply have some furniture that needs a new home? We have a collection of gently used home furniture items that we're giving away for free! Our well-maintained pieces are in good condition and can add comfort and style to your home.",
+                    post.description,
                     style = MaterialTheme.typography.bodyMedium,
                 )
 
@@ -200,7 +268,7 @@ fun GoogleMapView(
             ) {
                 Marker(
                     state = MarkerState(position = defaultLatLng),
-                    snippet = "Selected location",
+                    snippet = "Post location",
                 )
             }
 

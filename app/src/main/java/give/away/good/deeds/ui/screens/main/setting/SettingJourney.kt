@@ -118,21 +118,21 @@ fun SettingsJourneyScreen(
                     onBackPress = {
                         navController.popBackStack()
                     },
-                    navigateToDetail = {
-                        navController.navigate("post_detail")
+                    onPostClick = { post ->
+                        navController.navigate("post_detail/${post.id}")
                     }
                 )
             }
 
-            composable("post_detail") {
+            composable("post_detail/{postId}") { backStackEntry ->
+                val postId = backStackEntry.arguments?.getString("postId")
                 PostDetailScreen(
+                    postId = postId ?: "",
                     onBackPress = {
                         navController.popBackStack()
                     },
-                    isMyPost = true
                 )
             }
-
 
         }
     }

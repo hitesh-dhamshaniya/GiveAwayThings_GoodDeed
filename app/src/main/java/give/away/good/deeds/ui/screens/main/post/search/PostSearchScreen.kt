@@ -1,15 +1,9 @@
 package give.away.good.deeds.ui.screens.main.post.search
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -23,17 +17,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.rememberLottieComposition
 import give.away.good.deeds.R
 import give.away.good.deeds.network.model.Post
 import give.away.good.deeds.ui.screens.app_common.EmptyResultStateView
 import give.away.good.deeds.ui.screens.app_common.ErrorStateView
 import give.away.good.deeds.ui.screens.app_common.LottieAnimationView
 import give.away.good.deeds.ui.screens.app_common.NoInternetStateView
-import give.away.good.deeds.ui.screens.main.post.common.PostCard
+import give.away.good.deeds.ui.screens.main.post.common.PostList
 import give.away.good.deeds.ui.screens.main.setting.location.LoadingView
 import give.away.good.deeds.ui.screens.state.AppState
 import give.away.good.deeds.ui.screens.state.ErrorCause
@@ -41,7 +31,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun PostSearchScreen(
-    navigateToDetail: (() -> Unit)? = null,
+    onPostClick: ((Post) -> Unit)? = null,
     viewModel: PostSearchViewModel = koinViewModel()
  ) {
     Scaffold { contentPadding ->
@@ -77,7 +67,9 @@ fun PostSearchScreen(
                 is AppState.Result<List<Post>> -> {
                     PostList(
                         postList = state.data ?: emptyList(),
-                        navigateToDetail = navigateToDetail,
+                        onClick = { post ->
+                            onPostClick?.invoke(post)
+                        },
                     )
                 }
 
@@ -120,41 +112,3 @@ fun PostSearchScreen(
     }
 }
 
-@Composable
-fun PostList(
-    postList: List<Post>,
-    navigateToDetail: (() -> Unit)? = null,
-) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.padding(horizontal = 16.dp)
-    ) {
-        items(postList) { post ->
-            PostCard(
-                post = post,
-                isMyPost = false,
-                onClick = {
-                    navigateToDetail?.invoke()
-                }
-            )
-        }
-
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-    }
-}
-
-@Composable
-fun LottieAnimation() {
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.lottie_animation_llxxvzkf))
-    Box(
-        modifier = Modifier.padding(64.dp)
-    ) {
-        LottieAnimation(
-            composition = composition,
-            iterations = LottieConstants.IterateForever
-        )
-    }
-}

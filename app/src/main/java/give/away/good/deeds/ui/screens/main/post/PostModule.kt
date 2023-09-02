@@ -1,6 +1,8 @@
 package give.away.good.deeds.ui.screens.main.post
 
 import give.away.good.deeds.ui.screens.main.post.add.AddPostViewModel
+import give.away.good.deeds.ui.screens.main.post.common.PostViewModel
+import give.away.good.deeds.ui.screens.main.post.detail.PostDetailViewModel
 import give.away.good.deeds.ui.screens.main.post.list.PostListViewModel
 import give.away.good.deeds.ui.screens.main.post.mypost.MyPostViewModel
 import give.away.good.deeds.ui.screens.main.post.search.PostSearchViewModel
@@ -19,5 +21,11 @@ val postModule = module {
     }
     viewModel {
         PostSearchViewModel(get(), get())
+    }
+    viewModel {
+        PostDetailViewModel(get(), get(), get())
+    }
+    viewModel {
+        PostViewModel(get())
     }
 }

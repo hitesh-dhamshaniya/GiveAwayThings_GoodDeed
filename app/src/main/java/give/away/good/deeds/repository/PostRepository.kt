@@ -16,6 +16,8 @@ interface PostRepository {
         images: List<Uri>
     ): CallResult<Unit>
 
+    suspend fun getPost(postId: String): CallResult<Post>
+
     suspend fun getPost(): CallResult<List<Post>>
 
     suspend fun getMyPosts(): CallResult<List<Post>>
@@ -44,6 +46,17 @@ class PostRepositoryImpl(
                 .await()
 
             CallResult.Success(Unit)
+        } catch (ex: Exception) {
+            CallResult.Failure(ex.message)
+        }
+    }
+
+    override suspend fun getPost(postId: String): CallResult<Post> {
+        return try {
+            val snapshot = firestore.collection(COLLECTION_POST).document(postId)
+                .get()
+                .await()
+            CallResult.Success(snapshot.toPost())
         } catch (ex: Exception) {
             CallResult.Failure(ex.message)
         }

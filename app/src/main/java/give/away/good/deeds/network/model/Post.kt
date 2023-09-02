@@ -59,6 +59,7 @@ data class Post(
 fun DocumentSnapshot.toPost(): Post {
     return Post(
         id = id,
+        userId = getString("userId") ?: "",
         title = getString("title") ?: "",
         description = getString("description") ?: "",
         quantity = getLong("quantity")?.toInt() ?: 1,

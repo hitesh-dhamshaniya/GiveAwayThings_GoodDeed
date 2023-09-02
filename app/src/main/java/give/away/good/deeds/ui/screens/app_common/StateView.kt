@@ -232,7 +232,7 @@ fun EmptyResultStateView(
     StateViewWithLottie(
         resId = R.raw.animation_no_result,
         title = title ?: "No Result Found",
-        message = message ?: "Sorry, We couldn't find what you're looking for. Please try again.",
+        message = message ?: "Sorry, We couldn't find what you're looking for. Please try again later.",
     )
 }
 

@@ -1,14 +1,9 @@
 package give.away.good.deeds.ui.screens.main.post.list
 
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -21,14 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import give.away.good.deeds.R
 import give.away.good.deeds.network.model.Post
 import give.away.good.deeds.ui.screens.app_common.ErrorStateView
 import give.away.good.deeds.ui.screens.app_common.NoInternetStateView
 import give.away.good.deeds.ui.screens.app_common.NoResultStateView
-import give.away.good.deeds.ui.screens.main.post.add.AddPostForm
-import give.away.good.deeds.ui.screens.main.post.common.PostCard
+import give.away.good.deeds.ui.screens.main.post.common.PostList
 import give.away.good.deeds.ui.screens.main.setting.location.LoadingView
 import give.away.good.deeds.ui.screens.state.AppState
 import give.away.good.deeds.ui.screens.state.ErrorCause
@@ -38,7 +31,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostListScreen(
-    navigateToDetail: (() -> Unit)? = null,
+    onPostClick: ((Post) -> Unit)? = null,
     viewModel: PostListViewModel = koinViewModel()
 ) {
     Scaffold(topBar = {
@@ -67,7 +60,9 @@ fun PostListScreen(
                 is AppState.Result<List<Post>> -> {
                     PostList(
                         postList = state.data ?: emptyList(),
-                        navigateToDetail = navigateToDetail,
+                        onClick = { post ->
+                            onPostClick?.invoke(post)
+                        },
                     )
                 }
 
@@ -104,38 +99,13 @@ fun PostListScreen(
                     }
                 }
                 is AppState.Ideal -> {
-                    AddPostForm()
+                    // do nothing
                 }
             }
         }
     }
 }
 
-@Composable
-fun PostList(
-    postList: List<Post>,
-    navigateToDetail: (() -> Unit)? = null,
-) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.padding(horizontal = 16.dp)
-    ) {
-        items(postList) { post ->
-            PostCard(
-                post = post,
-                isMyPost = false,
-                onClick = {
-                    navigateToDetail?.invoke()
-                }
-            )
-        }
-
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-    }
-}
 
 
 @Composable
