@@ -1,10 +1,7 @@
 # GiveAwayThings_GoodDeeds
 An android mobile application for donate things which is not usuable for one but its useful to other.
 
-dhaval.patel@yopmail.com / Pass1234!
-
-Pass1234!
-Pass123!
+dhaval@yopmail.com / Pass1234
 
 Lottie
 1. No Internet
