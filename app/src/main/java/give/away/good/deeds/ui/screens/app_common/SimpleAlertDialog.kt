@@ -11,6 +11,7 @@ fun SimpleAlertDialog(
     title: String,
     message: String,
     confirmAction: String,
+    dismissAction: String = "Cancel",
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
 ) {
@@ -35,14 +36,14 @@ fun SimpleAlertDialog(
                 onDismiss()
                 onConfirm()
             }) {
-                Text(confirmAction)
+                Text(confirmAction.uppercase())
             }
         },
         dismissButton = {
             TextButton(onClick = {
                 onDismiss()
             }) {
-                Text("Cancel")
+                Text(dismissAction.uppercase())
             }
         },
     )

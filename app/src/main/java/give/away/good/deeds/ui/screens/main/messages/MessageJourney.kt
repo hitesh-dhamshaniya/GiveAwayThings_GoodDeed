@@ -40,17 +40,19 @@ fun MessageJourneyScreen(
     ) {
         NavHost(
             navController = navController,
-            startDestination = "messages"
+            startDestination = "chat_group"
         ) {
 
-            composable("messages") {
+            composable("chat_group") {
                 MessageListScreen(
                     navController = navController,
                 )
             }
 
-            composable("chat") {
+            composable("chat/{groupId}") { backStackEntry ->
+                val groupId = backStackEntry.arguments?.getString("groupId")
                 MessageDetailScreen(
+                    groupId = groupId ?: "",
                     navController = navController,
                 )
             }

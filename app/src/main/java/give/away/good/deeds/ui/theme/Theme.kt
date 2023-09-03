@@ -10,6 +10,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -100,7 +101,10 @@ fun AppTheme(
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = if(useDarkTheme) md_theme_dark_surface.toArgb() else md_theme_light_surface.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !useDarkTheme
+            WindowCompat.getInsetsController(window, view).apply {
+                isAppearanceLightStatusBars = !useDarkTheme
+                isAppearanceLightNavigationBars = !useDarkTheme
+            }
         }
     }
 

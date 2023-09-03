@@ -8,18 +8,30 @@ import kotlinx.coroutines.tasks.await
 
 interface MediaRepository {
 
-    suspend fun uploadProfileImage(context: Context, userId: String, uri: Uri): String
+    suspend fun uploadProfileImage(userId: String, uri: Uri): String
+
+    suspend fun uploadPostImages(postId: String, images: List<Uri>): List<String>
 
 }
 
 class MediaRepositoryImpl(
+    private val context: Context,
     private val storage: FirebaseStorage,
 ) : MediaRepository {
 
-    override suspend fun uploadProfileImage(context: Context, userId: String, uri: Uri): String {
+    override suspend fun uploadProfileImage(userId: String, uri: Uri): String {
         val fileName = "$userId.jpg"
         val fileRef = storage.reference.child("users").child(fileName)
         return uploadUri(context, uri, fileRef)
+    }
+
+    override suspend fun uploadPostImages(postId: String, images: List<Uri>): List<String> {
+        var index = 1
+        return images.map { uri ->
+            val fileName = "$postId-${index++}.jpg"
+            val fileRef = storage.reference.child("posts").child(postId).child(fileName)
+            uploadUri(context, uri, fileRef)
+        }
     }
 
     private suspend fun uploadUri(context: Context, uri: Uri, fileRef: StorageReference): String {

@@ -1,5 +1,8 @@
 package give.away.good.deeds.ui.screens.main.post.common
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,6 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,34 +22,51 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import give.away.good.deeds.network.model.Post
+import give.away.good.deeds.network.model.PostInfo
+import give.away.good.deeds.ui.screens.app_common.ProfileAvatar
 import give.away.good.deeds.ui.screens.main.post.list.PostImageCarousel
+import give.away.good.deeds.utils.TimeAgo
+import org.koin.androidx.compose.koinViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostCard(
-    isMyPost: Boolean = false,
-    onClick: () -> Unit,
+    postInfo: PostInfo,
+    onClick: (PostInfo) -> Unit,
+    viewModel: PostViewModel = koinViewModel()
 ) {
+    val post = postInfo.post
+    val isMyPost = viewModel.isMyPost(post)
+
     Card (
-        onClick = onClick
+        onClick = {
+            onClick(postInfo)
+        }
     ){
-        val list = listOf<String>(
-            "https://images.unsplash.com/photo-1551298370-9d3d53740c72?&w=1000&q=80",
-            "https://images.unsplash.com/photo-1618220179428-22790b461013?&w=1000&q=80",
-            "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1000&q=80"
-        )
+
         Column {
-            PostImageCarousel(
-                imageList = list,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(240.dp)
-            )
+            Box {
+                PostImageCarousel(
+                    imageList = post.images,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(240.dp)
+                )
+
+                if (isMyPost) {
+                    PostStatusBadge(
+                        post = post,
+                        modifier = Modifier.align(Alignment.TopEnd)
+                    )
+                }
+            }
+
 
             Column(
                 modifier = Modifier.padding(16.dp)
@@ -54,25 +76,23 @@ fun PostCard(
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        AsyncImage(
-                            model = "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=512&q=80",
+                        ProfileAvatar(
+                            profileUrl = postInfo.user?.profilePic ?: "",
                             modifier = Modifier
                                 .size(48.dp)
                                 .clip(RoundedCornerShape(24.dp)),
-                            contentDescription = "",
-                            contentScale = ContentScale.Crop
                         )
 
                         Spacer(modifier = Modifier.width(8.dp))
 
                         Column {
                             Text(
-                                "David Warner",
+                                postInfo.user?.getName() ?: "",
                                 style = MaterialTheme.typography.titleMedium
                             )
 
                             Text(
-                                "0.8 miles away",
+                                text = "Added "+TimeAgo.timeAgo(post.createdDateTime.time),
                                 style = MaterialTheme.typography.bodyMedium
                             )
                         }
@@ -81,23 +101,73 @@ fun PostCard(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    "Home Furniture Giveaway",
+                    post.title,
                     style = MaterialTheme.typography.titleMedium
                 )
 
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    "Are you looking to refresh your living space or simply have some furniture that needs a new home? We have a collection of gently used home furniture items that we're giving away for free! Our well-maintained pieces are in good condition and can add comfort and style to your home.",
+                    post.description,
                     style = MaterialTheme.typography.bodyMedium,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
-
-
             }
         }
     }
+}
+
+@Composable
+fun PostList(
+    postList: List<PostInfo>,
+    onClick: (PostInfo) -> Unit,
+) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier.padding(horizontal = 16.dp)
+    ) {
+        items(postList) { post ->
+            PostCard(
+                postInfo = post,
+                onClick = onClick
+            )
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+    }
+}
+
+@Composable
+fun PostStatusBadge(
+    post: Post,
+    modifier: Modifier
+) {
+    val text: String
+    val backgroundColor: Color
+    if (post.isActive()) {
+        text = "Active"
+        backgroundColor = Color(0xFF009688)
+    } else {
+        text = "Closed"
+        backgroundColor = Color(0xFFF44336)
+    }
+
+    Text(
+        text = text.uppercase(),
+        style = MaterialTheme.typography.labelSmall,
+        fontWeight = FontWeight.Medium,
+        color = Color.White,
+
+        modifier = modifier
+            .padding(16.dp)
+            .clip(RoundedCornerShape(24.dp))
+            .background(backgroundColor.copy(alpha = 0.7f))
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+    )
 }

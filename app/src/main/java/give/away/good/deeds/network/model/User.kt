@@ -9,6 +9,10 @@ data class User(
     val email: String? = "",
     var profilePic: String? = ""
 ) {
+
+    @Exclude
+    fun getName() = "$firstName $lastName"
+
     @Exclude
     fun toMap() = mapOf<String, String>(
         "id" to (id ?: ""),

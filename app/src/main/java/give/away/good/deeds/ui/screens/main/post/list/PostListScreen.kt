@@ -1,32 +1,39 @@
 package give.away.good.deeds.ui.screens.main.post.list
 
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import give.away.good.deeds.R
-import give.away.good.deeds.ui.screens.main.post.common.PostCard
+import give.away.good.deeds.network.model.Post
+import give.away.good.deeds.network.model.PostInfo
+import give.away.good.deeds.ui.screens.app_common.ErrorStateView
+import give.away.good.deeds.ui.screens.app_common.NoInternetStateView
+import give.away.good.deeds.ui.screens.app_common.NoResultStateView
+import give.away.good.deeds.ui.screens.main.post.common.PostList
+import give.away.good.deeds.ui.screens.main.setting.location.LoadingView
+import give.away.good.deeds.ui.screens.state.AppState
+import give.away.good.deeds.ui.screens.state.ErrorCause
 import give.away.good.deeds.ui.theme.AppTheme
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostListScreen(
-    navigateToDetail: (() -> Unit)? = null,
+    onPostClick: ((Post) -> Unit)? = null,
+    viewModel: PostListViewModel = koinViewModel()
 ) {
     Scaffold(topBar = {
         TopAppBar(
@@ -44,35 +51,62 @@ fun PostListScreen(
                 .padding(contentPadding)
                 .fillMaxSize()
         ) {
-            PostList(
-                navigateToDetail = navigateToDetail
-            )
-        }
-    }
-}
+            LaunchedEffect(Unit, block = {
+                viewModel.fetchPosts()
+            })
 
-@Composable
-fun PostList(
-    navigateToDetail: (() -> Unit)? = null,
-) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.padding(horizontal = 16.dp)
-    ) {
-        items(5) {
-            PostCard(
-                onClick = {
-                    navigateToDetail?.invoke()
+            val uiState = viewModel.uiState.collectAsState()
+
+            when (val state = uiState.value) {
+                is AppState.Result<List<PostInfo>> -> {
+                    PostList(
+                        postList = state.data ?: emptyList(),
+                        onClick = { post ->
+                            onPostClick?.invoke(post.post)
+                        },
+                    )
                 }
-            )
-        }
 
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
-        }
+                is AppState.Loading -> {
+                    LoadingView()
+                }
 
+                is AppState.Error -> {
+                    when(state.cause){
+                        ErrorCause.NO_INTERNET -> {
+                            NoInternetStateView {
+                                viewModel.fetchPosts()
+                            }
+                        }
+                        ErrorCause.NO_RESULT -> {
+                            NoResultStateView(
+                                title = "No Give Away Things",
+                                message = "Sorry, We couldn't find any give away items for you. Please try again after some time."
+                            ) {
+                                viewModel.fetchPosts()
+                            }
+                        }
+                        ErrorCause.UNKNOWN -> {
+                            ErrorStateView(
+                                title = "Couldn't Load Posts!",
+                                message = state.message,
+                            ) {
+                                viewModel.fetchPosts()
+                            }
+                        }
+                        else -> {
+
+                        }
+                    }
+                }
+                is AppState.Ideal -> {
+                    // do nothing
+                }
+            }
+        }
     }
 }
+
 
 
 @Composable

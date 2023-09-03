@@ -27,7 +27,7 @@
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="give.away.good.deeds.ui.screens.setting.SettingsJourney"
+        android:name="give.away.good.deeds.ui.screens.main.setting.SettingsJourney"
         android:label="Settings" />
 
 </navigation>

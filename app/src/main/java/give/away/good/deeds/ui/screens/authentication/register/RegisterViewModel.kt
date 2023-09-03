@@ -7,12 +7,14 @@ import give.away.good.deeds.repository.AuthRepository
 import give.away.good.deeds.repository.CallResult
 import give.away.good.deeds.repository.UserRepository
 import give.away.good.deeds.ui.screens.authentication.common.AuthenticationState
+import give.away.good.deeds.utils.NetworkReader
 import kotlinx.coroutines.launch
 
 
 class RegisterViewModel(
     private val authRepository: AuthRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val networkReader: NetworkReader,
 ) : ViewModel() {
 
     val uiState = MutableLiveData<AuthenticationState<Boolean>>(AuthenticationState.None)
@@ -33,6 +35,10 @@ class RegisterViewModel(
     ) {
         uiState.postValue(AuthenticationState.Loading)
         viewModelScope.launch {
+            if(!networkReader.isConnected()){
+                uiState.postValue(AuthenticationState.NoInternet)
+                return@launch
+            }
             when (val result = authRepository.register(email = email, password = password)) {
                 is CallResult.Success -> {
                     saveUser(result.data, firstName, lastName, email)

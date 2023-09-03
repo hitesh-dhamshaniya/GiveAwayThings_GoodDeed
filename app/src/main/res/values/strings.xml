@@ -70,6 +70,7 @@
     <string name="error_password_and_confirm_password_not_matched">Password and Confirm password not matched</string>
     <string name="error_please_enter_first_name">Please enter first name</string>
     <string name="error_please_enter_last_name">Please enter last name</string>
+    <string name="error_no_internet">It seems that you\'re not online. Try again.</string>
 
     <string name="file_provider_path">give.away.good.deeds.fileprovider</string>
     <string name="msg_are_you_sure_you_want_to_logout">Are you sure you want to logout?</string>

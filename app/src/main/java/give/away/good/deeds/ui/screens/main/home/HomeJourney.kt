@@ -13,6 +13,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import give.away.good.deeds.ui.screens.main.messages.detail.MessageDetailScreen
 import give.away.good.deeds.ui.screens.main.post.detail.PostDetailScreen
 import give.away.good.deeds.ui.screens.main.post.list.PostListScreen
 import give.away.good.deeds.ui.theme.AppTheme
@@ -44,26 +45,27 @@ fun HomeJourneyScreen(
         ) {
             composable("home") {
                 PostListScreen(
-                    navigateToDetail = {
-                        navController.navigate("post_detail")
+                    onPostClick = { post ->
+                        navController.navigate("post_detail/${post.id}")
                     }
                 )
             }
 
-            composable("post_detail") {
+            composable("post_detail/{postId}") { backStackEntry ->
+                val postId = backStackEntry.arguments?.getString("postId")
                 PostDetailScreen(
-                    onBackPress = {
-                        navController.popBackStack()
-                    },
-                    /*showFullImage = {
-                        val encodedUrl = URLEncoder.encode(it, StandardCharsets.UTF_8.toString())
-                        navController.navigate("post_image/"+encodedUrl)
-                    }*/
+                    postId = postId ?: "",
+                    navController = navController,
                 )
             }
 
-
-
+            composable("chat/{groupId}") { backStackEntry ->
+                val groupId = backStackEntry.arguments?.getString("groupId")
+                MessageDetailScreen(
+                    groupId = groupId ?: "",
+                    navController = navController,
+                )
+            }
         }
     }
 }

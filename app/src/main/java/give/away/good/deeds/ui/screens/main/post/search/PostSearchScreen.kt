@@ -1,19 +1,15 @@
 package give.away.good.deeds.ui.screens.main.post.search
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -21,22 +17,28 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.rememberLottieComposition
 import give.away.good.deeds.R
-import give.away.good.deeds.ui.screens.main.post.common.PostCard
+import give.away.good.deeds.network.model.Post
+import give.away.good.deeds.network.model.PostInfo
+import give.away.good.deeds.ui.screens.app_common.EmptyResultStateView
+import give.away.good.deeds.ui.screens.app_common.ErrorStateView
+import give.away.good.deeds.ui.screens.app_common.LottieAnimationView
+import give.away.good.deeds.ui.screens.app_common.NoInternetStateView
+import give.away.good.deeds.ui.screens.main.post.common.PostList
+import give.away.good.deeds.ui.screens.main.setting.location.LoadingView
+import give.away.good.deeds.ui.screens.state.AppState
+import give.away.good.deeds.ui.screens.state.ErrorCause
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun PostSearchScreen(
-    navigateToDetail: (() -> Unit)? = null,
+    onPostClick: ((Post) -> Unit)? = null,
+    viewModel: PostSearchViewModel = koinViewModel()
  ) {
     Scaffold { contentPadding ->
         Column(
             modifier = Modifier
                 .padding(contentPadding)
-                .padding(16.dp)
                 .fillMaxSize()
         ) {
             var text by rememberSaveable { mutableStateOf("") }
@@ -44,11 +46,14 @@ fun PostSearchScreen(
                 value = text,
                 onValueChange = {
                     text = it
+                    viewModel.searchPosts(it)
                 },
                 placeholder = {
                     Text("Search give away")
                 },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
                 maxLines = 1,
                 leadingIcon = {
                     Icon(
@@ -58,50 +63,55 @@ fun PostSearchScreen(
                 },
             )
 
-            if (text.isBlank()) {
-                LottieAnimation()
-            } else {
+            val uiState = viewModel.uiState.collectAsState()
+            when (val state = uiState.value) {
+                is AppState.Result<List<PostInfo>> -> {
+                    PostList(
+                        postList = state.data ?: emptyList(),
+                        onClick = { post ->
+                            onPostClick?.invoke(post.post)
+                        },
+                    )
+                }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                is AppState.Loading -> {
+                    LoadingView()
+                }
 
-                PostList(
-                    modifier = Modifier.weight(1f),
-                    navigateToDetail = navigateToDetail,
-                )
+                is AppState.Error -> {
+                    when(state.cause){
+                        ErrorCause.NO_INTERNET -> {
+                            NoInternetStateView {
+                                viewModel.searchPosts(text)
+                            }
+                        }
+                        ErrorCause.NO_RESULT -> {
+                            EmptyResultStateView(
+                                message =  "Sorry, We couldn't find what you're looking for. Try searching some other keywords."
+                            )
+                        }
+                        ErrorCause.UNKNOWN -> {
+                            ErrorStateView(
+                                title = "Couldn't Search Posts!",
+                                message = state.message,
+                            ) {
+                                viewModel.searchPosts(text)
+                            }
+                        }
+                        else -> {
+                            LottieAnimationView(
+                                resId = R.raw.lottie_animation_llxxvzkf
+                            )
+                        }
+                    }
+                }
+                is AppState.Ideal -> {
+                    LottieAnimationView(
+                        resId = R.raw.lottie_animation_llxxvzkf
+                    )
+                }
             }
         }
     }
 }
 
-@Composable
-fun PostList(
-    modifier: Modifier,
-    navigateToDetail: (() -> Unit)? = null,
-) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier
-    ) {
-        items(5) {
-            PostCard(
-                onClick = {
-                    navigateToDetail?.invoke()
-                }
-            )
-        }
-
-    }
-}
-
-@Composable
-fun LottieAnimation() {
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.lottie_animation_llxxvzkf))
-    Box(
-        modifier = Modifier.padding(64.dp)
-    ) {
-        LottieAnimation(
-            composition = composition,
-            iterations = LottieConstants.IterateForever
-        )
-    }
-}

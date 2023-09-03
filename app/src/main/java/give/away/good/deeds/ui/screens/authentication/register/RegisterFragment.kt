@@ -11,7 +11,9 @@ import give.away.good.deeds.R
 import give.away.good.deeds.ui.screens.app_common.DialogFactory
 import give.away.good.deeds.ui.screens.app_common.hideSoftKeyboard
 import give.away.good.deeds.ui.screens.app_common.isValidEmail
+import give.away.good.deeds.ui.screens.app_common.startActivity
 import give.away.good.deeds.ui.screens.authentication.common.AuthenticationState
+import give.away.good.deeds.ui.screens.main.MainActivity
 import org.koin.android.ext.android.inject
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
@@ -94,6 +96,14 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                     showErrorMessage(result.message)
                 }
 
+                is AuthenticationState.NoInternet -> {
+                    DialogFactory.showErrorDialog(
+                        requireActivity(),
+                        getString(R.string.action_register),
+                        getString(R.string.error_no_internet)
+                    )
+                }
+
                 else -> {}
             }
         }
@@ -160,7 +170,8 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             getString(R.string.action_register),
             "Registration successfully done",
             listener = {
-                findNavController().popBackStack()
+                startActivity(MainActivity::class)
+                requireActivity().finish()
             }
         )
     }

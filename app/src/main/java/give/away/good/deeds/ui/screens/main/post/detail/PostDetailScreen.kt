@@ -25,14 +25,17 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import androidx.navigation.NavController
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -40,14 +43,26 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import give.away.good.deeds.R
+import give.away.good.deeds.network.model.PostInfo
+import give.away.good.deeds.ui.screens.app_common.ErrorStateView
+import give.away.good.deeds.ui.screens.app_common.LottieAnimationView
+import give.away.good.deeds.ui.screens.app_common.NoInternetStateView
+import give.away.good.deeds.ui.screens.app_common.ProfileAvatar
+import give.away.good.deeds.ui.screens.app_common.SimpleAlertDialog
 import give.away.good.deeds.ui.screens.main.post.list.PostImageCarousel
+import give.away.good.deeds.ui.screens.main.setting.location.LoadingView
+import give.away.good.deeds.ui.screens.state.AppState
+import give.away.good.deeds.ui.screens.state.ErrorCause
 import give.away.good.deeds.ui.theme.AppThemeButtonShape
+import give.away.good.deeds.utils.TimeAgo
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostDetailScreen(
-    isMyPost: Boolean = false,
-    onBackPress: () -> Unit,
+    postId: String,
+    navController: NavController? = null,
+    viewModel: PostDetailViewModel = koinViewModel()
 ) {
     Scaffold(topBar = {
         TopAppBar(
@@ -59,7 +74,9 @@ fun PostDetailScreen(
                 )
             },
             navigationIcon = {
-                IconButton(onClick = onBackPress) {
+                IconButton(onClick = {
+                    navController?.popBackStack()
+                }) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
                         contentDescription = "Back Arrow"
@@ -75,86 +92,222 @@ fun PostDetailScreen(
                 .fillMaxSize()
         ) {
 
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
+            LaunchedEffect(Unit, block = {
+                viewModel.getPost(postId)
+            })
 
-                item {
-                    PostDetailView()
+            val uiState = viewModel.uiState.collectAsState()
+            when (val state = uiState.value) {
+                is AppState.Result<PostInfo> -> {
+                    val postInfo = state.data
+                    if (postInfo == null) {
+                        LaunchedEffect(Unit) {
+                            navController?.popBackStack()
+                        }
+                    } else if (postInfo.chatGroupId != null) {
+                        LaunchedEffect(Unit) {
+                            navController?.navigate("chat/"+postInfo.chatGroupId)
+                            postInfo.chatGroupId = null
+                        }
+                    } else {
+                        PostDetailActionView(
+                            postInfo = postInfo,
+                        )
+                    }
                 }
 
-                item {
-                    GoogleMapView(
-                        defaultLatLng = LatLng(51.509865, -0.118092)
-                    )
+                is AppState.Loading -> {
+                    LoadingView()
                 }
 
-                item {
-                    Spacer(modifier = Modifier.height(96.dp))
+                is AppState.Error -> {
+                    when (state.cause) {
+                        ErrorCause.NO_INTERNET -> {
+                            NoInternetStateView {
+                                viewModel.getPost(postId)
+                            }
+                        }
+
+                        ErrorCause.UNKNOWN -> {
+                            ErrorStateView(
+                                title = "Couldn't Load Post!",
+                                message = state.message,
+                            ) {
+                                viewModel.getPost(postId)
+                            }
+                        }
+
+                        else -> {
+                            LottieAnimationView(
+                                resId = R.raw.animation_no_result
+                            )
+                        }
+                    }
+                }
+
+                is AppState.Ideal -> {
+                    // do nothing
                 }
             }
-
-            Button(
-                modifier = Modifier.fillMaxWidth().align(Alignment.BottomCenter).padding(bottom = 16.dp),
-                shape = AppThemeButtonShape,
-                onClick = {
-
-                },
-            ) {
-                Text(
-                    text = if (isMyPost) "Close" else "Request Item",
-                    modifier = Modifier.padding(8.dp),
-                )
-            }
-
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PostDetailView(
+fun PostDetailActionView(
+    postInfo: PostInfo,
+    viewModel: PostDetailViewModel = koinViewModel()
 ) {
-    Card {
-        val list = listOf<String>(
-            "https://images.unsplash.com/photo-1551298370-9d3d53740c72?&w=1000&q=80",
-            "https://images.unsplash.com/photo-1618220179428-22790b461013?&w=1000&q=80",
-            "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1000&q=80"
-        )
-        Column {
-            PostImageCarousel(
-                imageList = list,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(240.dp),
+    val post = postInfo.post
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+
+            item {
+                PostImageCard(postInfo)
+            }
+
+            item {
+                PostDetailView(postInfo)
+            }
+
+            val location = post.location
+            if (location != null) {
+                item {
+                    GoogleMapView(
+                        defaultLatLng = post.location,
+                        address = post.address ?: "",
+                    )
+                }
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(96.dp))
+            }
+        }
+
+        val showCloseDialog = remember { mutableStateOf(false) }
+        if (showCloseDialog.value)
+            SimpleAlertDialog(
+                title = "Close Give Away?",
+                message = "Are you sure you want to close this give away?",
+                confirmAction = "Yes",
+                dismissAction = "No",
+                onDismiss = {
+                    showCloseDialog.value = false
+                },
+                onConfirm = {
+                    viewModel.setPostStatus(post, 0)
+                }
             )
 
-            Column(
-                modifier = Modifier.padding(16.dp)
+        val showRequestDialog = remember { mutableStateOf(false) }
+        if (showRequestDialog.value)
+            SimpleAlertDialog(
+                title = "Request \"${post.title}\"",
+                message = "Are you sure you want to request this give away?",
+                confirmAction = "Yes",
+                dismissAction = "No",
+                onDismiss = {
+                    showRequestDialog.value = false
+                },
+                onConfirm = {
+                    viewModel.sendRequest(postInfo)
+                }
+            )
+
+        if (viewModel.isMyPost(post)) {
+            if (!post.isClosed()) {
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 16.dp),
+                    shape = AppThemeButtonShape,
+                    onClick = {
+                        showCloseDialog.value = true
+                    },
+                ) {
+                    Text(
+                        text = "Close".uppercase(),
+                        modifier = Modifier.padding(8.dp),
+                    )
+                }
+            }
+        } else {
+            val alreadyRequested = viewModel.isAlreadyRequested(post)
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 16.dp),
+                shape = AppThemeButtonShape,
+                onClick = {
+                    showRequestDialog.value = true
+                },
+            ) {
+                val text = if (alreadyRequested) {
+                    "Send Message"
+                } else {
+                    "Request Item"
+                }
+                Text(
+                    text = text.uppercase(),
+                    modifier = Modifier.padding(8.dp),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun PostImageCard(
+    postInfo: PostInfo
+) {
+    Card {
+        PostImageCarousel(
+            imageList = postInfo.post.images,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(240.dp),
+            showFullImage = true
+        )
+    }
+}
+
+@Composable
+fun PostDetailView(
+    postInfo: PostInfo,
+) {
+    val post = postInfo.post
+    Card {
+        Column(
+            modifier = Modifier.padding(16.dp),
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
             ) {
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    AsyncImage(
-                        model = "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=512&q=80",
-                        modifier = Modifier
-                            .size(48.dp)
-                            .clip(RoundedCornerShape(24.dp)),
-                        contentDescription = "",
-                        contentScale = ContentScale.Crop
+                ProfileAvatar(
+                    profileUrl = postInfo.user?.profilePic ?: "",
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(RoundedCornerShape(24.dp)),
                     )
 
                     Spacer(modifier = Modifier.width(8.dp))
 
                     Column {
                         Text(
-                            "David Warner",
+                            postInfo.user?.getName() ?: "",
                             style = MaterialTheme.typography.titleMedium
                         )
 
                         Text(
-                            "Added 19 hours ago",
+                            text = "Added "+ TimeAgo.timeAgo(post.createdDateTime.time),
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
@@ -163,20 +316,19 @@ fun PostDetailView(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    "Home Furniture Giveaway",
+                    post.title,
                     style = MaterialTheme.typography.titleMedium
                 )
 
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    "Are you looking to refresh your living space or simply have some furniture that needs a new home? We have a collection of gently used home furniture items that we're giving away for free! Our well-maintained pieces are in good condition and can add comfort and style to your home.",
+                    post.description,
                     style = MaterialTheme.typography.bodyMedium,
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
             }
-        }
     }
 }
 
@@ -184,6 +336,7 @@ fun PostDetailView(
 @Composable
 fun GoogleMapView(
     defaultLatLng: LatLng,
+    address: String?,
 ) {
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(defaultLatLng, 14f)
@@ -196,11 +349,11 @@ fun GoogleMapView(
                 cameraPositionState = cameraPositionState,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(280.dp)
+                    .height(240.dp)
             ) {
                 Marker(
                     state = MarkerState(position = defaultLatLng),
-                    snippet = "Selected location",
+                    snippet = address ?: "Post location",
                 )
             }
 
@@ -218,18 +371,12 @@ fun GoogleMapView(
 
                 Column {
                     Text(
-                        "49 Featherstone Street, EC1Y 8SY, London",
+                        address ?: "",
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium
                     )
-
-                    Text(
-                        "0.8 miles away",
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
                 }
             }
-
 
         }
     }

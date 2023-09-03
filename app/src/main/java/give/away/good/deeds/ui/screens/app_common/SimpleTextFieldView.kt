@@ -86,7 +86,7 @@ fun PasswordTextField(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             shape = RoundedCornerShape(8.dp, 8.dp),
             trailingIcon = {
-                val image = if (passwordVisible) R.drawable.ic_visibility
+                val image = if (!passwordVisible) R.drawable.ic_visibility
                 else R.drawable.ic_visibility_off
 
                 // Please provide localized description for accessibility services
@@ -97,8 +97,8 @@ fun PasswordTextField(
                     Image(
                         painter = painterResource(image),
                         contentDescription = description,
-                        colorFilter = ColorFilter.tint(Color.Gray),
-                        modifier = Modifier.size(18.dp)
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
+                        modifier = Modifier.size(24.dp)
                     )
                 }
             }

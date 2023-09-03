@@ -10,6 +10,8 @@ private const val COLLECTION_USER: String = "users"
 interface UserRepository {
 
     suspend fun getUser(): CallResult<User>
+    suspend fun getUserFromCache(userId: String): User?
+
     suspend fun createUser(
         userId: String,
         firstName: String,
@@ -42,6 +44,15 @@ class UserRepositoryImpl(
         }
     }
 
+    override suspend fun getUserFromCache(userId: String): User? {
+        var user = UserCache.get(userId)
+        if (user == null){
+            user = getUser(userId)
+            UserCache.add(user)
+        }
+        return user
+    }
+
     override suspend fun createUser(
         userId: String,
         firstName: String,
@@ -71,6 +82,12 @@ class UserRepositoryImpl(
         } catch (ex: Exception) {
             CallResult.Failure(ex.message)
         }
+    }
+
+    private suspend fun getUser(userId: String): User? {
+        val document = firestore.collection(COLLECTION_USER).document(userId)
+        val snapshot = document.get().await()
+        return snapshot.toObject(User::class.java)
     }
 
 }
