@@ -17,10 +17,10 @@ object SettingUtil {
     const val LOGOUT = "Logout"
 
     private fun addItems() {
-        settingItemsList.add(SettingItemModel(R.drawable.ic_profile, PROFILE, "profile"))
-        settingItemsList.add(SettingItemModel(R.drawable.ic_change_password, CHANGE_PASSWORD, "change_password"))
-        settingItemsList.add(SettingItemModel(R.drawable.ic_location, SET_LOCATION, "location"))
-        settingItemsList.add(SettingItemModel(R.drawable.ic_home, MY_LISTING, "account_listing"))
+        settingItemsList.add(SettingItemModel(R.drawable.ic_person_24px, PROFILE, "profile"))
+        settingItemsList.add(SettingItemModel(R.drawable.ic_lock_reset_24px, CHANGE_PASSWORD, "change_password"))
+        settingItemsList.add(SettingItemModel(R.drawable.ic_person_pin_circle_24px, SET_LOCATION, "location"))
+        settingItemsList.add(SettingItemModel(R.drawable.ic_menu_home, MY_LISTING, "account_listing"))
         settingItemsList.add(SettingItemModel(R.drawable.ic_logout, LOGOUT, "logout"))
     }
 

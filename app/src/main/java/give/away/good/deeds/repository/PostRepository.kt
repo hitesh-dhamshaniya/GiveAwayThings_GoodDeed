@@ -3,6 +3,7 @@ package give.away.good.deeds.repository
 import android.net.Uri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import give.away.good.deeds.network.model.Post
 import give.away.good.deeds.network.model.PostInfo
 import give.away.good.deeds.network.model.toPost
@@ -97,6 +98,7 @@ class PostRepositoryImpl(
         return try {
             val snapshot = firestore.collection(COLLECTION_POST)
                 .whereEqualTo("userId", getCurrentUserId())
+                .orderBy("createdDateTime", Query.Direction.DESCENDING)
                 .get()
                 .await()
             val list = snapshot.documents.map {

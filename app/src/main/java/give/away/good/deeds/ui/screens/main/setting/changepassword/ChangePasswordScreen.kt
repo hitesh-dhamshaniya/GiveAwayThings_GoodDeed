@@ -95,11 +95,7 @@ fun ChangePasswordStateView(
             LoadingView()
         }
         is AppState.Ideal -> {
-            LazyColumn {
-                item {
-                    ChangePasswordForm()
-                }
-            }
+            ChangePasswordForm()
         }
         is AppState.Error -> {
             when(state.cause){
@@ -130,75 +126,84 @@ fun ChangePasswordStateView(
 fun ChangePasswordForm(
     viewModel: ChangePasswordViewModel = koinViewModel()
 ) {
+    val currentPassword = remember { mutableStateOf("") }
+    val currentPasswordVisibility = remember { mutableStateOf(false) }
+    val currentPasswordError = remember { mutableStateOf("") }
+
+    val newPassword = remember { mutableStateOf("") }
+    val newPasswordVisibility = remember { mutableStateOf(false) }
+    val newPasswordError = remember { mutableStateOf("") }
+
+    val confirmPassword = remember { mutableStateOf("") }
+    val confirmPasswordVisibility = remember { mutableStateOf(false) }
+    val confirmPasswordError = remember { mutableStateOf("") }
+
     Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        modifier = Modifier.fillMaxSize().padding(16.dp),
     ) {
-
-        val currentPassword = remember { mutableStateOf("") }
-        val currentPasswordVisibility = remember { mutableStateOf(false) }
-        val currentPasswordError = remember { mutableStateOf("") }
-        PasswordTextField(
-            text = "Current Password",
-            value = currentPassword.value,
-            passwordVisible = currentPasswordVisibility.value,
-            onValueChange = {
-                currentPasswordError.value = ""
-                currentPassword.value = it
-            },
-            onPasswordVisibleChange = {
-                currentPasswordVisibility.value = it
-            },
-            isError = currentPasswordError.value.isNotBlank(),
-            supportingText = {
-                Text(text = currentPasswordError.value)
+        LazyColumn(
+            modifier = Modifier.fillMaxSize().weight(1f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            item {
+                PasswordTextField(
+                    text = "Current Password",
+                    value = currentPassword.value,
+                    passwordVisible = currentPasswordVisibility.value,
+                    onValueChange = {
+                        currentPasswordError.value = ""
+                        currentPassword.value = it
+                    },
+                    onPasswordVisibleChange = {
+                        currentPasswordVisibility.value = it
+                    },
+                    isError = currentPasswordError.value.isNotBlank(),
+                    supportingText = {
+                        Text(text = currentPasswordError.value)
+                    }
+                )
             }
-        )
 
-        val newPassword = remember { mutableStateOf("") }
-        val newPasswordVisibility = remember { mutableStateOf(false) }
-        val newPasswordError = remember { mutableStateOf("") }
-        PasswordTextField(
-            text = "New Password",
-            value = newPassword.value,
-            passwordVisible = newPasswordVisibility.value,
-            onValueChange = {
-                newPasswordError.value = ""
-                newPassword.value = it
-            },
-            onPasswordVisibleChange = {
-                newPasswordVisibility.value = it
-            },
-            isError = newPasswordError.value.isNotBlank(),
-            supportingText = {
-                Text(text = newPasswordError.value)
+            item {
+                PasswordTextField(
+                    text = "New Password",
+                    value = newPassword.value,
+                    passwordVisible = newPasswordVisibility.value,
+                    onValueChange = {
+                        newPasswordError.value = ""
+                        newPassword.value = it
+                    },
+                    onPasswordVisibleChange = {
+                        newPasswordVisibility.value = it
+                    },
+                    isError = newPasswordError.value.isNotBlank(),
+                    supportingText = {
+                        Text(text = newPasswordError.value)
+                    }
+                )
             }
-        )
 
-        val confirmPassword = remember { mutableStateOf("") }
-        val confirmPasswordVisibility = remember { mutableStateOf(false) }
-        val confirmPasswordError = remember { mutableStateOf("") }
-        PasswordTextField(
-            text = "Confirm Password",
-            value = confirmPassword.value,
-            passwordVisible = confirmPasswordVisibility.value,
-            onValueChange = {
-                confirmPasswordError.value = ""
-                confirmPassword.value = it
-            },
-            onPasswordVisibleChange = {
-                confirmPasswordVisibility.value = it
-            },
-            isError = confirmPasswordError.value.isNotBlank(),
-            supportingText = {
-                Text(text = confirmPasswordError.value)
+
+            item {
+                PasswordTextField(
+                    text = "Confirm Password",
+                    value = confirmPassword.value,
+                    passwordVisible = confirmPasswordVisibility.value,
+                    onValueChange = {
+                        confirmPasswordError.value = ""
+                        confirmPassword.value = it
+                    },
+                    onPasswordVisibleChange = {
+                        confirmPasswordVisibility.value = it
+                    },
+                    isError = confirmPasswordError.value.isNotBlank(),
+                    supportingText = {
+                        Text(text = confirmPasswordError.value)
+                    }
+                )
             }
-        )
-
-        Spacer(modifier = Modifier.weight(1f))
+        }
 
         Button(
             modifier = Modifier.fillMaxWidth(),

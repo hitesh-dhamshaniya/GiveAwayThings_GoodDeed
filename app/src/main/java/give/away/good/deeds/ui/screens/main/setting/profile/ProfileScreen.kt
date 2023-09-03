@@ -103,11 +103,7 @@ fun ProfileFormStateView(
             LoadingView()
         }
         is AppState.Ideal -> {
-            LazyColumn {
-                item {
-                    ProfileForm()
-                }
-            }
+            ProfileForm()
         }
         is AppState.Error -> {
             when(state.cause){
@@ -141,60 +137,71 @@ fun ProfileForm(
 ) {
     val formState = viewModel.formState
     Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        modifier = Modifier.fillMaxSize().padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-
-        ProfileImageView(
-            imageUri = formState["profilePic"],
-            onAdd = {
-                formState.remove("profilePic")
-                formState["profilePic"] = it
-            }
-        )
-
         val fNameError = remember { mutableStateOf("") }
-        SimpleTextFieldView(
-            text = "First name",
-            value = formState["firstName"] ?: "",
-            onValueChange = {
-                fNameError.value = ""
-                formState.remove("firstName")
-                formState["firstName"] = it
-            },
-            isError = fNameError.value.isNotBlank(),
-            supportingText = {
-                Text(text = fNameError.value)
-            }
-        )
-
         val lNameError = remember { mutableStateOf("") }
-        SimpleTextFieldView(
-            text = "Last name",
-            value = formState["lastName"] ?: "",
-            onValueChange = {
-                lNameError.value = ""
-                formState.remove("lastName")
-                formState["lastName"] = it
-            },
-            isError = lNameError.value.isNotBlank(),
-            supportingText = {
-                Text(text = lNameError.value)
+
+        LazyColumn(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize().weight(1f),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+
+            item {
+                ProfileImageView(
+                    imageUri = formState["profilePic"],
+                    onAdd = {
+                        formState.remove("profilePic")
+                        formState["profilePic"] = it
+                    }
+                )
             }
-        )
 
-        SimpleTextFieldView(
-            text = "Email address",
-            value = formState["email"] ?: "",
-            onValueChange = {
-            },
-            isEnabled = false
-        )
+            item {
+                SimpleTextFieldView(
+                    text = "First name",
+                    value = formState["firstName"] ?: "",
+                    onValueChange = {
+                        fNameError.value = ""
+                        formState.remove("firstName")
+                        formState["firstName"] = it
+                    },
+                    isError = fNameError.value.isNotBlank(),
+                    supportingText = {
+                        Text(text = fNameError.value)
+                    }
+                )
+            }
 
-        Spacer(modifier = Modifier.weight(1f))
+            item {
+                SimpleTextFieldView(
+                    text = "Last name",
+                    value = formState["lastName"] ?: "",
+                    onValueChange = {
+                        lNameError.value = ""
+                        formState.remove("lastName")
+                        formState["lastName"] = it
+                    },
+                    isError = lNameError.value.isNotBlank(),
+                    supportingText = {
+                        Text(text = lNameError.value)
+                    }
+                )
+            }
+
+            item {
+                SimpleTextFieldView(
+                    text = "Email address",
+                    value = formState["email"] ?: "",
+                    onValueChange = {
+                    },
+                    isEnabled = false
+                )
+            }
+
+        }
 
         Button(
             modifier = Modifier.fillMaxWidth(),
