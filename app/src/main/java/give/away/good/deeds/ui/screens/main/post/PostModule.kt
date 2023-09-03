@@ -13,7 +13,7 @@ import org.koin.dsl.module
 
 val postModule = module {
     viewModel {
-        AddPostViewModel(get(), get(), get())
+        AddPostViewModel(get(), get(), get(), get())
     }
     viewModel {
         PostListViewModel(get(), get())

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import give.away.good.deeds.BuildConfig
 import give.away.good.deeds.repository.AuthRepository
+import give.away.good.deeds.utils.NetworkReader
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class SplashViewModel(
+    private val networkReader: NetworkReader,
     private val authRepository: AuthRepository,
 ) : ViewModel() {
 
@@ -23,6 +25,10 @@ class SplashViewModel(
         viewModelScope.launch {
             if (!BuildConfig.DEBUG)
                 delay(mSplashDelay)
+
+            if (networkReader.isConnected()) {
+                authRepository.reload()
+            }
             _event.send(authRepository.isLoggedIn())
         }
     }

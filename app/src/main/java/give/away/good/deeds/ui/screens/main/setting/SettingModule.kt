@@ -29,6 +29,7 @@ val settingModule = module {
     }
     viewModel {
         SetupLocationViewModel(
+            context = get(),
             userConfigRepository = get(),
         )
     }

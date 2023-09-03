@@ -86,7 +86,9 @@ fun PostSearchScreen(
                             }
                         }
                         ErrorCause.NO_RESULT -> {
-                            EmptyResultStateView()
+                            EmptyResultStateView(
+                                message =  "Sorry, We couldn't find what you're looking for. Try searching some other keywords."
+                            )
                         }
                         ErrorCause.UNKNOWN -> {
                             ErrorStateView(

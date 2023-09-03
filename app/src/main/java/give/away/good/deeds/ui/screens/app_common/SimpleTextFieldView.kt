@@ -97,8 +97,8 @@ fun PasswordTextField(
                     Image(
                         painter = painterResource(image),
                         contentDescription = description,
-                        colorFilter = ColorFilter.tint(Color.Gray),
-                        modifier = Modifier.size(18.dp)
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
+                        modifier = Modifier.size(24.dp)
                     )
                 }
             }

@@ -14,7 +14,9 @@ data class Post(
     val description: String = "",
     val images: List<String> = emptyList(),
     val quantity: Int = 1,
+
     val location: LatLng? = null,
+    val address: String? = null,
 
     val createdDateTime: Date = Date(),
     val pickupDateTime: Date? = null,
@@ -33,6 +35,7 @@ data class Post(
         "description" to description,
         //"images" to images,
         "quantity" to quantity,
+        "address" to address,
         "location" to location?.let { GeoPoint(it.latitude, it.longitude) },
         "keywords" to prepareKeywords(),
         "status" to 1,
@@ -41,6 +44,7 @@ data class Post(
         "createdDateTime" to FieldValue.serverTimestamp(),
     )
 
+    @Exclude
     private fun prepareKeywords(): List<String> {
         val keywords = mutableSetOf<String>()
         keywords.addAll(title.lowercase().split("\\s+".toRegex()))
@@ -48,10 +52,13 @@ data class Post(
         return keywords.toList()
     }
 
+    @Exclude
     fun isActive() = status == 1
 
+    @Exclude
     fun isClosed() = status == 0
 
+    @Exclude
     fun isCancelled() = status == -1
 
 }
@@ -65,6 +72,7 @@ fun DocumentSnapshot.toPost(): Post {
         quantity = getLong("quantity")?.toInt() ?: 1,
         status = getLong("status")?.toInt() ?: 1,
 
+        address = getString("address"),
         location = get("location", GeoPoint::class.java)?.let {
             LatLng(it.latitude, it.longitude)
         },

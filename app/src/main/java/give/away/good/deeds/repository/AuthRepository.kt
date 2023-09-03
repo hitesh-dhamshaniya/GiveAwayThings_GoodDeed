@@ -7,6 +7,7 @@ interface AuthRepository {
     fun getUserId(): String?
 
     fun isLoggedIn(): Boolean
+    suspend fun reload()
 
     suspend fun forgotPassword(email: String): CallResult<Unit>
 
@@ -27,6 +28,14 @@ class AuthRepositoryImpl(
     }
 
     override fun isLoggedIn() = firebaseAuth.currentUser != null
+
+    override suspend fun reload() {
+        try {
+            firebaseAuth.currentUser?.reload()?.await()
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+    }
 
     override suspend fun forgotPassword(email: String): CallResult<Unit> {
         return try {

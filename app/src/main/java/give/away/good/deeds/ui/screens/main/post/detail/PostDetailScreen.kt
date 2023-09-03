@@ -174,7 +174,8 @@ fun PostDetailActionView(
             if (location != null) {
                 item {
                     GoogleMapView(
-                        defaultLatLng = post.location
+                        defaultLatLng = post.location,
+                        address = post.address ?: "",
                     )
                 }
             }
@@ -327,6 +328,7 @@ fun PostDetailView(
 @Composable
 fun GoogleMapView(
     defaultLatLng: LatLng,
+    address: String?,
 ) {
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(defaultLatLng, 14f)
@@ -361,15 +363,15 @@ fun GoogleMapView(
 
                 Column {
                     Text(
-                        "49 Featherstone Street, EC1Y 8SY, London",
+                        address ?: "",
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium
                     )
 
-                    Text(
+                    /*Text(
                         "0.8 miles away",
                         style = MaterialTheme.typography.bodyMedium,
-                    )
+                    )*/
                 }
             }
 

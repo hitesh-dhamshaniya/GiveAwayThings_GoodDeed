@@ -27,13 +27,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import give.away.good.deeds.network.model.UserConfig
+import give.away.good.deeds.ui.screens.app_common.ErrorStateView
 import give.away.good.deeds.ui.theme.AppThemeButtonShape
 import org.koin.androidx.compose.koinViewModel
 
@@ -78,15 +80,17 @@ fun LocationScreenView(
 ) {
 
     LaunchedEffect(Unit, block = {
-        viewModel.getLocation()
+        viewModel.fetchLocation()
     })
 
-    val latLng by viewModel.uiState.collectAsState()
-    if (latLng == null) {
+    val config by viewModel.uiState.collectAsState()
+    val latLng = config?.latLng
+
+    if (config == null || latLng == null) {
         LoadingView()
     } else {
         GoogleMapView(
-            defaultLatLng = latLng ?: viewModel.defaultLatLng,
+            userConfig = config!!,
             onBackPress = onBackPress
         )
     }
@@ -106,12 +110,14 @@ fun LoadingView() {
 
 @Composable
 fun GoogleMapView(
-    defaultLatLng: LatLng,
+    userConfig: UserConfig,
     onBackPress: () -> Unit,
     viewModel: SetupLocationViewModel = koinViewModel()
 ) {
+    val latLng = userConfig.latLng!!
+    val address = userConfig.address
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(defaultLatLng, 10f)
+        position = CameraPosition.fromLatLngZoom(latLng, 10f)
     }
 
     Column(
@@ -127,10 +133,18 @@ fun GoogleMapView(
             }
         ) {
             Marker(
-                state = MarkerState(position = defaultLatLng),
-                snippet = "Selected location",
+                state = MarkerState(position = latLng),
+                snippet = address,
             )
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = address,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center,
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 

@@ -33,7 +33,7 @@ import org.koin.dsl.module
  */
 val appViewModules = module {
     viewModel {
-        SplashViewModel(get())
+        SplashViewModel(get(), get())
     }
 
     factory<NetworkReader> {

@@ -6,11 +6,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
+import give.away.good.deeds.AppConstant
 import give.away.good.deeds.network.model.Post
 import give.away.good.deeds.repository.CallResult
 import give.away.good.deeds.repository.PostRepository
+import give.away.good.deeds.repository.UserConfigRepository
 import give.away.good.deeds.ui.screens.state.AppState
 import give.away.good.deeds.ui.screens.state.ErrorCause
 import give.away.good.deeds.utils.NetworkReader
@@ -23,11 +24,12 @@ class AddPostViewModel(
     auth: FirebaseAuth,
     private val postRepository: PostRepository,
     private val networkReader: NetworkReader,
+    private val userConfigRepository: UserConfigRepository,
 ) : ViewModel() {
 
-    private val defaultLatLng = LatLng(51.509865, -0.118092)
     private val defaultPost = Post(
-        location = defaultLatLng,
+        location = AppConstant.defaultLocation,
+        address = AppConstant.defaultAddress,
         userId = auth.currentUser?.uid ?: ""
     )
 
@@ -83,6 +85,21 @@ class AddPostViewModel(
     fun resetState() {
         resetNetworkState()
         post = defaultPost
+    }
+
+    fun fetchLocation() {
+        viewModelScope.launch {
+            when (val result = userConfigRepository.getLocation()) {
+                is CallResult.Success -> {
+                    post = post.copy(location = result.data.latLng, address = result.data.address)
+                    _uiState.emit(AppState.Result())
+                }
+
+                else -> {
+                    // do nothing..
+                }
+            }
+        }
     }
 
     fun resetNetworkState() {

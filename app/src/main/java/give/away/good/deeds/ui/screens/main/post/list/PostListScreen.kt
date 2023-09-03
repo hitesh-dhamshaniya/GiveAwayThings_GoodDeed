@@ -80,8 +80,8 @@ fun PostListScreen(
                         }
                         ErrorCause.NO_RESULT -> {
                             NoResultStateView(
-                                title = "No Give Away Things Nearby",
-                                message = "Sorry, We couldn't find any give away items in your nearby location. Please try again after some time."
+                                title = "No Give Away Things",
+                                message = "Sorry, We couldn't find any give away items for you. Please try again after some time."
                             ) {
                                 viewModel.fetchPosts()
                             }

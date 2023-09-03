@@ -10,6 +10,7 @@ data class User(
     var profilePic: String? = ""
 ) {
 
+    @Exclude
     fun getName() = "$firstName $lastName"
 
     @Exclude
