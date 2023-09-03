@@ -36,6 +36,7 @@ import give.away.good.deeds.network.model.ChatGroup
 import give.away.good.deeds.ui.screens.app_common.EmptyResultStateView
 import give.away.good.deeds.ui.screens.app_common.ErrorStateView
 import give.away.good.deeds.ui.screens.app_common.NoInternetStateView
+import give.away.good.deeds.ui.screens.app_common.ProfileAvatar
 import give.away.good.deeds.ui.screens.main.setting.location.LoadingView
 import give.away.good.deeds.ui.screens.state.AppState
 import give.away.good.deeds.ui.screens.state.ErrorCause
@@ -151,13 +152,11 @@ fun MessageCard(
         Row(
             verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(16.dp)
         ) {
-            AsyncImage(
-                model = chatGroup.user?.profilePic,
+            ProfileAvatar(
+                profileUrl = chatGroup.user?.profilePic,
                 modifier = Modifier
                     .size(48.dp)
                     .clip(RoundedCornerShape(24.dp)),
-                contentDescription = "",
-                contentScale = ContentScale.Crop
             )
 
             Spacer(modifier = Modifier.width(16.dp))

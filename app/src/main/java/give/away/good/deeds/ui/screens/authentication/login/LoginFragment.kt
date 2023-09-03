@@ -42,9 +42,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         handleUIClicks(view)
 
         observeUIChanges()
-
-      //  edtEmailAdd.setText("dhaval.patel@yopmail.com")
-       // edtPassword.setText("Pass123!")
     }
 
     private fun handleUIClicks(view: View) {

@@ -30,6 +30,11 @@ class PostDetailViewModel(
     fun isMyPost(post: Post): Boolean{
         return authRepository.getUserId() == post.userId
     }
+
+    fun isAlreadyRequested(post: Post): Boolean{
+        return post.requestedUsers.contains(authRepository.getUserId())
+    }
+
     fun getPost(postId: String) {
         viewModelScope.launch {
             if(!networkReader.isConnected()){

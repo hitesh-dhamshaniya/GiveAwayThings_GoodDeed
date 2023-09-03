@@ -32,12 +32,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -45,7 +43,6 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import give.away.good.deeds.R
-import give.away.good.deeds.network.model.Post
 import give.away.good.deeds.network.model.PostInfo
 import give.away.good.deeds.ui.screens.app_common.ErrorStateView
 import give.away.good.deeds.ui.screens.app_common.LottieAnimationView
@@ -114,7 +111,7 @@ fun PostDetailScreen(
                         }
                     } else {
                         PostDetailActionView(
-                            postInfo = postInfo
+                            postInfo = postInfo,
                         )
                     }
                 }
@@ -187,26 +184,11 @@ fun PostDetailActionView(
             }
         }
 
-        val showGiveAwayDialog = remember { mutableStateOf(false) }
-        if (showGiveAwayDialog.value)
-            SimpleAlertDialog(
-                title = "Did you give away to someone?",
-                message = "Are you sure you want to close give away?\nChoose YES option if you've given away items to community members.",
-                confirmAction = "Yes",
-                dismissAction = "No",
-                onDismiss = {
-                    showGiveAwayDialog.value = false
-                },
-                onConfirm = {
-                    viewModel.setPostStatus(post, 0)
-                }
-            )
-
         val showCloseDialog = remember { mutableStateOf(false) }
         if (showCloseDialog.value)
             SimpleAlertDialog(
-                title = "Is your item no longer available for give away?",
-                message = "Are you sure you want to cancel give away?\nChoose YES option if item is no longer available for give away.",
+                title = "Close Give Away?",
+                message = "Are you sure you want to close this give away?",
                 confirmAction = "Yes",
                 dismissAction = "No",
                 onDismiss = {
@@ -221,7 +203,7 @@ fun PostDetailActionView(
         if (showRequestDialog.value)
             SimpleAlertDialog(
                 title = "Request \"${post.title}\"",
-                message = "Are you sure you want to request the give away?",
+                message = "Are you sure you want to request this give away?",
                 confirmAction = "Yes",
                 dismissAction = "No",
                 onDismiss = {
@@ -233,46 +215,25 @@ fun PostDetailActionView(
             )
 
         if (viewModel.isMyPost(post)) {
-            if (!post.isClosed() && !post.isCancelled()) {
-                Row(
+            if (!post.isClosed()) {
+                Button(
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.BottomCenter)
+                        .padding(bottom = 16.dp),
+                    shape = AppThemeButtonShape,
+                    onClick = {
+                        showCloseDialog.value = true
+                    },
                 ) {
-                    Button(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(bottom = 16.dp),
-                        shape = AppThemeButtonShape,
-                        onClick = {
-                            showGiveAwayDialog.value = true
-                        },
-                    ) {
-                        Text(
-                            text = "Done".uppercase(),
-                            modifier = Modifier.padding(8.dp),
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.width(16.dp))
-
-                    Button(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(bottom = 16.dp),
-                        shape = AppThemeButtonShape,
-                        onClick = {
-                            showCloseDialog.value = true
-                        },
-                    ) {
-                        Text(
-                            text = "Cancel".uppercase(),
-                            modifier = Modifier.padding(8.dp),
-                        )
-                    }
+                    Text(
+                        text = "Close".uppercase(),
+                        modifier = Modifier.padding(8.dp),
+                    )
                 }
             }
         } else {
+            val alreadyRequested = viewModel.isAlreadyRequested(post)
             Button(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -283,8 +244,13 @@ fun PostDetailActionView(
                     showRequestDialog.value = true
                 },
             ) {
+                val text = if (alreadyRequested) {
+                    "Send Message"
+                } else {
+                    "Request Item"
+                }
                 Text(
-                    text = "Request Item",
+                    text = text.uppercase(),
                     modifier = Modifier.padding(8.dp),
                 )
             }

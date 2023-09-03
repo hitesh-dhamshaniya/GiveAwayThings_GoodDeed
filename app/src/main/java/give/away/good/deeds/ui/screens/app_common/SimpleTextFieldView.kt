@@ -86,7 +86,7 @@ fun PasswordTextField(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             shape = RoundedCornerShape(8.dp, 8.dp),
             trailingIcon = {
-                val image = if (passwordVisible) R.drawable.ic_visibility
+                val image = if (!passwordVisible) R.drawable.ic_visibility
                 else R.drawable.ic_visibility_off
 
                 // Please provide localized description for accessibility services

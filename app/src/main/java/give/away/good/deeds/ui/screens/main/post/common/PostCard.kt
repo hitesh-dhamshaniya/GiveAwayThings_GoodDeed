@@ -152,12 +152,9 @@ fun PostStatusBadge(
     val backgroundColor: Color
     if (post.isActive()) {
         text = "Active"
-        backgroundColor = Color(0xFF03A9F4)
-    } else if (post.isClosed()) {
-        text = "Give Away"
         backgroundColor = Color(0xFF009688)
     } else {
-        text = "Cancelled"
+        text = "Closed"
         backgroundColor = Color(0xFFF44336)
     }
 
