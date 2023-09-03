@@ -33,16 +33,16 @@ class ChatRepositoryImpl(
     override suspend fun createChatGroup(postUserId: String): CallResult<String> {
         return try {
             val currentUserId = getCurrentUserId()
-
-            val participants = listOf(postUserId, currentUserId)
             val snapshot = firestore.collection(COLLECTION_CHAT_GROUP)
-                .whereArrayContains("participants", participants)
+                .whereEqualTo("participants.$postUserId", true)
+                .whereEqualTo("participants.$currentUserId", true)
                 .limit(1)
                 .get().await()
 
             if (snapshot.isEmpty) {
+                val participantMap = mapOf(postUserId to true, currentUserId to true)
                 val data = hashMapOf<String, Any>(
-                    "participants" to participants,
+                    "participants" to participantMap,
                     "status" to 1,
                 )
                 val documentId = firestore.collection(COLLECTION_CHAT_GROUP).add(data).await().id
@@ -71,12 +71,13 @@ class ChatRepositoryImpl(
         return try {
             val userId = getCurrentUserId() ?: ""
             val snapshot = firestore.collection(COLLECTION_CHAT_GROUP)
-                .whereArrayContains("participants", userId)
+                .whereEqualTo("participants.$userId", true)
                 .get()
                 .await()
 
             val list = snapshot.documents.map { document ->
-                val participants = document.get("participants") as? List<String> ?: emptyList()
+                val participantMap = document.get("participants") as? Map<String, Boolean> ?: emptyMap()
+                val participants = participantMap.keys.toMutableList()
                 val participants1 = participants.toMutableList()
                 participants1.remove(userId)
                 val participantId = participants1.first()
@@ -111,8 +112,8 @@ class ChatRepositoryImpl(
                 .get()
                 .await()
 
-            val participants = snapshot.get("participants") as? List<String> ?: emptyList()
-            val participants1 = participants.toMutableList()
+            val participantMap = snapshot.get("participants") as? Map<String, Boolean> ?: emptyMap()
+            val participants1 = participantMap.keys.toMutableList()
             participants1.remove(userId)
             val participantId = participants1.first()
 

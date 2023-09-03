@@ -102,7 +102,7 @@ class PostDetailViewModel(
         val chatMessage = ChatMessage(
             id = "",
             senderId = authRepository.getUserId() ?: "",
-            message = "I'm interested in \"${post.title}\". Can I please have it? "
+            message = "I'm interested in your give away \"${post.title}\". Can I please have it? "
         )
         when (val result = chatRepository.sendMessage(groupId, chatMessage)) {
             is CallResult.Success -> {
