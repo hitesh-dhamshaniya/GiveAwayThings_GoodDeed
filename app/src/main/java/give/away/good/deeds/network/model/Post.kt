@@ -58,9 +58,6 @@ data class Post(
     @Exclude
     fun isClosed() = status == 0
 
-    @Exclude
-    fun isCancelled() = status == -1
-
 }
 
 fun DocumentSnapshot.toPost(): Post {

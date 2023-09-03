@@ -26,7 +26,7 @@ fun ChatCard(
     val modifier =
         if (!isMyMessage) Modifier.padding(end = 64.dp) else Modifier.padding(start = 64.dp)
     val shape =
-        if (isMyMessage) RoundedCornerShape(0.dp, 8.dp, 8.dp, 8.dp) else RoundedCornerShape(8.dp, 0.dp, 8.dp, 8.dp)
+        if (!isMyMessage) RoundedCornerShape(0.dp, 8.dp, 8.dp, 8.dp) else RoundedCornerShape(8.dp, 0.dp, 8.dp, 8.dp)
     Card(
         modifier = modifier,
         shape = shape

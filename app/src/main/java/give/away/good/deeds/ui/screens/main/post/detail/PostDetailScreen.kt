@@ -167,6 +167,10 @@ fun PostDetailActionView(
         ) {
 
             item {
+                PostImageCard(postInfo)
+            }
+
+            item {
                 PostDetailView(postInfo)
             }
 
@@ -196,7 +200,7 @@ fun PostDetailActionView(
                     showCloseDialog.value = false
                 },
                 onConfirm = {
-                    viewModel.setPostStatus(post, -1)
+                    viewModel.setPostStatus(post, 0)
                 }
             )
 
@@ -260,33 +264,38 @@ fun PostDetailActionView(
 }
 
 @Composable
+fun PostImageCard(
+    postInfo: PostInfo
+) {
+    Card {
+        PostImageCarousel(
+            imageList = postInfo.post.images,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(240.dp),
+            showFullImage = true
+        )
+    }
+}
+
+@Composable
 fun PostDetailView(
     postInfo: PostInfo,
 ) {
     val post = postInfo.post
     Card {
-        Column {
-            PostImageCarousel(
-                imageList = post.images,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(240.dp),
-                showFullImage = true
-            )
-
-            Column(
-                modifier = Modifier.padding(16.dp)
+        Column(
+            modifier = Modifier.padding(16.dp),
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
             ) {
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-
-                    ProfileAvatar(
-                        profileUrl = postInfo.user?.profilePic ?: "",
-                        modifier = Modifier
-                            .size(48.dp)
-                            .clip(RoundedCornerShape(24.dp)),
+                ProfileAvatar(
+                    profileUrl = postInfo.user?.profilePic ?: "",
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(RoundedCornerShape(24.dp)),
                     )
 
                     Spacer(modifier = Modifier.width(8.dp))
@@ -320,7 +329,6 @@ fun PostDetailView(
 
                 Spacer(modifier = Modifier.height(8.dp))
             }
-        }
     }
 }
 
@@ -341,11 +349,11 @@ fun GoogleMapView(
                 cameraPositionState = cameraPositionState,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(280.dp)
+                    .height(240.dp)
             ) {
                 Marker(
                     state = MarkerState(position = defaultLatLng),
-                    snippet = "Post location",
+                    snippet = address ?: "Post location",
                 )
             }
 
@@ -367,14 +375,8 @@ fun GoogleMapView(
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium
                     )
-
-                    /*Text(
-                        "0.8 miles away",
-                        style = MaterialTheme.typography.bodyMedium,
-                    )*/
                 }
             }
-
 
         }
     }
