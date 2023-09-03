@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -30,6 +31,7 @@ import give.away.good.deeds.ui.screens.app_common.NoInternetStateView
 import give.away.good.deeds.ui.screens.app_common.SimpleTextFieldView
 import give.away.good.deeds.ui.screens.app_common.StateView
 import give.away.good.deeds.ui.screens.app_common.StateViewState
+import give.away.good.deeds.ui.screens.main.setting.changepassword.ChangePasswordForm
 import give.away.good.deeds.ui.screens.main.setting.location.LoadingView
 import give.away.good.deeds.ui.screens.state.AppState
 import give.away.good.deeds.ui.screens.state.ErrorCause
@@ -101,7 +103,11 @@ fun ProfileFormStateView(
             LoadingView()
         }
         is AppState.Ideal -> {
-            ProfileForm()
+            LazyColumn {
+                item {
+                    ProfileForm()
+                }
+            }
         }
         is AppState.Error -> {
             when(state.cause){
