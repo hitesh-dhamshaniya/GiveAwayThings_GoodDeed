@@ -36,6 +36,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -56,13 +57,14 @@ import give.away.good.deeds.ui.screens.main.setting.location.LoadingView
 import give.away.good.deeds.ui.screens.state.AppState
 import give.away.good.deeds.ui.screens.state.ErrorCause
 import give.away.good.deeds.ui.theme.AppThemeButtonShape
+import give.away.good.deeds.utils.TimeAgo
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostDetailScreen(
     postId: String,
-    onBackPress: () -> Unit,
+    navController: NavController? = null,
     viewModel: PostDetailViewModel = koinViewModel()
 ) {
     Scaffold(topBar = {
@@ -75,7 +77,9 @@ fun PostDetailScreen(
                 )
             },
             navigationIcon = {
-                IconButton(onClick = onBackPress) {
+                IconButton(onClick = {
+                    navController?.popBackStack()
+                }) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
                         contentDescription = "Back Arrow"
@@ -98,15 +102,19 @@ fun PostDetailScreen(
             val uiState = viewModel.uiState.collectAsState()
             when (val state = uiState.value) {
                 is AppState.Result<PostInfo> -> {
-                    val post = state.data
-                    if (post == null) {
+                    val postInfo = state.data
+                    if (postInfo == null) {
                         LaunchedEffect(Unit) {
-                            onBackPress()
+                            navController?.popBackStack()
+                        }
+                    } else if (postInfo.chatGroupId != null) {
+                        LaunchedEffect(Unit) {
+                            navController?.navigate("chat/"+postInfo.chatGroupId)
+                            postInfo.chatGroupId = null
                         }
                     } else {
                         PostDetailActionView(
-                            postInfo = post,
-                            onBackPress = onBackPress
+                            postInfo = postInfo
                         )
                     }
                 }
@@ -151,7 +159,6 @@ fun PostDetailScreen(
 @Composable
 fun PostDetailActionView(
     postInfo: PostInfo,
-    onBackPress: () -> Unit,
     viewModel: PostDetailViewModel = koinViewModel()
 ) {
     val post = postInfo.post
@@ -221,7 +228,7 @@ fun PostDetailActionView(
                     showRequestDialog.value = false
                 },
                 onConfirm = {
-                    viewModel.sendRequest(post)
+                    viewModel.sendRequest(postInfo)
                 }
             )
 
@@ -288,7 +295,6 @@ fun PostDetailActionView(
 @Composable
 fun PostDetailView(
     postInfo: PostInfo,
-    viewModel: PostDetailViewModel = koinViewModel()
 ) {
     val post = postInfo.post
     Card {
@@ -320,12 +326,12 @@ fun PostDetailView(
 
                     Column {
                         Text(
-                            "David Warner",
+                            postInfo.user?.getName() ?: "",
                             style = MaterialTheme.typography.titleMedium
                         )
 
                         Text(
-                            "Added 19 hours ago",
+                            text = "Added "+ TimeAgo.timeAgo(post.createdDateTime.time),
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }

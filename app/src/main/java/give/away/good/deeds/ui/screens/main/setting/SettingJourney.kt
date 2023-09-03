@@ -128,9 +128,7 @@ fun SettingsJourneyScreen(
                 val postId = backStackEntry.arguments?.getString("postId")
                 PostDetailScreen(
                     postId = postId ?: "",
-                    onBackPress = {
-                        navController.popBackStack()
-                    },
+                    navController = navController,
                 )
             }
 

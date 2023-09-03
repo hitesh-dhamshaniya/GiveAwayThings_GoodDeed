@@ -23,15 +23,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import give.away.good.deeds.network.model.Post
 import give.away.good.deeds.network.model.PostInfo
 import give.away.good.deeds.ui.screens.app_common.ProfileAvatar
 import give.away.good.deeds.ui.screens.main.post.list.PostImageCarousel
+import give.away.good.deeds.utils.TimeAgo
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -93,7 +92,7 @@ fun PostCard(
                             )
 
                             Text(
-                                "0.8 miles away",
+                                text = "Added "+TimeAgo.timeAgo(post.createdDateTime.time),
                                 style = MaterialTheme.typography.bodyMedium
                             )
                         }

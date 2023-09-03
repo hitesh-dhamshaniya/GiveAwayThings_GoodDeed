@@ -26,14 +26,14 @@ object TimeAgo {
             diff < 2 * HOUR_MILLIS -> "an hour ago"
             diff < 24 * HOUR_MILLIS -> "${diff / HOUR_MILLIS} hours ago"
             diff < 48 * HOUR_MILLIS -> "yesterday"
-            else -> getRelativeTime(time)
+            else -> getRelativeTime(timeInMillis)
         }
     }
 
-    private fun getRelativeTime(time: Long) : String {
+    private fun getRelativeTime(timeInMillis: Long) : String {
         val now = System.currentTimeMillis();
         return DateUtils.getRelativeTimeSpanString(
-            time,
+            timeInMillis,
             now,
             DateUtils.DAY_IN_MILLIS
         ).toString()

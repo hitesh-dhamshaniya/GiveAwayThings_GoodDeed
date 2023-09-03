@@ -13,6 +13,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import give.away.good.deeds.ui.screens.main.messages.detail.MessageDetailScreen
 import give.away.good.deeds.ui.screens.main.post.detail.PostDetailScreen
 import give.away.good.deeds.ui.screens.main.post.search.PostSearchScreen
 import give.away.good.deeds.ui.theme.AppTheme
@@ -54,9 +55,15 @@ fun SearchJourneyScreen(
                 val postId = backStackEntry.arguments?.getString("postId")
                 PostDetailScreen(
                     postId = postId ?: "",
-                    onBackPress = {
-                        navController.popBackStack()
-                    },
+                    navController = navController,
+                )
+            }
+
+            composable("chat/{groupId}") { backStackEntry ->
+                val groupId = backStackEntry.arguments?.getString("groupId")
+                MessageDetailScreen(
+                    groupId = groupId ?: "",
+                    navController = navController,
                 )
             }
 

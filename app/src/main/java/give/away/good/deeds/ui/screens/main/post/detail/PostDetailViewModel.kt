@@ -69,14 +69,14 @@ class PostDetailViewModel(
         }
     }
 
-    fun sendRequest(post: Post) {
+    fun sendRequest(postInfo: PostInfo) {
         // hitesh@yopmail.com
         viewModelScope.launch {
             _uiState.emit(AppState.Loading)
 
-            when (val result = postRepository.requestPost(post.id)) {
+            when (val result = postRepository.requestPost(postInfo.post.id)) {
                 is CallResult.Success -> {
-                    createChatGroup( post)
+                    createChatGroup(postInfo)
                 }
 
                 is CallResult.Failure -> {
@@ -86,10 +86,10 @@ class PostDetailViewModel(
         }
     }
 
-    private suspend fun createChatGroup(post: Post){
-        when (val result = chatRepository.createChatGroup(post.userId)) {
+    private suspend fun createChatGroup(postInfo: PostInfo){
+        when (val result = chatRepository.createChatGroup(postInfo.post.userId)) {
             is CallResult.Success -> {
-                sendMessage(result.data, post)
+                sendMessage(result.data, postInfo)
             }
 
             is CallResult.Failure -> {
@@ -98,15 +98,16 @@ class PostDetailViewModel(
         }
     }
 
-    private suspend fun sendMessage(groupId: String, post: Post) {
+    private suspend fun sendMessage(groupId: String, postInfo: PostInfo) {
         val chatMessage = ChatMessage(
             id = "",
             senderId = authRepository.getUserId() ?: "",
-            message = "I'm interested in your give away \"${post.title}\". Can I please have it? "
+            message = "I'm interested in your give away \"${postInfo.post.title}\". Can I get it? "
         )
         when (val result = chatRepository.sendMessage(groupId, chatMessage)) {
             is CallResult.Success -> {
-                _uiState.emit(AppState.Result())
+                postInfo.chatGroupId = groupId
+                _uiState.emit(AppState.Result(postInfo))
             }
 
             is CallResult.Failure -> {
