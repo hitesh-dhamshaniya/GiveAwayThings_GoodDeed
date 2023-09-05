@@ -193,7 +193,7 @@ fun AddPostForm(
                 onValueChange = {
                     viewModel.onDescriptionChange(it)
                 },
-                maxLines = 5,
+                maxLines = 4,
                 isError = errorEnabled.value && viewModel.post.description.isBlank(),
                 supportingText = {
                     if (errorEnabled.value && viewModel.post.description.isBlank()) {
@@ -226,6 +226,22 @@ fun AddPostForm(
                     }
                 }
 
+            }
+        }
+
+        item {
+            Column {
+                Text(
+                    text = "Approximate Location",
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.Medium,
+                )
+
+                Text(
+                    text = viewModel.post.address ?: "",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
             }
         }
 
