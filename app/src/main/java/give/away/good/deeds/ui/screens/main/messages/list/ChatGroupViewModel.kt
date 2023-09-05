@@ -33,7 +33,10 @@ class ChatGroupViewModel(
                 if (result.data.isEmpty()) {
                     _uiState.emit(AppState.Error(cause = ErrorCause.NO_RESULT))
                 } else {
-                    _uiState.emit(AppState.Result(result.data))
+                    val sortedList = result.data.sortedByDescending {
+                        it.chat?.timestamp
+                    }
+                    _uiState.emit(AppState.Result(sortedList))
                 }
             } else {
                 _uiState.emit(AppState.Error(cause = ErrorCause.NO_RESULT))

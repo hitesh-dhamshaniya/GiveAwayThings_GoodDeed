@@ -7,7 +7,9 @@ import com.google.firebase.firestore.Query
 import give.away.good.deeds.network.model.Post
 import give.away.good.deeds.network.model.PostInfo
 import give.away.good.deeds.network.model.toPost
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 private const val COLLECTION_POST: String = "posts"
 
@@ -30,13 +32,16 @@ interface PostRepository {
 
     suspend fun requestPost(postId: String): CallResult<Unit>
 
+    suspend fun broadcastNewPost(postId: String): CallResult<PostInfo>
+
 }
 
 class PostRepositoryImpl(
     private val auth: FirebaseAuth,
     private val firestore: FirebaseFirestore,
     private val mediaRepository: MediaRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val cloudMessagingRepository: CloudMessagingRepository
 ) : PostRepository {
     override suspend fun createPost(post: Post, images: List<Uri>): CallResult<Unit> {
         return try {
@@ -51,6 +56,9 @@ class PostRepositoryImpl(
                 .document(document.id)
                 .update(docData)
                 .await()
+
+            // broadcast new post info
+            broadcastNewPost(document.id)
 
             CallResult.Success(Unit)
         } catch (ex: Exception) {
@@ -173,6 +181,16 @@ class PostRepositoryImpl(
             CallResult.Success(Unit)
         } catch (ex: Exception) {
             CallResult.Failure(ex.message)
+        }
+    }
+
+    override suspend fun broadcastNewPost(postId: String): CallResult<PostInfo> {
+        return withContext(Dispatchers.IO) {
+            val callResult = getPost(postId)
+            if (callResult is CallResult.Success) {
+                cloudMessagingRepository.broadcastNewPost(postInfo = callResult.data)
+            }
+            callResult
         }
     }
 

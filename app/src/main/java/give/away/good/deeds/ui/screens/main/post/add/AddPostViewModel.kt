@@ -89,10 +89,11 @@ class AddPostViewModel(
 
     fun fetchLocation() {
         viewModelScope.launch {
-            when (val result = userConfigRepository.getLocation()) {
+            when (val result = userConfigRepository.getUserConfig()) {
                 is CallResult.Success -> {
-                    post = post.copy(location = result.data.latLng, address = result.data.address)
-                    _uiState.emit(AppState.Result())
+                    if (result.data.latLng != null) {
+                        post = post.copy(location = result.data.latLng, address = result.data.address)
+                    }
                 }
 
                 else -> {

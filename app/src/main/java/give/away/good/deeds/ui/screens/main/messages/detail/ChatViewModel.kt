@@ -73,7 +73,7 @@ class ChatViewModel(
         firestore.collection(COLLECTION_CHAT_GROUP)
             .document(chatGroupMessage.groupId)
             .collection(COLLECTION_CHAT_MESSAGES)
-            .addSnapshotListener { value, error ->
+            .addSnapshotListener { value, _ ->
 
                 if(value != null) {
                     viewModelScope.launch {

@@ -39,8 +39,6 @@ data class Post(
         "location" to location?.let { GeoPoint(it.latitude, it.longitude) },
         "keywords" to prepareKeywords(),
         "status" to 1,
-
-        "quantity" to quantity,
         "createdDateTime" to FieldValue.serverTimestamp(),
     )
 
@@ -60,6 +58,7 @@ data class Post(
 
 }
 
+@Suppress("UNCHECKED_CAST")
 fun DocumentSnapshot.toPost(): Post {
     return Post(
         id = id,

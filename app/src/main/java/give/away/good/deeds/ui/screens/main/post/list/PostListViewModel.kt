@@ -32,7 +32,10 @@ class PostListViewModel(
             val result = postRepository.getPost()
             if (result is CallResult.Success) {
                 if (result.data.isNotEmpty()) {
-                    _uiState.emit(AppState.Result(result.data))
+                    val sortedList = result.data.sortedByDescending {
+                        it.post.createdDateTime
+                    }
+                    _uiState.emit(AppState.Result(sortedList))
                 } else {
                     _uiState.emit(AppState.Error(cause = ErrorCause.NO_RESULT))
                 }

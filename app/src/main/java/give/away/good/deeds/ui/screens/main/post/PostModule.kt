@@ -28,7 +28,7 @@ val postModule = module {
         PostDetailViewModel(get(), get(), get(), get())
     }
     viewModel {
-        PostViewModel(get())
+        PostViewModel(get(), get())
     }
 
     viewModel {

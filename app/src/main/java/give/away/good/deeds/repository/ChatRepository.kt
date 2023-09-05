@@ -7,9 +7,11 @@ import give.away.good.deeds.network.model.ChatGroup
 import give.away.good.deeds.network.model.ChatGroupMessage
 import give.away.good.deeds.network.model.ChatMessage
 import give.away.good.deeds.network.model.toChatMessage
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
- const val COLLECTION_CHAT_GROUP: String = "chat-group"
+const val COLLECTION_CHAT_GROUP: String = "chat-group"
  const val COLLECTION_CHAT_MESSAGES: String = "chat-messages"
 
 interface ChatRepository {
@@ -24,10 +26,12 @@ interface ChatRepository {
 
 }
 
+@Suppress("UNCHECKED_CAST")
 class ChatRepositoryImpl(
     private val firebaseAuth: FirebaseAuth,
     private val firestore: FirebaseFirestore,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val cloudMessagingRepository: CloudMessagingRepository
 ) : ChatRepository {
 
     override suspend fun createChatGroup(postUserId: String): CallResult<String> {
@@ -61,6 +65,9 @@ class ChatRepositoryImpl(
             firestore.collection(COLLECTION_CHAT_GROUP)
                 .document(groupId)
                 .collection(COLLECTION_CHAT_MESSAGES).add(chatMessage.toMap())
+
+            sendMessagePush(groupId, chatMessage)
+
             CallResult.Success(Unit)
         } catch (ex: Exception) {
             CallResult.Failure(ex.message)
@@ -101,6 +108,27 @@ class ChatRepositoryImpl(
             CallResult.Success(list)
         } catch (ex: Exception) {
             CallResult.Failure(ex.message)
+        }
+    }
+
+    private suspend fun sendMessagePush(groupId: String, chatMessage: ChatMessage) {
+        return withContext(Dispatchers.IO) {
+            val userId = getCurrentUserId() ?: ""
+            val snapshot = firestore.collection(COLLECTION_CHAT_GROUP)
+                .document(groupId)
+                .get()
+                .await()
+
+            val participantMap = snapshot.get("participants") as? Map<String, Boolean> ?: emptyMap()
+            val participants1 = participantMap.keys.toMutableList()
+            participants1.remove(userId)
+            val participantId = participants1.first()
+            val group = ChatGroup(
+                id = groupId,
+                chat = chatMessage,
+                user = userRepository.getUserFromCache(participantId)
+            )
+            cloudMessagingRepository.sendChatMessagePush(group)
         }
     }
 

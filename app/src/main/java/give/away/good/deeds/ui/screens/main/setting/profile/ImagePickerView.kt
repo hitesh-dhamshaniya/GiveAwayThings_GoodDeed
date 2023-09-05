@@ -90,10 +90,8 @@ fun ProfileImageView(
         FloatingActionButton(
             onClick = {
                 ImagePicker.with(context)
-                    .compress(512)         //Final image size will be less than 1 MB(Optional)
-                    .maxResultSize(
-                        1080, 1080
-                    )  //Final image resolution will be less than 1080 x 1080(Optional)
+                    .cropSquare()
+                    .maxResultSize(512, 512)
                     .createIntent { intent ->
                         imagePickerLauncher.launch(intent)
                     }
