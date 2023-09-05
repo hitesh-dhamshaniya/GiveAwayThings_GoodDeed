@@ -122,25 +122,11 @@ fun MessageDetailContainer(
     Scaffold(topBar = {
         TopAppBar(
             title = {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-
-                    ProfileAvatar(
-                        profileUrl = chatGroupMessage?.user?.profilePic,
-                        modifier = Modifier
-                            .size(48.dp)
-                            .clip(RoundedCornerShape(24.dp)),
-                    )
-                    
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    Text(
-                        text = chatGroupMessage?.user?.getName() ?: "",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+                Text(
+                    text = chatGroupMessage?.user?.getName() ?: "",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
             },
             navigationIcon = {
                 IconButton(onClick = {
@@ -186,7 +172,8 @@ fun ChatView(
             items(chatMessages.reversed()) { chatMessage ->
                 ChatCard(
                     chatMessage = chatMessage,
-                    userId = chatGroupMessage?.me?.id ?: ""
+                    userId = chatGroupMessage?.me?.id ?: "",
+                    senderProfilePic = chatGroupMessage?.user?.profilePic
                 )
             }
         }
