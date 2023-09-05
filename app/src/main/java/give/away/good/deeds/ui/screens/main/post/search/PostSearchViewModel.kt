@@ -33,7 +33,10 @@ class PostSearchViewModel(
             when (val result = postRepository.searchPost(query)) {
                 is CallResult.Success -> {
                     if (result.data.isNotEmpty()) {
-                        _uiState.emit(AppState.Result(result.data))
+                        val sortedList = result.data.sortedByDescending {
+                            it.post.createdDateTime
+                        }
+                        _uiState.emit(AppState.Result(sortedList))
                     } else {
                         _uiState.emit(AppState.Error(cause = ErrorCause.NO_RESULT))
                     }
