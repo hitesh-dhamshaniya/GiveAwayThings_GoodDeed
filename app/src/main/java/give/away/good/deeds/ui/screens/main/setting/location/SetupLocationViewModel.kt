@@ -31,7 +31,11 @@ class SetupLocationViewModel(
         viewModelScope.launch {
             val result = userConfigRepository.getUserConfig()
             if (result is CallResult.Success) {
-                _uiState.emit(result.data)
+                if (result.data.latLng != null) {
+                    _uiState.emit(result.data)
+                } else {
+                    _uiState.emit(defaultConfig)
+                }
             } else {
                 _uiState.emit(defaultConfig)
             }
