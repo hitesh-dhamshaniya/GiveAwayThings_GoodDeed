@@ -46,9 +46,6 @@ fun PostImageCarousel(
                 content = {
                     ImageFullScreenView(
                         imageUrl = showDialog.value,
-                        onClose = {
-                            showDialog.value = ""
-                        }
                     )
                 },
                 properties = DialogProperties(

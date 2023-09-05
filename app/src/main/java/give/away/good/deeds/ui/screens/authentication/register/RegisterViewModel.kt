@@ -19,10 +19,6 @@ class RegisterViewModel(
 
     val uiState = MutableLiveData<AuthenticationState<Boolean>>(AuthenticationState.None)
 
-    companion object {
-        const val TAG: String = "RegisterViewModel"
-    }
-
     /**
      * @param email: String
      * @param password: String

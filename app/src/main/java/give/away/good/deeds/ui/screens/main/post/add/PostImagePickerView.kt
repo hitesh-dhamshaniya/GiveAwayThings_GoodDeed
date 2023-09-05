@@ -85,10 +85,7 @@ fun PostImagePickerView(
             if (imageUris.size < 5) {
                 AddPhotoCard(onClick = {
                     ImagePicker.with(context)
-                        .compress(512)
-                        .maxResultSize(
-                            1080, 1080
-                        )
+                        .maxResultSize(1080, 1080)
                         .createIntent { intent ->
                             imagePickerLauncher.launch(intent)
                         }

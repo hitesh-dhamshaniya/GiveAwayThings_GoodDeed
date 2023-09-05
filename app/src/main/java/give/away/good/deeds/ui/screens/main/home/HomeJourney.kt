@@ -39,6 +39,7 @@ fun HomeJourneyScreen(
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
+
         NavHost(
             navController = navController,
             startDestination = "home"

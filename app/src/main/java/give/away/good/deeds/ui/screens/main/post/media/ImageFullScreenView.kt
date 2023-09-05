@@ -9,8 +9,7 @@ import coil.compose.AsyncImage
 
 @Composable
 fun ImageFullScreenView(
-    imageUrl: String,
-    onClose: () -> Unit,
+    imageUrl: String
 ) {
     Box(
         modifier = Modifier.fillMaxSize()

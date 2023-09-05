@@ -7,9 +7,6 @@ import give.away.good.deeds.repository.CallResult
 import give.away.good.deeds.ui.screens.authentication.common.AuthenticationState
 import give.away.good.deeds.utils.NetworkReader
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 

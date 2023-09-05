@@ -31,7 +31,7 @@ object FileUtil {
         return when (uri.scheme) {
             ContentResolver.SCHEME_CONTENT -> context.contentResolver.getType(uri)
             ContentResolver.SCHEME_FILE -> MimeTypeMap.getSingleton().getMimeTypeFromExtension(
-                MimeTypeMap.getFileExtensionFromUrl(uri.toString()).toLowerCase(Locale.US)
+                MimeTypeMap.getFileExtensionFromUrl(uri.toString()).lowercase()
             )
             else -> null
         }

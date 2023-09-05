@@ -29,7 +29,7 @@ class SetupLocationViewModel(
 
     fun fetchLocation() {
         viewModelScope.launch {
-            val result = userConfigRepository.getLocation()
+            val result = userConfigRepository.getUserConfig()
             if (result is CallResult.Success) {
                 _uiState.emit(result.data)
             } else {
