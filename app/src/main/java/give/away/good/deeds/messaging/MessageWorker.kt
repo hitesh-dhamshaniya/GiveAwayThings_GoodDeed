@@ -41,7 +41,7 @@ class MessageWorker(
             getBitmapFromUrl(url)
         }
         val icon = inputData.getString("icon")?.let { url ->
-            getBitmapFromUrl(url)
+            getBitmapFromUrl(url, isRounded = true)
         }
         val data = inputData.getString("data")
 
@@ -94,12 +94,17 @@ class MessageWorker(
         }
     }
 
-    private fun getBitmapFromUrl(imageUrl: String): Bitmap? {
+    private fun getBitmapFromUrl(imageUrl: String, isRounded: Boolean = false): Bitmap? {
         return try {
             val connection = URL(imageUrl).openConnection() as HttpURLConnection
             connection.doInput = true
             connection.connect()
-            BitmapFactory.decodeStream(connection.inputStream).roundCorner()
+            val bitmap = BitmapFactory.decodeStream(connection.inputStream)
+            if (isRounded) {
+                bitmap.roundCorner()
+            } else {
+                bitmap
+            }
         } catch (ex: Exception) {
             ex.printStackTrace()
             null
