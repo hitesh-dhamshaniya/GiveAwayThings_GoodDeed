@@ -15,12 +15,14 @@ object SettingUtil {
     const val SET_LOCATION = "Location"
     const val MY_LISTING = "My Posts"
     const val LOGOUT = "Logout"
+    const val NOTIFICATION = "Notifications"
 
     private fun addItems() {
         settingItemsList.add(SettingItemModel(R.drawable.ic_person_24px, PROFILE, "profile"))
         settingItemsList.add(SettingItemModel(R.drawable.ic_lock_reset_24px, CHANGE_PASSWORD, "change_password"))
         settingItemsList.add(SettingItemModel(R.drawable.ic_person_pin_circle_24px, SET_LOCATION, "location"))
         settingItemsList.add(SettingItemModel(R.drawable.ic_menu_volunteer, MY_LISTING, "account_listing"))
+        settingItemsList.add(SettingItemModel(R.drawable.ic_menu_notifications, NOTIFICATION, "notification"))
         settingItemsList.add(SettingItemModel(R.drawable.ic_logout, LOGOUT, "logout"))
     }
 

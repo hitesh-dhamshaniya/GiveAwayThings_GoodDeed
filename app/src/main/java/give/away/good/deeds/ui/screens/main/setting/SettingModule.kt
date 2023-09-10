@@ -4,6 +4,7 @@ import give.away.good.deeds.ui.screens.main.setting.changepassword.ChangePasswor
 import give.away.good.deeds.ui.screens.main.setting.location.SetupLocationViewModel
 import give.away.good.deeds.ui.screens.main.setting.profile.ProfileViewModel
 import give.away.good.deeds.ui.screens.main.setting.menu.SettingViewModel
+import give.away.good.deeds.ui.screens.main.setting.notification.NotificationViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -31,6 +32,12 @@ val settingModule = module {
         SetupLocationViewModel(
             context = get(),
             userConfigRepository = get(),
+        )
+    }
+    viewModel {
+        NotificationViewModel(
+            networkReader = get(),
+            repository = get(),
         )
     }
 }

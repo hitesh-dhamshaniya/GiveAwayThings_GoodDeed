@@ -16,6 +16,8 @@ import give.away.good.deeds.repository.CloudMessagingRepository
 import give.away.good.deeds.repository.CloudMessagingRepositoryImpl
 import give.away.good.deeds.repository.MediaRepository
 import give.away.good.deeds.repository.MediaRepositoryImpl
+import give.away.good.deeds.repository.NotificationRepository
+import give.away.good.deeds.repository.NotificationRepositoryImpl
 import give.away.good.deeds.repository.PostRepository
 import give.away.good.deeds.repository.PostRepositoryImpl
 import give.away.good.deeds.repository.UserConfigRepository
@@ -74,6 +76,9 @@ val appViewModules = module {
     }
     factory<CloudMessagingRepository> {
         CloudMessagingRepositoryImpl(get(), get())
+    }
+    factory<NotificationRepository> {
+        NotificationRepositoryImpl(get(), get())
     }
 
 }

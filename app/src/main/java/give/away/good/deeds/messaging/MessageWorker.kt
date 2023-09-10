@@ -13,6 +13,7 @@ import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import give.away.good.deeds.R
 import give.away.good.deeds.network.model.Notification
@@ -21,8 +22,13 @@ import give.away.good.deeds.repository.AuthRepositoryImpl
 import give.away.good.deeds.repository.NOTIFICATION_TYPE_GENERAL
 import give.away.good.deeds.repository.NOTIFICATION_TYPE_MESSAGE
 import give.away.good.deeds.repository.NOTIFICATION_TYPE_POST
+import give.away.good.deeds.repository.NotificationRepositoryImpl
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.Date
 
 class MessageWorker(
     appContext: Context,
@@ -37,10 +43,14 @@ class MessageWorker(
         val title = inputData.getString("title") ?: applicationContext.getString(R.string.app_name)
         val body = inputData.getString("body")
         val type = inputData.getString("type") ?: NOTIFICATION_TYPE_GENERAL
-        val bitmap = inputData.getString("image")?.let { url ->
+
+        val image = inputData.getString("image")
+        val imageBitmap = image?.let { url ->
             getBitmapFromUrl(url)
         }
-        val icon = inputData.getString("icon")?.let { url ->
+
+        val icon = inputData.getString("icon")
+        val iconBitmap = icon?.let { url ->
             getBitmapFromUrl(url, isRounded = true)
         }
         val data = inputData.getString("data")
@@ -54,22 +64,24 @@ class MessageWorker(
             title = title,
             message = body,
             type = type,
-            time = System.currentTimeMillis()
+            time = Date(),
+
+            icon = icon,
+            image = image,
+            data = data,
         )
 
         when (type) {
             NOTIFICATION_TYPE_POST -> {
-                handlePost(data, notification, bitmap, icon)
+                handlePost(data, notification, imageBitmap, iconBitmap)
             }
 
             NOTIFICATION_TYPE_MESSAGE -> {
-                val manager = NotificationManager(applicationContext)
-                manager.showPush(notification, bitmap, icon)
+                showPush(notification, imageBitmap, iconBitmap)
             }
 
             else -> {
-                val manager = NotificationManager(applicationContext)
-                manager.showPush(notification, bitmap, icon)
+                showPush(notification, imageBitmap, iconBitmap)
             }
         }
 
@@ -87,8 +99,7 @@ class MessageWorker(
 
         val uid = FirebaseAuth.getInstance().currentUser?.uid
         if (post.userId != uid) {
-            val manager = NotificationManager(applicationContext)
-            manager.showPush(notification, bitmap, icon)
+            showPush(notification, bitmap, icon)
         } else {
             Log.w(TAG, "Skip post as you're the owner")
         }
@@ -132,5 +143,16 @@ class MessageWorker(
 
     companion object {
         private const val TAG = "MessageWorker"
+    }
+
+    private fun showPush(notification: Notification, image: Bitmap?, icon: Bitmap?){
+        val manager = NotificationManager(applicationContext)
+        manager.showPush(notification, image, icon)
+
+        val auth = FirebaseAuth.getInstance()
+        val firestore = FirebaseFirestore.getInstance()
+        CoroutineScope(Dispatchers.IO).launch {
+            NotificationRepositoryImpl(auth, firestore).add(notification)
+        }
     }
 }

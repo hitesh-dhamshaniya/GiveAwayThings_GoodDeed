@@ -29,6 +29,7 @@ import give.away.good.deeds.ui.screens.main.post.mypost.MyPostScreen
 import give.away.good.deeds.ui.screens.main.setting.profile.ProfileScreen
 import give.away.good.deeds.ui.screens.main.setting.menu.SettingViewModel
 import give.away.good.deeds.ui.screens.main.setting.menu.SettingsScreen
+import give.away.good.deeds.ui.screens.main.setting.notification.NotificationScreen
 import give.away.good.deeds.ui.theme.AppTheme
 import give.away.good.deeds.utils.contentView
 import org.koin.androidx.compose.koinViewModel
@@ -110,6 +111,12 @@ fun SettingsJourneyScreen(
                     onBackPress = {
                         navController.popBackStack()
                     }
+                )
+            }
+
+            composable("notification") {
+                NotificationScreen(
+                    navController = navController,
                 )
             }
 

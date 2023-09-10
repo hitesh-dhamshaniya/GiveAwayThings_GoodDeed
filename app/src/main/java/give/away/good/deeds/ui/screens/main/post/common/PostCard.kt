@@ -46,7 +46,8 @@ fun PostCard(
 
     Card (
         onClick = {
-            onClick(postInfo)
+            viewModel.sendPush(post.id)
+            // onClick(postInfo)
         }
     ){
 
