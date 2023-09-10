@@ -22,6 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import give.away.good.deeds.R
 import give.away.good.deeds.ui.screens.app_common.SimpleAlertDialog
 import give.away.good.deeds.ui.screens.authentication.AuthActivity
+import give.away.good.deeds.ui.screens.main.messages.detail.MessageDetailScreen
 import give.away.good.deeds.ui.screens.main.post.detail.PostDetailScreen
 import give.away.good.deeds.ui.screens.main.setting.changepassword.ChangePasswordScreen
 import give.away.good.deeds.ui.screens.main.setting.location.SetupLocationScreen
@@ -139,6 +140,13 @@ fun SettingsJourneyScreen(
                 )
             }
 
+            composable("chat/{groupId}") { backStackEntry ->
+                val groupId = backStackEntry.arguments?.getString("groupId")
+                MessageDetailScreen(
+                    groupId = groupId ?: "",
+                    navController = navController,
+                )
+            }
         }
     }
 }

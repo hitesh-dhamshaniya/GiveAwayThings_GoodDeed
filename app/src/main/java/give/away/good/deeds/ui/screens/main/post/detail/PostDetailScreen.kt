@@ -283,7 +283,9 @@ fun PostDetailView(
     postInfo: PostInfo,
 ) {
     val post = postInfo.post
-    Card {
+    Card(
+        modifier = Modifier.fillMaxWidth()
+    ) {
         Column(
             modifier = Modifier.padding(16.dp),
         ) {

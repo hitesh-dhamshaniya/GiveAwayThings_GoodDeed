@@ -39,8 +39,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.google.gson.Gson
 import give.away.good.deeds.R
 import give.away.good.deeds.network.model.Notification
+import give.away.good.deeds.network.model.Post
 import give.away.good.deeds.repository.NOTIFICATION_TYPE_MESSAGE
 import give.away.good.deeds.repository.NOTIFICATION_TYPE_POST
 import give.away.good.deeds.ui.screens.app_common.EmptyResultStateView
@@ -96,7 +98,8 @@ fun NotificationScreen(
             when (val state = uiState.value) {
                 is AppState.Result<List<Notification>> -> {
                     NotificationList(
-                        lists = state.data ?: emptyList()
+                        lists = state.data ?: emptyList(),
+                        navController = navController,
                     )
                 }
 
@@ -145,14 +148,15 @@ fun NotificationScreen(
 
 @Composable
 private fun NotificationList(
-    lists: List<Notification>
+    lists: List<Notification>,
+    navController: NavController
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier.padding(horizontal = 16.dp)
     ) {
         items(lists) { notification ->
-            NotificationCard(notification)
+            NotificationCard(notification, navController)
         }
     }
 }
@@ -160,10 +164,31 @@ private fun NotificationList(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun NotificationCard(
-    notification: Notification
+    notification: Notification,
+    navController: NavController
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        onClick = {
+            when (notification.type) {
+                NOTIFICATION_TYPE_MESSAGE -> {
+                    if (!notification.data.isNullOrBlank()) {
+                        navController.navigate("chat/" + notification.data)
+                    }
+                }
+
+                NOTIFICATION_TYPE_POST -> {
+                    if (!notification.data.isNullOrBlank()) {
+                        val post = Gson().fromJson(notification.data, Post::class.java)
+                        navController.navigate("post_detail/" + post.id)
+                    }
+                }
+
+                else -> {
+
+                }
+            }
+        }
     ) {
         Row(
             verticalAlignment = Alignment.Top,
@@ -203,7 +228,10 @@ private fun NotificationCard(
 
                     AsyncImage(
                         model = notification.image,
-                        modifier = Modifier.height(180.dp).fillMaxWidth().clip(RoundedCornerShape(8.dp)),
+                        modifier = Modifier
+                            .height(180.dp)
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(8.dp)),
                         contentDescription = "",
                         contentScale = ContentScale.Crop,
                     )
