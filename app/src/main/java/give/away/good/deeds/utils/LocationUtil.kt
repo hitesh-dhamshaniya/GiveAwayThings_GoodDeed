@@ -28,10 +28,10 @@ object LocationUtil {
             if (!addresses.isNullOrEmpty()) {
                 address = addresses[0]
                 address.getAddressLine(0)
-            } else{
+            } else {
                 null
             }
-        }catch (ex: Exception){
+        } catch (ex: Exception) {
             ex.printStackTrace()
             null
         }

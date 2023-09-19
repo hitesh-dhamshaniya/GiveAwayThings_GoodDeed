@@ -31,7 +31,7 @@ class RegisterViewModel(
     ) {
         uiState.postValue(AuthenticationState.Loading)
         viewModelScope.launch {
-            if(!networkReader.isConnected()){
+            if (!networkReader.isConnected()) {
                 uiState.postValue(AuthenticationState.NoInternet)
                 return@launch
             }
@@ -65,6 +65,7 @@ class RegisterViewModel(
             is CallResult.Success -> {
                 uiState.postValue(AuthenticationState.Result())
             }
+
             is CallResult.Failure -> {
                 uiState.postValue(AuthenticationState.Error(result.message ?: ""))
             }

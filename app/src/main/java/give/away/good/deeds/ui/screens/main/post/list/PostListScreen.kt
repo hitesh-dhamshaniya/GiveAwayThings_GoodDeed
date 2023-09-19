@@ -72,12 +72,13 @@ fun PostListScreen(
                 }
 
                 is AppState.Error -> {
-                    when(state.cause){
+                    when (state.cause) {
                         ErrorCause.NO_INTERNET -> {
                             NoInternetStateView {
                                 viewModel.fetchPosts()
                             }
                         }
+
                         ErrorCause.NO_RESULT -> {
                             NoResultStateView(
                                 title = "No Give Away Things",
@@ -86,6 +87,7 @@ fun PostListScreen(
                                 viewModel.fetchPosts()
                             }
                         }
+
                         ErrorCause.UNKNOWN -> {
                             ErrorStateView(
                                 title = "Couldn't Load Posts!",
@@ -94,11 +96,13 @@ fun PostListScreen(
                                 viewModel.fetchPosts()
                             }
                         }
+
                         else -> {
 
                         }
                     }
                 }
+
                 is AppState.Ideal -> {
                     // do nothing
                 }
@@ -106,7 +110,6 @@ fun PostListScreen(
         }
     }
 }
-
 
 
 @Composable

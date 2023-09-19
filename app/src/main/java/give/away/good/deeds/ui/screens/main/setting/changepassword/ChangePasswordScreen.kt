@@ -79,7 +79,7 @@ fun ChangePasswordStateView(
 ) {
     val uiState = viewModel.uiState.collectAsState()
 
-    when(val state = uiState.value){
+    when (val state = uiState.value) {
         is AppState.Result<Unit> -> {
             StateView(
                 title = "Success!",
@@ -91,19 +91,23 @@ fun ChangePasswordStateView(
                 }
             )
         }
+
         is AppState.Loading -> {
             LoadingView()
         }
+
         is AppState.Ideal -> {
             ChangePasswordForm()
         }
+
         is AppState.Error -> {
-            when(state.cause){
+            when (state.cause) {
                 ErrorCause.NO_INTERNET -> {
                     NoInternetStateView {
                         viewModel.resetState()
                     }
                 }
+
                 ErrorCause.UNKNOWN -> {
                     StateView(
                         title = "Failure!",
@@ -115,6 +119,7 @@ fun ChangePasswordStateView(
                         }
                     )
                 }
+
                 else -> {
                 }
             }

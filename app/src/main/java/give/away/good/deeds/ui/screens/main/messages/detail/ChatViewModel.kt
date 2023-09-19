@@ -34,7 +34,7 @@ class ChatViewModel(
 
     fun fetchChatMessages(groupId: String) {
         viewModelScope.launch {
-            if(!networkReader.isConnected()){
+            if (!networkReader.isConnected()) {
                 _uiState.emit(AppState.Error(cause = ErrorCause.NO_INTERNET))
                 return@launch
             }
@@ -50,7 +50,7 @@ class ChatViewModel(
 
     fun sendMessage(chatGroupMessage: ChatGroupMessage, value: String) {
         viewModelScope.launch {
-            if(!networkReader.isConnected()){
+            if (!networkReader.isConnected()) {
                 _uiState.emit(AppState.Error(cause = ErrorCause.NO_INTERNET))
                 return@launch
             }
@@ -75,7 +75,7 @@ class ChatViewModel(
             .collection(COLLECTION_CHAT_MESSAGES)
             .addSnapshotListener { value, _ ->
 
-                if(value != null) {
+                if (value != null) {
                     viewModelScope.launch {
                         val state = _uiState.value
                         if (state is AppState.Result) {
@@ -86,7 +86,7 @@ class ChatViewModel(
                             }
 
                             newList.forEach { chat ->
-                                if(!chatMessages.any { it.id == chat.id }){
+                                if (!chatMessages.any { it.id == chat.id }) {
                                     chatMessages.add(chat)
                                 }
                             }

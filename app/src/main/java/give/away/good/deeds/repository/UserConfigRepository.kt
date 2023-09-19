@@ -9,6 +9,11 @@ import kotlinx.coroutines.tasks.await
 
 private const val COLLECTION_USER_CONFIG: String = "user-config"
 
+/**
+ * UserConfigRepository
+ * @author Hitesh
+ * @since 02.09.2023
+ */
 interface UserConfigRepository {
 
     suspend fun getUserConfig(): CallResult<UserConfig>

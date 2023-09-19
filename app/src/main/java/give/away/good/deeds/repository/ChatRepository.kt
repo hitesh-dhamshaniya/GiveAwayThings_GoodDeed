@@ -12,7 +12,7 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 const val COLLECTION_CHAT_GROUP: String = "chat-group"
- const val COLLECTION_CHAT_MESSAGES: String = "chat-messages"
+const val COLLECTION_CHAT_MESSAGES: String = "chat-messages"
 
 interface ChatRepository {
 

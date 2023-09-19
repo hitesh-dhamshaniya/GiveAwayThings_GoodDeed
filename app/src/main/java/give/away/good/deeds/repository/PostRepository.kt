@@ -13,6 +13,11 @@ import kotlinx.coroutines.withContext
 
 private const val COLLECTION_POST: String = "posts"
 
+/**
+ * Post Repository
+ * @author Hitesh
+ * @since 02.09.2023
+ */
 interface PostRepository {
 
     suspend fun createPost(

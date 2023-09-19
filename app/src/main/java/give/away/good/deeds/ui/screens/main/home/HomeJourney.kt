@@ -19,6 +19,11 @@ import give.away.good.deeds.ui.screens.main.post.list.PostListScreen
 import give.away.good.deeds.ui.theme.AppTheme
 import give.away.good.deeds.utils.contentView
 
+/**
+ * Home Journey class
+ * @author Hitesh
+ * @since 02.09.2023
+ */
 class HomeJourney : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,

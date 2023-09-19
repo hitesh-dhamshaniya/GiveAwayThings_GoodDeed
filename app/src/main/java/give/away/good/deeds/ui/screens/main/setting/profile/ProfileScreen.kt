@@ -87,7 +87,7 @@ fun ProfileFormStateView(
 
     val uiState = viewModel.uiState.collectAsState()
 
-    when(val state = uiState.value){
+    when (val state = uiState.value) {
         is AppState.Result<Unit> -> {
             StateView(
                 title = "Success!",
@@ -99,19 +99,23 @@ fun ProfileFormStateView(
                 }
             )
         }
+
         is AppState.Loading -> {
             LoadingView()
         }
+
         is AppState.Ideal -> {
             ProfileForm()
         }
+
         is AppState.Error -> {
-            when(state.cause){
+            when (state.cause) {
                 ErrorCause.NO_INTERNET -> {
                     NoInternetStateView {
                         viewModel.fetchUser()
                     }
                 }
+
                 ErrorCause.UNKNOWN -> {
                     StateView(
                         title = "Failure!",
@@ -123,6 +127,7 @@ fun ProfileFormStateView(
                         }
                     )
                 }
+
                 else -> {
 
                 }

@@ -12,15 +12,15 @@ interface ProfilePrefService {
 
     fun isLoggedIn(): Boolean
 
-    fun setLoggedIn(status:Boolean)
+    fun setLoggedIn(status: Boolean)
 
     fun getUserId(): String
 
-    fun setUserId(userId:String)
+    fun setUserId(userId: String)
 
     fun getAccessToken(): String?
 
-    fun setAccessToken(token:String)
+    fun setAccessToken(token: String)
 
     fun saveUser(user: User)
 

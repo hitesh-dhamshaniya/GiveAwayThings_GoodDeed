@@ -23,7 +23,7 @@ object DialogFactory {
         context: Context,
         title: String,
         message: String,
-        listener: (()->Unit)?
+        listener: (() -> Unit)?
     ) {
         MaterialAlertDialogBuilder(context)
             .setTitle(title)

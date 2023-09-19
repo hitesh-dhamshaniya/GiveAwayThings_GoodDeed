@@ -55,7 +55,7 @@ class AddPostViewModel(
         post = post.copy(quantity = quantity)
     }
 
-    fun isValidPost() : Boolean {
+    fun isValidPost(): Boolean {
         return post.title.isNotBlank() &&
                 post.description.isNotBlank() &&
                 post.images.isNotEmpty()

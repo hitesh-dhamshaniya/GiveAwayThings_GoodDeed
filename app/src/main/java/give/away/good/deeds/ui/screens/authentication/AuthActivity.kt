@@ -8,6 +8,11 @@ import give.away.good.deeds.ui.screens.authentication.module.authModule
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 
+/**
+ * AuthActivity
+ * @author Hitesh
+ * @since 02.09.2023
+ */
 class AuthActivity : AppCompatActivity(R.layout.activity_auth) {
 
     override fun onCreate(savedInstanceState: Bundle?) {

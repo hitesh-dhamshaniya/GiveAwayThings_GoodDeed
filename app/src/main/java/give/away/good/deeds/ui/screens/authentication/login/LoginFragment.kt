@@ -74,6 +74,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         is AuthenticationState.Error -> {
                             showErrorDialog(requireActivity(), getString(R.string.title_login_failed), getString(R.string.msg_login_failed))
                         }
+
                         is AuthenticationState.NoInternet -> {
                             showErrorDialog(requireActivity(), getString(R.string.title_login_failed), getString(R.string.error_no_internet))
                         }

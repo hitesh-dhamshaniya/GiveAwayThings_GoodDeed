@@ -33,6 +33,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     companion object {
-       private const val TAG = "FCM"
+        private const val TAG = "FCM"
     }
 }

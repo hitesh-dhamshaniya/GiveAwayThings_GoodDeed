@@ -100,7 +100,7 @@ fun AppTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = if(useDarkTheme) md_theme_dark_surface.toArgb() else md_theme_light_surface.toArgb()
+            window.statusBarColor = if (useDarkTheme) md_theme_dark_surface.toArgb() else md_theme_light_surface.toArgb()
             WindowCompat.getInsetsController(window, view).apply {
                 isAppearanceLightStatusBars = !useDarkTheme
                 isAppearanceLightNavigationBars = !useDarkTheme

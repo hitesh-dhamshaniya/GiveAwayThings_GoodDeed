@@ -6,6 +6,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 
+/**
+ * The class used for show simple alert dialog
+ * @author Hitesh
+ * @since 02.09.2023
+ */
 @Composable
 fun SimpleAlertDialog(
     title: String,

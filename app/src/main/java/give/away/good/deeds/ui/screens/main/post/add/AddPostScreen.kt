@@ -63,7 +63,7 @@ fun AddPostScreen(
             })
 
             val uiState = viewModel.uiState.collectAsState()
-            when(val state = uiState.value){
+            when (val state = uiState.value) {
                 is AppState.Result<Unit> -> {
                     StateView(
                         title = "Post Created!",
@@ -75,16 +75,19 @@ fun AddPostScreen(
                         }
                     )
                 }
+
                 is AppState.Loading -> {
                     LoadingView()
                 }
+
                 is AppState.Error -> {
-                    when(state.cause){
+                    when (state.cause) {
                         ErrorCause.NO_INTERNET -> {
                             NoInternetStateView {
                                 viewModel.resetNetworkState()
                             }
                         }
+
                         ErrorCause.UNKNOWN -> {
                             StateView(
                                 title = "Failure!",
@@ -96,11 +99,13 @@ fun AddPostScreen(
                                 }
                             )
                         }
+
                         else -> {
 
                         }
                     }
                 }
+
                 is AppState.Ideal -> {
                     AddPostForm()
                 }

@@ -49,7 +49,7 @@ class ProfileViewModel(
     ) {
 
         viewModelScope.launch {
-            if(!networkReader.isConnected()){
+            if (!networkReader.isConnected()) {
                 _uiState.emit(AppState.Error(cause = ErrorCause.NO_INTERNET))
                 return@launch
             }

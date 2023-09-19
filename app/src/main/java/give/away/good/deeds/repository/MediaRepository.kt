@@ -6,6 +6,11 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.tasks.await
 
+/**
+ * MediaRepository
+ * @author Hitesh
+ * @since 02.09.2023
+ */
 interface MediaRepository {
 
     suspend fun uploadProfileImage(userId: String, uri: Uri): String
@@ -14,6 +19,11 @@ interface MediaRepository {
 
 }
 
+/**
+ * MediaRepositoryImp
+ * @author Hitesh
+ * @since 02.09.2023
+ */
 class MediaRepositoryImpl(
     private val context: Context,
     private val storage: FirebaseStorage,

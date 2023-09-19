@@ -6,6 +6,11 @@ import give.away.good.deeds.ui.screens.authentication.register.RegisterViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
+/**
+ * Authentication module
+ * @author Hitesh
+ * @since 02.09.2023
+ */
 val authModule = module {
     viewModel {
         LoginViewModel(

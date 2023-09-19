@@ -6,6 +6,11 @@ import android.content.Intent
 import android.view.inputmethod.InputMethodManager
 import kotlin.reflect.KClass
 
+/**
+ * Activity Extension functions
+ * @author Hitesh
+ * @since 20.08.2023
+ */
 fun Activity.launchActivity(cls: KClass<out Activity>) {
     startActivity(Intent(this, cls.java))
 }

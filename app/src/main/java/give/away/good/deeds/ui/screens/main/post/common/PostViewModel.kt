@@ -12,7 +12,7 @@ class PostViewModel(
     private val postRepository: PostRepository
 ) : ViewModel() {
 
-    fun isMyPost(post: Post): Boolean{
+    fun isMyPost(post: Post): Boolean {
         return authRepository.getUserId() == post.userId
     }
 

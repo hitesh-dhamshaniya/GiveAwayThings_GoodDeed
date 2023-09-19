@@ -30,7 +30,7 @@ object TimeAgo {
         }
     }
 
-    private fun getRelativeTime(timeInMillis: Long) : String {
+    private fun getRelativeTime(timeInMillis: Long): String {
         val now = System.currentTimeMillis();
         return DateUtils.getRelativeTimeSpanString(
             timeInMillis,

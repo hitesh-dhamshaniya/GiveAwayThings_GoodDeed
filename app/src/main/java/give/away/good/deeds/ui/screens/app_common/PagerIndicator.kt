@@ -24,7 +24,11 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-
+/**
+ * Pager Indicator
+ * @author Hitesh
+ * @since 02.09.2023
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PagerIndicator(

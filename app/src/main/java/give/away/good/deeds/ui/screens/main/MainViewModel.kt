@@ -12,7 +12,7 @@ class MainViewModel(
 
     fun saveToken() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { result ->
-            if(result.isSuccessful){
+            if (result.isSuccessful) {
                 viewModelScope.launch {
                     userConfigRepository.addToken(result.result)
                 }

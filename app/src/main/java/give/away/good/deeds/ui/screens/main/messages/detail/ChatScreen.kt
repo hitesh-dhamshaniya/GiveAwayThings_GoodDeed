@@ -62,7 +62,7 @@ fun MessageDetailScreen(
         is AppState.Result<ChatGroupMessage> -> {
             val chatGroupMessage = state.data
 
-            if(chatGroupMessage!=null) {
+            if (chatGroupMessage != null) {
                 LaunchedEffect(Unit, block = {
                     viewModel.setSnapshotListener(chatGroupMessage)
                 })

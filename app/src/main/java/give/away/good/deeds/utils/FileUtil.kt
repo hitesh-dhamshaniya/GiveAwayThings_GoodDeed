@@ -33,6 +33,7 @@ object FileUtil {
             ContentResolver.SCHEME_FILE -> MimeTypeMap.getSingleton().getMimeTypeFromExtension(
                 MimeTypeMap.getFileExtensionFromUrl(uri.toString()).lowercase()
             )
+
             else -> null
         }
     }

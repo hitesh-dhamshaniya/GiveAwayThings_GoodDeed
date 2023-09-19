@@ -3,6 +3,10 @@ package give.away.good.deeds.repository
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.tasks.await
 
+/**
+ * @author Hitesh
+ * @since 02.09.2023
+ */
 interface AuthRepository {
     fun getUserId(): String?
 

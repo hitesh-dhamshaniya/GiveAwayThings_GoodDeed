@@ -12,7 +12,11 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
-
+/**
+ * Composable functions for Lottie Animations
+ * @author Hitesh
+ * @since 02.09.2023
+ */
 @Composable
 fun LottieAnimationView(
     @RawRes resId: Int

@@ -33,6 +33,7 @@ fun subscribeToTopic() {
     firebaseMessaging.subscribeToTopic(NOTIFICATION_TOPIC_GENERAL)
     firebaseMessaging.subscribeToTopic(NOTIFICATION_TOPIC_NEW_POST)
 }
+
 fun unsubscribeFromTopic() {
     val firebaseMessaging = FirebaseMessaging.getInstance()
     firebaseMessaging.unsubscribeFromTopic(NOTIFICATION_TOPIC_GENERAL)

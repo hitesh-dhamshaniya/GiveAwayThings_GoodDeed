@@ -44,11 +44,11 @@ fun PostCard(
     val post = postInfo.post
     val isMyPost = viewModel.isMyPost(post)
 
-    Card (
+    Card(
         onClick = {
             onClick(postInfo)
         }
-    ){
+    ) {
 
         Column {
             Box {
@@ -92,7 +92,7 @@ fun PostCard(
                             )
 
                             Text(
-                                text = "Added "+TimeAgo.timeAgo(post.createdDateTime.time),
+                                text = "Added " + TimeAgo.timeAgo(post.createdDateTime.time),
                                 style = MaterialTheme.typography.bodyMedium
                             )
                         }

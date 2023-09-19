@@ -26,7 +26,7 @@ class LoginViewModel(
     fun login(email: String, password: String) {
         viewModelScope.launch {
             _eventChannel.send(AuthenticationState.Loading)
-            if(!networkReader.isConnected()){
+            if (!networkReader.isConnected()) {
                 _eventChannel.send(AuthenticationState.NoInternet)
                 return@launch
             }

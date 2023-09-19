@@ -47,6 +47,7 @@ class ForgotPasswordFragment : Fragment(R.layout.fragment_forgot_password) {
                 is AuthenticationState.Error -> {
                     showErrorMessage()
                 }
+
                 is AuthenticationState.NoInternet -> {
                     DialogFactory.showErrorDialog(
                         requireActivity(),

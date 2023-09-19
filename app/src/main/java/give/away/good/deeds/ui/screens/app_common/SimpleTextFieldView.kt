@@ -40,7 +40,7 @@ fun SimpleTextFieldView(
             text = text,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Medium,
-            color = if(isEnabled) Color.Unspecified else Color.LightGray
+            color = if (isEnabled) Color.Unspecified else Color.LightGray
         )
         Spacer(Modifier.height(4.dp))
         TextField(
@@ -53,7 +53,7 @@ fun SimpleTextFieldView(
             isError = isError,
             supportingText = supportingText,
             shape = RoundedCornerShape(8.dp, 8.dp),
-    )
+        )
     }
 }
 

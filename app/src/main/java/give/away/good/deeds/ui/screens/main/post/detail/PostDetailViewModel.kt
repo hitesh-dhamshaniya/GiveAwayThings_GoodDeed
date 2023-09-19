@@ -27,17 +27,17 @@ class PostDetailViewModel(
     private val _uiState = MutableStateFlow<AppState<PostInfo>>(AppState.Loading)
     val uiState: StateFlow<AppState<PostInfo>> = _uiState.asStateFlow()
 
-    fun isMyPost(post: Post): Boolean{
+    fun isMyPost(post: Post): Boolean {
         return authRepository.getUserId() == post.userId
     }
 
-    fun isAlreadyRequested(post: Post): Boolean{
+    fun isAlreadyRequested(post: Post): Boolean {
         return post.requestedUsers.contains(authRepository.getUserId())
     }
 
     fun getPost(postId: String) {
         viewModelScope.launch {
-            if(!networkReader.isConnected()){
+            if (!networkReader.isConnected()) {
                 _uiState.emit(AppState.Error(cause = ErrorCause.NO_INTERNET))
                 return@launch
             }
@@ -47,6 +47,7 @@ class PostDetailViewModel(
                 is CallResult.Success -> {
                     _uiState.emit(AppState.Result(result.data))
                 }
+
                 else -> {
                     _uiState.emit(AppState.Error())
                 }
@@ -56,7 +57,7 @@ class PostDetailViewModel(
 
     fun setPostStatus(post: Post, status: Int) {
         viewModelScope.launch {
-            if(!networkReader.isConnected()){
+            if (!networkReader.isConnected()) {
                 _uiState.emit(AppState.Error(cause = ErrorCause.NO_INTERNET))
                 return@launch
             }
@@ -91,7 +92,7 @@ class PostDetailViewModel(
         }
     }
 
-    private suspend fun createChatGroup(postInfo: PostInfo){
+    private suspend fun createChatGroup(postInfo: PostInfo) {
         when (val result = chatRepository.createChatGroup(postInfo.post.userId)) {
             is CallResult.Success -> {
                 sendMessage(result.data, postInfo)

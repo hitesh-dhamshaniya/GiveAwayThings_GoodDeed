@@ -106,7 +106,7 @@ fun PostDetailScreen(
                         }
                     } else if (postInfo.chatGroupId != null) {
                         LaunchedEffect(Unit) {
-                            navController?.navigate("chat/"+postInfo.chatGroupId)
+                            navController?.navigate("chat/" + postInfo.chatGroupId)
                             postInfo.chatGroupId = null
                         }
                     } else {
@@ -296,39 +296,39 @@ fun PostDetailView(
                     modifier = Modifier
                         .size(48.dp)
                         .clip(RoundedCornerShape(24.dp)),
+                )
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Column {
+                    Text(
+                        postInfo.user?.getName() ?: "",
+                        style = MaterialTheme.typography.titleMedium
                     )
 
-                    Spacer(modifier = Modifier.width(8.dp))
-
-                    Column {
-                        Text(
-                            postInfo.user?.getName() ?: "",
-                            style = MaterialTheme.typography.titleMedium
-                        )
-
-                        Text(
-                            text = "Added "+ TimeAgo.timeAgo(post.createdDateTime.time),
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
+                    Text(
+                        text = "Added " + TimeAgo.timeAgo(post.createdDateTime.time),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
                 }
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Text(
-                    post.title,
-                    style = MaterialTheme.typography.titleMedium
-                )
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Text(
-                    post.description,
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
             }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                post.title,
+                style = MaterialTheme.typography.titleMedium
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                post.description,
+                style = MaterialTheme.typography.bodyMedium,
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+        }
     }
 }
 

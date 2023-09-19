@@ -22,6 +22,11 @@ const val NOTIFICATION_TYPE_POST = "new_post"
 const val NOTIFICATION_TYPE_MESSAGE = "message"
 const val NOTIFICATION_TYPE_GENERAL = "general"
 
+/**
+ * Repository for message
+ * @author Hitesh
+ * @since 02.09.2023
+ */
 interface CloudMessagingRepository {
     fun broadcastNewPost(postInfo: PostInfo)
 

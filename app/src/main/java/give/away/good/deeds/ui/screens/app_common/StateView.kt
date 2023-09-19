@@ -91,12 +91,12 @@ fun StateView(
 
         if (actionText != null) {
             Spacer(modifier = Modifier.height(8.dp))
-             Button(
+            Button(
                 shape = AppThemeButtonShape,
                 onClick = {
                     actionClick?.invoke()
                 },
-                 modifier = Modifier.defaultMinSize(minWidth = 120.dp)
+                modifier = Modifier.defaultMinSize(minWidth = 120.dp)
             ) {
                 Text(
                     text = actionText.uppercase(),
@@ -126,7 +126,7 @@ fun StateViewWithLottie(
         verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically)
     ) {
 
-        if(resId !=null) {
+        if (resId != null) {
             val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(resId))
             LottieAnimation(
                 composition = composition,
@@ -159,12 +159,12 @@ fun StateViewWithLottie(
 
         if (actionText != null) {
             Spacer(modifier = Modifier.height(8.dp))
-             Button(
+            Button(
                 shape = AppThemeButtonShape,
                 onClick = {
                     actionClick?.invoke()
                 },
-                 modifier = Modifier.defaultMinSize(minWidth = 120.dp)
+                modifier = Modifier.defaultMinSize(minWidth = 120.dp)
             ) {
                 Text(
                     text = actionText.uppercase(),

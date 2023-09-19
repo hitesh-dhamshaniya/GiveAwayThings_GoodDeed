@@ -81,18 +81,20 @@ fun MyPostScreen(
                 }
 
                 is AppState.Error -> {
-                    when(state.cause){
+                    when (state.cause) {
                         ErrorCause.NO_INTERNET -> {
                             NoInternetStateView {
                                 viewModel.fetchPosts()
                             }
                         }
+
                         ErrorCause.NO_RESULT -> {
                             EmptyResultStateView(
                                 title = "No Post Found!",
                                 message = "You haven't created any post yet. Once you create a post it will be visible here."
                             )
                         }
+
                         ErrorCause.UNKNOWN -> {
                             ErrorStateView(
                                 title = "Couldn't Load Posts!",
@@ -101,11 +103,13 @@ fun MyPostScreen(
                                 viewModel.fetchPosts()
                             }
                         }
+
                         else -> {
 
                         }
                     }
                 }
+
                 is AppState.Ideal -> {
                     // do nothing
                 }

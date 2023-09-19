@@ -10,7 +10,7 @@ import give.away.good.deeds.R
 @Composable
 fun ProfileAvatar(
     modifier: Modifier,
-    profileUrl: String? =null,
+    profileUrl: String? = null,
 ) {
     AsyncImage(
         model = profileUrl,

@@ -34,7 +34,7 @@ import org.koin.androidx.compose.koinViewModel
 fun PostSearchScreen(
     onPostClick: ((Post) -> Unit)? = null,
     viewModel: PostSearchViewModel = koinViewModel()
- ) {
+) {
     Scaffold { contentPadding ->
         Column(
             modifier = Modifier
@@ -79,17 +79,19 @@ fun PostSearchScreen(
                 }
 
                 is AppState.Error -> {
-                    when(state.cause){
+                    when (state.cause) {
                         ErrorCause.NO_INTERNET -> {
                             NoInternetStateView {
                                 viewModel.searchPosts(text)
                             }
                         }
+
                         ErrorCause.NO_RESULT -> {
                             EmptyResultStateView(
-                                message =  "Sorry, We couldn't find what you're looking for. Try searching some other keywords."
+                                message = "Sorry, We couldn't find what you're looking for. Try searching some other keywords."
                             )
                         }
+
                         ErrorCause.UNKNOWN -> {
                             ErrorStateView(
                                 title = "Couldn't Search Posts!",
@@ -98,6 +100,7 @@ fun PostSearchScreen(
                                 viewModel.searchPosts(text)
                             }
                         }
+
                         else -> {
                             LottieAnimationView(
                                 resId = R.raw.lottie_animation_llxxvzkf
@@ -105,6 +108,7 @@ fun PostSearchScreen(
                         }
                     }
                 }
+
                 is AppState.Ideal -> {
                     LottieAnimationView(
                         resId = R.raw.lottie_animation_llxxvzkf

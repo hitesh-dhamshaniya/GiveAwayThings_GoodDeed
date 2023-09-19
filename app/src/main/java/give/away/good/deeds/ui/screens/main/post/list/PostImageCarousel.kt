@@ -27,7 +27,7 @@ import give.away.good.deeds.ui.screens.main.post.media.ImageFullScreenView
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
 fun PostImageCarousel(
-    imageList : List<String>,
+    imageList: List<String>,
     modifier: Modifier = Modifier,
     showFullImage: Boolean = false
 ) {

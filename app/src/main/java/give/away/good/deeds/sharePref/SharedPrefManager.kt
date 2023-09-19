@@ -64,7 +64,7 @@ class SharedPrefManager(private val mSharedPreferences: SharedPreferences) {
      */
     public fun get(key: String, defValues: MutableSet<String>): MutableSet<String> {
         val set = mSharedPreferences.getStringSet(key, defValues);
-        if(set!=null) return set;
+        if (set != null) return set;
         return Collections.emptySet();
     }
 

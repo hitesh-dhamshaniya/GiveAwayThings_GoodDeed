@@ -13,21 +13,16 @@ interface UserRepository {
     suspend fun getUserFromCache(userId: String): User?
 
     suspend fun createUser(
-        userId: String,
-        firstName: String,
-        lastName: String,
-        email: String
+        userId: String, firstName: String, lastName: String, email: String
     ): CallResult<Unit>
 
     suspend fun updateUser(
-        userId: String,
-        data: Map<String, Any>
+        userId: String, data: Map<String, Any>
     ): CallResult<Unit>
 }
 
 class UserRepositoryImpl(
-    private val firebaseAuth: FirebaseAuth,
-    private val firestore: FirebaseFirestore
+    private val firebaseAuth: FirebaseAuth, private val firestore: FirebaseFirestore
 ) : UserRepository {
 
     override suspend fun getUser(): CallResult<User> {
@@ -46,7 +41,7 @@ class UserRepositoryImpl(
 
     override suspend fun getUserFromCache(userId: String): User? {
         var user = UserCache.get(userId)
-        if (user == null){
+        if (user == null) {
             user = getUser(userId)
             UserCache.add(user)
         }
@@ -54,10 +49,7 @@ class UserRepositoryImpl(
     }
 
     override suspend fun createUser(
-        userId: String,
-        firstName: String,
-        lastName: String,
-        email: String
+        userId: String, firstName: String, lastName: String, email: String
     ): CallResult<Unit> {
         val user = User(userId, firstName, lastName, email)
         return try {
@@ -70,14 +62,10 @@ class UserRepositoryImpl(
     }
 
     override suspend fun updateUser(
-        userId: String,
-        data: Map<String, Any>
+        userId: String, data: Map<String, Any>
     ): CallResult<Unit> {
         return try {
-            firestore.collection(COLLECTION_USER)
-                .document(userId)
-                .update(data)
-                .await()
+            firestore.collection(COLLECTION_USER).document(userId).update(data).await()
             CallResult.Success(Unit)
         } catch (ex: Exception) {
             CallResult.Failure(ex.message)

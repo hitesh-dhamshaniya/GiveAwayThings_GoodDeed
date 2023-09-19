@@ -45,10 +45,12 @@ class SetupLocationViewModel(
     fun setTempLocation(latLng: LatLng) {
         viewModelScope.launch {
             val address = LocationUtil.getAddress(context, latLng)
-            _uiState.emit(UserConfig(
-                latLng = latLng,
-                address = address ?: ""
-            ))
+            _uiState.emit(
+                UserConfig(
+                    latLng = latLng,
+                    address = address ?: ""
+                )
+            )
         }
     }
 
