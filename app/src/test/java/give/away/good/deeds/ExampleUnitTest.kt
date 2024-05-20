@@ -17,7 +17,7 @@ class ExampleUnitTest {
     }
 
     @Test
-    fun isValid_emailAddress(){
+    fun isValid_emailAddress() {
         assertFalse("".isEmailValid())
 
         assertFalse("hitesh".isEmailValid())

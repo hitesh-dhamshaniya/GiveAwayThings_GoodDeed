@@ -1,0 +1,46 @@
+[versions]
+compose = '2023.08.00'
+navigation = '2.7.1'
+firebase = '32.2.3'
+koin = '3.4.2'
+
+[libraries]
+compose-bom = { module = 'androidx.compose:compose-bom', version.ref = "compose" }
+compose-ui = { module = 'androidx.compose.ui:ui' }
+compose-ui-tooling = { module = 'androidx.compose.ui:ui-tooling' }
+compose-runtime = { module = 'androidx.compose.runtime:runtime' }
+compose-runtime-livedata = { module = 'androidx.compose.runtime:runtime-livedata' }
+compose-foundation = { module = 'androidx.compose.foundation:foundation' }
+compose-foundation-layout = { module = 'androidx.compose.foundation:foundation-layout' }
+compose-material = { module = 'androidx.compose.material:material' }
+compose-material3 = { module = 'androidx.compose.material3:material3' }
+
+navigation-fragment = { module = 'androidx.navigation:navigation-fragment-ktx', version.ref = "navigation" }
+navigation-ui = { module = 'androidx.navigation:navigation-ui-ktx', version.ref = "navigation" }
+navigation-compose = { module = 'androidx.navigation:navigation-compose', version.ref = "navigation" }
+navigation-testing = { module = 'androidx.navigation:navigation-testing', version.ref = "navigation" }
+
+firebase-bom = { module = 'com.google.firebase:firebase-bom', version.ref = "firebase" }
+firebase-analytics = { module = 'com.google.firebase:firebase-analytics-ktx' }
+firebase-crashlytics = { module = 'com.google.firebase:firebase-crashlytics-ktx' }
+firebase-firestore = { module = 'com.google.firebase:firebase-firestore-ktx' }
+firebase-auth = { module = 'com.google.firebase:firebase-auth-ktx' }
+firebase-storage = { module = 'com.google.firebase:firebase-storage-ktx' }
+firebase-messaging = { module = 'com.google.firebase:firebase-messaging-ktx	' }
+
+koin-core = { module = 'io.insert-koin:koin-core', version.ref = "koin" }
+koin-android = { module = 'io.insert-koin:koin-android', version.ref = "koin" }
+koin-androidx-compose = { module = 'io.insert-koin:koin-androidx-compose', version.ref = "koin" }
+
+[bundles]
+compose = ["compose-ui", "compose-ui-tooling", "compose-runtime", "compose-runtime-livedata", "compose-foundation", "compose-foundation-layout", "compose-material3",]
+navigation = ["navigation-fragment", "navigation-ui", "navigation-compose"]
+firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-firestore", "firebase-auth", "firebase-storage", "firebase-messaging"]
+koin = ["koin-core", "koin-android", "koin-androidx-compose"]
+
+[plugins]
+android-application = { id = "com.android.application", version = "8.0.2" }
+android-library = { id = "com.android.library", version = "8.0.2" }
+kotlin-android = { id = 'org.jetbrains.kotlin.android', version = '1.8.21' }
+kotlin-jvm = { id = 'org.jetbrains.kotlin.jvm', version = '1.8.21' }
+ktlint-gradle = { id = 'org.jlleitschuh.gradle.ktlint', version = '11.3.2' }

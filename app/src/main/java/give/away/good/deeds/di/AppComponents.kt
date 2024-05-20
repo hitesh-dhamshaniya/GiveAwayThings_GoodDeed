@@ -1,6 +1,8 @@
 package give.away.good.deeds.di
 
 import give.away.good.deeds.sharePref.di.sharedPrefModules
+import give.away.good.deeds.ui.screens.main.post.postModule
+import give.away.good.deeds.ui.screens.main.setting.settingModule
 
 /**
  * @author Hitesh
@@ -10,6 +12,6 @@ import give.away.good.deeds.sharePref.di.sharedPrefModules
 val appComponent = listOf(
     appViewModules,
     sharedPrefModules,
-    /*landingViewModules,
-    domainVariables*/
+    settingModule,
+    postModule
 )

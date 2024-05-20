@@ -1,132 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <data>
+    <include layout="@layout/content_guild_lines" />
 
-    </data>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvTitleLogin"
+        style="@style/AppTextView.Title"
+        android:text="@string/title_login_now"
+        app:layout_constraintEnd_toEndOf="@id/glVEnd"
+        app:layout_constraintStart_toStartOf="@id/glVStart"
+        app:layout_constraintTop_toTopOf="@id/glTop" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvTitleEnterDetail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/msg_enter_your_details_to_continue"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@id/glVEnd"
+        app:layout_constraintStart_toStartOf="@id/glVStart"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitleLogin" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputEmail"
+        style="@style/AppTextInputLayout"
+        android:layout_marginTop="@dimen/DP16"
+        android:hint="@string/hint_email_address"
+        app:layout_constraintEnd_toEndOf="@id/glVEnd"
+        app:layout_constraintStart_toStartOf="@id/glVStart"
+        app:layout_constraintTop_toBottomOf="@id/tvTitleEnterDetail">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtEmailAdd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:lines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputPassword"
+        style="@style/AppTextInputLayout"
+        android:layout_marginTop="@dimen/DP16"
+        android:hint="@string/hint_password"
+        app:passwordToggleEnabled="true"
+        app:layout_constraintEnd_toEndOf="@id/glVEnd"
+        app:layout_constraintStart_toStartOf="@id/glVStart"
+        app:layout_constraintTop_toBottomOf="@id/inputEmail">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:lines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLogin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/DP12"
+        android:text="@string/action_login"
+        app:layout_constraintEnd_toEndOf="@id/glVEnd"
+        app:layout_constraintStart_toStartOf="@id/glVStart"
+        app:layout_constraintTop_toBottomOf="@id/tvForgotPassword" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/tvForgotPassword"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:padding="8dp"
+        android:text="@string/action_forgot_password"
+        app:layout_constraintEnd_toEndOf="@id/glVEnd"
+        app:layout_constraintTop_toBottomOf="@id/inputPassword" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvDoNotHaveAccount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:text="@string/msg_do_not_have_account_yet"
+        app:layout_constraintBottom_toTopOf="@id/btnRegister"
+        app:layout_constraintEnd_toEndOf="@id/glVEnd"
+        app:layout_constraintStart_toStartOf="@id/glVStart" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRegister"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/DP16"
+        android:text="@string/action_join_team"
+        app:layout_constraintBottom_toBottomOf="@id/glBottom"
+        app:layout_constraintEnd_toEndOf="@id/glVEnd"
+        app:layout_constraintStart_toStartOf="@id/glVStart" />
+
+    <include
+        android:id="@+id/progressIndicator"
+        layout="@layout/widget_progressbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/glVStart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.1" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/glTop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.06" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/glVEnd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.9" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/glBottom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.94" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTitleLogin"
-            style="@style/AppTextView.Title"
-            android:layout_marginTop="@dimen/DP16"
-            android:text="@string/title_login_now"
-            app:layout_constraintEnd_toEndOf="@id/glVEnd"
-            app:layout_constraintStart_toStartOf="@id/glVStart"
-            app:layout_constraintTop_toTopOf="@id/glTop" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTitleEnterDetail"
-            style="@style/AppTextView.Normal"
-            android:text="@string/msg_enter_your_details_to_continue"
-            app:layout_constraintEnd_toEndOf="@id/glVEnd"
-            app:layout_constraintStart_toStartOf="@id/glVStart"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitleLogin" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/inputEmail"
-            style="@style/AppTextInputLayout"
-            android:layout_marginTop="@dimen/DP16"
-            android:hint="@string/hint_email_address"
-            app:layout_constraintEnd_toEndOf="@id/glVEnd"
-            app:layout_constraintStart_toStartOf="@id/glVStart"
-            app:layout_constraintTop_toBottomOf="@id/tvTitleEnterDetail">
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edtEmailAdd"
-                android:layout_width="match_parent"
-                android:inputType="textEmailAddress"
-                android:lines="1"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/inputPassword"
-            style="@style/AppTextInputLayout"
-            android:layout_marginTop="@dimen/DP16"
-            android:hint="@string/hint_password"
-            app:layout_constraintEnd_toEndOf="@id/glVEnd"
-            app:layout_constraintStart_toStartOf="@id/glVStart"
-            app:layout_constraintTop_toBottomOf="@id/inputEmail">
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edtPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:lines="1"
-                android:inputType="textPassword" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnLogin"
-            style="@style/AppButton"
-            android:layout_marginTop="@dimen/DP16"
-            android:text="@string/action_login"
-            app:layout_constraintEnd_toEndOf="@id/glVEnd"
-            app:layout_constraintStart_toStartOf="@id/glVStart"
-            app:layout_constraintTop_toBottomOf="@id/inputPassword" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvForgotPassword"
-            style="@style/TextAppearance.AppCompat.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:padding="8dp"
-            android:text="@string/action_forgot_password"
-            app:layout_constraintEnd_toEndOf="@id/glVEnd"
-            app:layout_constraintTop_toBottomOf="@id/btnLogin" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvDoNotHaveAccount"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/msg_do_not_have_account_yet"
-            app:layout_constraintEnd_toEndOf="@id/glVEnd"
-            app:layout_constraintStart_toStartOf="@id/glVStart"
-            app:layout_constraintTop_toBottomOf="@id/tvForgotPassword" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnRegister"
-            style="@style/AppButton"
-            android:layout_marginTop="@dimen/DP16"
-            android:text="@string/action_join_team"
-            app:layout_constraintEnd_toEndOf="@id/glVEnd"
-            app:layout_constraintStart_toStartOf="@id/glVStart"
-            app:layout_constraintTop_toBottomOf="@id/tvDoNotHaveAccount" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+</androidx.constraintlayout.widget.ConstraintLayout>
